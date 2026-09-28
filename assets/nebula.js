@@ -1,5 +1,5 @@
 /* Merkorn: the nebula behind every page.
-   A single full-screen fragment shader, rendered below native resolution.
+   A single full-screen fragment shader, rendered at native resolution.
    Each page sets data-seed on <body> so it sits in its own region of the cloud. */
 (() => {
   const canvas = document.getElementById('sky');
@@ -20,7 +20,7 @@
     return mix(mix(mix(h31(i), h31(i + vec3(1,0,0)), f.x), mix(h31(i + vec3(0,1,0)), h31(i + vec3(1,1,0)), f.x), f.y),
                mix(mix(h31(i + vec3(0,0,1)), h31(i + vec3(1,0,1)), f.x), mix(h31(i + vec3(0,1,1)), h31(i + vec3(1,1,1)), f.x), f.y), f.z);
   }
-  float fbm(vec3 p){ float a = .5, s = 0.; for (int k = 0; k < 5; k++) { s += a * noise(p); p = p * 2.03 + vec3(1.7, 9.2, 3.1); a *= .5; } return s; }
+  float fbm(vec3 p){ float a = .5, s = 0.; for (int k = 0; k < 6; k++) { s += a * noise(p); p = p * 2.03 + vec3(1.7, 9.2, 3.1); a *= .5; } return s; }
 
   // stars streaming toward the viewer, three depth layers
   float stars(vec2 uv, float travel){
@@ -92,10 +92,8 @@
     // keep it quiet behind reading areas
     col *= .78;
 
-    // print grain + slight posterisation: matte, never glossy
-    float g = h21(gl_FragCoord.xy + fract(T * 7.) * 91.);
-    col += (g - .5) * .075;
-    col = floor(col * 40. + g) / 40.;
+    // sub-pixel dither, invisible, only to avoid banding in the dark gradients
+    col += (h21(gl_FragCoord.xy) - .5) / 255.;
     gl_FragColor = vec4(col, 1.);
   }`;
   function sh(type, src) { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s); return s; }
@@ -108,7 +106,8 @@
   const U = n => gl.getUniformLocation(prog, n);
   const uR = U('R'), uT = U('T'), uZ = U('Z'), uV = U('V'), uC = U('C'), uM = U('M'), uS = U('S'), uW = U('W');
 
-  let scale = .6;
+  // native resolution (up to 2x on retina screens); lowered step by step only if the device struggles
+  let scale = 1;
   function size() {
     const d = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.round(innerWidth * d * scale); canvas.height = Math.round(innerHeight * d * scale);
@@ -148,7 +147,7 @@
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 
     frames++;
-    if (now - tCheck > 2000) { const fps = frames * 1000 / (now - tCheck); if (fps < 40 && scale > .35) { scale -= .15; size(); } frames = 0; tCheck = now; }
+    if (now - tCheck > 2000) { const fps = frames * 1000 / (now - tCheck); if (fps < 45 && scale > .55) { scale = Math.max(.55, scale - .15); size(); } frames = 0; tCheck = now; }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
