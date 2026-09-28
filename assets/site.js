@@ -122,8 +122,16 @@
 
   function update() {
     const vh = innerHeight;
-    scrubs.forEach(el => {
-      const r = el.getBoundingClientRect();
+    // 1. read every position first: mixing reads and writes forced a layout per element and caused stutter
+    const rs = scrubs.map(el => el.getBoundingClientRect());
+    const re = reduce ? [] : enters.map(el => el.getBoundingClientRect().top);
+    const rx = reduce ? [] : exits.map(el => el.getBoundingClientRect());
+    const rg = reduce ? [] : grows.map(el => el.getBoundingClientRect().top);
+    const rk = reduce ? [] : stacks.map(items => items.map(li => li.getBoundingClientRect()));
+    const rl = lines.map(el => el.getBoundingClientRect());
+    // 2. then write
+    scrubs.forEach((el, i) => {
+      const r = rs[i];
       el._p = clamp(-r.top / Math.max(1, r.height - vh));
       set(el, '--p', el._p);
     });
@@ -137,17 +145,16 @@
       if (t.extra) t.track.style.translate = `${(-(t.sec._p || 0) * t.extra).toFixed(1)}px 0`;
     });
     if (!reduce) {
-      enters.forEach(el => { const r = el.getBoundingClientRect(); set(el, '--e', clamp((vh - r.top) / (vh * .38))); });
-      exits.forEach(el => { const r = el.getBoundingClientRect(); set(el, '--x', clamp(-r.top / (r.height * .8))); });
-      grows.forEach(el => { const r = el.getBoundingClientRect(); set(el, '--g', clamp((vh - r.top) / (vh * .7))); });
-      stacks.forEach(items => items.forEach((li, i) => {
-        const next = items[i + 1];
-        if (!next) return;
-        const a = li.getBoundingClientRect(), b = next.getBoundingClientRect();
+      enters.forEach((el, i) => set(el, '--e', clamp((vh - re[i]) / (vh * .38))));
+      exits.forEach((el, i) => set(el, '--x', clamp(-rx[i].top / (rx[i].height * .8))));
+      grows.forEach((el, i) => set(el, '--g', clamp((vh - rg[i]) / (vh * .7))));
+      stacks.forEach((items, s) => items.forEach((li, i) => {
+        if (i === items.length - 1) return;
+        const a = rk[s][i], b = rk[s][i + 1];
         set(li, '--k', clamp((a.bottom - b.top) / a.height));
       }));
     }
-    lines.forEach(el => { const r = el.getBoundingClientRect(); set(el, '--l', clamp((vh * .5 - r.top) / r.height)); });
+    lines.forEach((el, i) => set(el, '--l', clamp((vh * .5 - rl[i].top) / rl[i].height)));
   }
 
   sizeTracks();
