@@ -116,7 +116,7 @@ def service_panels():
     return "\n          ".join(out)
 
 
-def band(eyebrow, title, text, cta=("contattaci.html", "Prenota una chiacchierata"), name="Primo incontro"):
+def band(eyebrow, title, text, cta=("contattaci.html", "Prenota un appuntamento"), name="Primo incontro"):
     return f"""<section class="band-wrap" data-name="{name}">
     <div class="wrap">
       <div class="band" data-grow>
@@ -293,7 +293,7 @@ HOME = f"""  <section class="hero" data-exit data-name="Inizio">
         </h1>
         <p class="lead">Progettiamo e sviluppiamo gestionali partendo da come lavora la vostra azienda. Prima analizziamo il processo, poi costruiamo il software che lo segue, dall'ordine alla fattura.</p>
         <div class="actions">
-          <a class="btn" href="contattaci.html"><span>Prenota una chiacchierata</span></a>
+          <a class="btn" href="contattaci.html"><span>Prenota un appuntamento</span></a>
           <a class="btn ghost" href="metodo.html"><span>Come lavoriamo</span></a>
         </div>
         <div class="scroll-cue"><i aria-hidden="true"></i>Scorri per continuare</div>
@@ -397,7 +397,7 @@ CHI = f"""  {page_hero("Chi siamo", ["Una software house che parte dalla <em>UX<
 
 CONTATTI = contact_form(
     heading="Contattaci",
-    intro="Compilate il modulo per prenotare una prima chiacchierata o per qualsiasi domanda sui nostri servizi. La richiesta arriva direttamente al nostro indirizzo email e vi rispondiamo personalmente.",
+    intro="Compilate il modulo per prenotare un appuntamento o per qualsiasi domanda sui nostri servizi. La richiesta arriva direttamente al nostro indirizzo email e vi rispondiamo personalmente.",
     level="h1",
 ).replace('class="contact"', 'class="contact page-contact"', 1)
 
@@ -419,7 +419,7 @@ PAGES = [
     ("metodo.html", "Come lavoriamo", "Il metodo Merkorn in quattro fasi: analisi del processo, fondamenta riusabili, componenti su misura e interfaccia, con esempi di schermate.", 1.3, METODO, True, ("assets/schermate.js",)),
     ("servizi.html", "Servizi", "Gestionali su misura, analisi dei processi, app per reparto e consegne, assistenza ed evoluzione del software.", 2.6, SERVIZI, True),
     ("chi-siamo.html", "Chi siamo", "Merkorn è una software house pugliese che sviluppa gestionali su misura per le PMI partendo dalla progettazione dell'esperienza d'uso.", 3.9, CHI, True),
-    ("contattaci.html", "Contattaci", "Contattate Merkorn per prenotare una prima chiacchierata o chiedere informazioni sui servizi di sviluppo software gestionale.", 5.2, CONTATTI, False),
+    ("contattaci.html", "Contattaci", "Contattate Merkorn per prenotare un appuntamento o chiedere informazioni sui servizi di sviluppo software gestionale.", 5.2, CONTATTI, False),
     ("privacy.html", "Privacy", "Informativa sul trattamento dei dati personali raccolti tramite il modulo di contatto del sito Merkorn.", 6.5, PRIVACY, True),
 ]
 
