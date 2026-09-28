@@ -125,7 +125,7 @@ def footer():
 HUD = """<div class="hud" aria-hidden="true"><span class="pm"><i></i><i></i><i></i><i></i><i></i></span><div><b>Sezione</b><span class="hud-name">Inizio</span><small class="hud-by">powered by <strong>Merkorn</strong></small></div></div>"""
 
 
-def page(path, title, description, seed, body, form=True):
+def page(path, title, description, seed, body, form=True, scripts=()):
     return f"""{head(title, description, path)}
 <body data-seed="{seed}">
 <canvas id="sky" aria-hidden="true"></canvas>
@@ -138,6 +138,7 @@ def page(path, title, description, seed, body, form=True):
 {HUD}
 <script src="assets/nebula.js" defer></script>
 <script src="assets/site.js" defer></script>
+{"".join(f'<script src="{x}" defer></script>' for x in scripts)}
 </body>
 </html>
 """

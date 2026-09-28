@@ -179,6 +179,105 @@ def legs_detailed():
     return '<div class="legs" data-line>\n        ' + "\n        ".join(out) + "\n      </div>"
 
 
+
+def app_frame(crumb, inner, kind="desk"):
+    return f"""<div class="app {kind}" data-enter>
+        <div class="app-bar"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="crumb">{crumb}</span><span class="sample">Dati di esempio</span></div>
+        <div class="app-body">{inner}</div>
+      </div>"""
+
+
+def screen(name, eyebrow, title, text, points, frame, flip=False):
+    pts = "".join(f"<li>{x}</li>" for x in points)
+    return f"""<section class="screen{' flip' if flip else ''}" data-name="{name}">
+    <div class="wrap screen-grid">
+      <div class="screen-txt" data-enter>
+        <span class="eyebrow">{eyebrow}</span>
+        <h2>{title}</h2>
+        <p>{text}</p>
+        <ul class="ticks">{pts}</ul>
+      </div>
+      {frame}
+    </div>
+  </section>"""
+
+
+DASH = app_frame("Direzione / Cruscotto", """
+          <div class="filters" role="group" aria-label="Periodo">
+            <button type="button" class="chip" data-range="3">Ultimi 3 mesi</button>
+            <button type="button" class="chip" data-range="6">Ultimi 6 mesi</button>
+            <button type="button" class="chip" data-range="12" aria-pressed="true">Ultimi 12 mesi</button>
+          </div>
+          <div class="tiles" id="dash-tiles"></div>
+          <div class="viz-row">
+            <figure class="viz wide">
+              <figcaption><strong>Fatturato mensile</strong><span>Migliaia di euro, IVA esclusa</span></figcaption>
+              <div class="legend"><span><i class="lk s1"></i>Anno in corso</span><span><i class="lk s0"></i>Anno precedente</span></div>
+              <div class="chart" id="dash-line"></div>
+              <details class="tview"><summary>Mostra i dati in tabella</summary><div id="dash-line-t"></div></details>
+            </figure>
+            <figure class="viz">
+              <figcaption><strong>Ordini per categoria</strong><span>Numero di ordini evasi nel periodo</span></figcaption>
+              <div class="chart" id="dash-bars"></div>
+              <details class="tview"><summary>Mostra i dati in tabella</summary><div id="dash-bars-t"></div></details>
+            </figure>
+          </div>""")
+
+STOCK = app_frame("Magazzino / Scorte", """
+          <div class="tiles three" id="stock-tiles"></div>
+          <div class="filters" role="group" aria-label="Filtra gli articoli">
+            <button type="button" class="chip" data-st="all" aria-pressed="true">Tutti</button>
+            <button type="button" class="chip" data-st="low">Sotto soglia</button>
+            <button type="button" class="chip" data-st="warn">In esaurimento</button>
+            <label class="search"><span class="sr">Cerca un articolo</span><input type="search" id="stock-q" placeholder="Cerca per codice o nome" autocomplete="off"></label>
+          </div>
+          <div class="tbl-wrap"><table class="tbl" id="stock-table">
+            <thead><tr><th scope="col">Codice</th><th scope="col">Articolo</th><th scope="col">Giacenza</th><th scope="col" class="num">Riordino</th><th scope="col">Stato</th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+          <p class="empty" id="stock-empty" hidden>Nessun articolo corrisponde alla ricerca.</p>""")
+
+PROD = app_frame("Produzione / Carico dei reparti", """
+          <div class="viz-row">
+            <figure class="viz wide">
+              <figcaption><strong>Ore lavorate per reparto</strong><span>Ultime otto settimane</span></figcaption>
+              <div class="legend"><span><i class="sw s1"></i>Taglio</span><span><i class="sw s2"></i>Assemblaggio</span><span><i class="sw s3"></i>Collaudo</span></div>
+              <div class="chart" id="prod-cols"></div>
+              <details class="tview"><summary>Mostra i dati in tabella</summary><div id="prod-cols-t"></div></details>
+            </figure>
+            <figure class="viz">
+              <figcaption><strong>Avanzamento commesse</strong><span>Percentuale completata e consegna prevista</span></figcaption>
+              <ul class="jobs" id="prod-jobs"></ul>
+            </figure>
+          </div>""")
+
+PHONE = app_frame("Consegne / Giro di oggi", """
+          <div class="ph-head"><span class="ph-k">Giro di oggi</span><strong id="ph-count"></strong><div class="meter"><i id="ph-meter"></i></div></div>
+          <div class="ph-next">
+            <span class="ph-k">Prossima consegna</span>
+            <h3 id="ph-name"></h3>
+            <p id="ph-addr"></p>
+            <ul class="ph-items" id="ph-items"></ul>
+          </div>
+          <button type="button" class="ph-go" id="ph-go">Consegna completata</button>
+          <button type="button" class="ph-alt" id="ph-reset">Ricomincia il giro</button>
+          <ul class="ph-list" id="ph-list" aria-label="Consegne successive"></ul>""", kind="phone")
+
+SCREENS = "\n\n  ".join([
+    screen("Cruscotto", "Esempi di schermate", "Il cruscotto della direzione",
+           "Una sola schermata per capire come sta andando l'azienda. Il periodo si sceglie una volta e aggiorna tutti i numeri e i grafici insieme.",
+           ["I quattro valori principali in evidenza, con il confronto rispetto al periodo precedente", "L'anno in corso in viola, l'anno precedente in grigio per confrontarli a colpo d'occhio", "Passando sul grafico si leggono i valori di ogni mese, e ogni grafico ha la sua tabella"], DASH),
+    screen("Magazzino", "Esempi di schermate", "Le scorte da riordinare",
+           "Chi gestisce il magazzino vede subito quali articoli stanno finendo e quanto riordinare. Lo stato è indicato con colore, simbolo e testo, così è leggibile da tutti.",
+           ["La barra mostra la giacenza e il segno verticale la soglia minima", "I filtri e la ricerca restringono l'elenco senza cambiare pagina", "Il riordino suggerito è calcolato sulla scorta massima dell'articolo"], STOCK, flip=True),
+    screen("Produzione", "Esempi di schermate", "Il carico dei reparti",
+           "Il responsabile di produzione confronta le ore lavorate settimana per settimana e controlla l'avanzamento delle commesse aperte.",
+           ["Le colonne sommano le ore dei tre reparti, con il totale in cima", "Le commesse a rischio o in ritardo sono segnalate accanto alla data di consegna", "Il calo di agosto si vede senza bisogno di leggere i numeri"], PROD),
+    screen("Consegne", "Esempi di schermate", "Il giro consegne sul telefono",
+           "L'autista vede una consegna alla volta, con indirizzo e merce da scaricare. Un solo pulsante grande conferma la consegna e passa alla successiva.",
+           ["Pulsanti grandi, utilizzabili anche con i guanti", "L'avanzamento del giro sempre visibile in alto", "Provate a premere Consegna completata"], PHONE, flip=True),
+])
+
 # ---------------------------------------------------------------- pagine
 
 HOME_SERVICES = (cards([(k, h, p) for k, h, p, _ in SERVICES], link="servizi.html")
@@ -232,6 +331,14 @@ METODO = f"""  {page_hero("Come lavoriamo", ["Un metodo in <em>quattro fasi</em>
       {legs_detailed()}
     </div>
   </section>
+
+  <section class="screens-intro" data-name="Esempi">
+    <div class="wrap">
+      <div class="sec-head centered" data-enter><span class="eyebrow">Fase 4 in pratica</span><h2>Come si vedono i dati</h2><p>Alcune schermate di esempio di un gestionale Merkorn, nello stesso stile di questo sito. Sono interattive e usano dati inventati, per mostrare come ogni schermata risponde a una domanda precisa di chi la usa.</p></div>
+    </div>
+  </section>
+
+  {SCREENS}
 
   {band("Primo incontro", "Prima delle fasi c'è una chiacchierata", CHAT_TEXT)}
 
@@ -309,7 +416,7 @@ PRIVACY = f"""  {page_hero("Privacy", ["Informativa sul trattamento dei dati"], 
 
 PAGES = [
     ("index.html", "Merkorn", "Merkorn sviluppa software gestionale su misura per le piccole e medie imprese italiane, partendo dall'analisi del processo aziendale.", 0.0, HOME, True),
-    ("metodo.html", "Come lavoriamo", "Il metodo Merkorn in quattro fasi: analisi del processo, fondamenta riusabili, componenti su misura e interfaccia.", 1.3, METODO, True),
+    ("metodo.html", "Come lavoriamo", "Il metodo Merkorn in quattro fasi: analisi del processo, fondamenta riusabili, componenti su misura e interfaccia, con esempi di schermate.", 1.3, METODO, True, ("assets/schermate.js",)),
     ("servizi.html", "Servizi", "Gestionali su misura, analisi dei processi, app per reparto e consegne, assistenza ed evoluzione del software.", 2.6, SERVIZI, True),
     ("chi-siamo.html", "Chi siamo", "Merkorn è una software house pugliese che sviluppa gestionali su misura per le PMI partendo dalla progettazione dell'esperienza d'uso.", 3.9, CHI, True),
     ("contattaci.html", "Contattaci", "Contattate Merkorn per prenotare una prima chiacchierata o chiedere informazioni sui servizi di sviluppo software gestionale.", 5.2, CONTATTI, False),
@@ -317,6 +424,6 @@ PAGES = [
 ]
 
 if __name__ == "__main__":
-    for path, title, desc, seed, body, form in PAGES:
-        (ROOT / path).write_text(page(path, title, desc, seed, body, form), encoding="utf-8")
+    for path, title, desc, seed, body, form, *extra in PAGES:
+        (ROOT / path).write_text(page(path, title, desc, seed, body, form, *extra), encoding="utf-8")
         print("scritto", path)

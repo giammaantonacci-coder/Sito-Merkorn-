@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Come lavoriamo | Merkorn</title>
-<meta name="description" content="Il metodo Merkorn in quattro fasi: analisi del processo, fondamenta riusabili, componenti su misura e interfaccia.">
+<meta name="description" content="Il metodo Merkorn in quattro fasi: analisi del processo, fondamenta riusabili, componenti su misura e interfaccia, con esempi di schermate.">
 <meta property="og:title" content="Come lavoriamo | Merkorn">
-<meta property="og:description" content="Il metodo Merkorn in quattro fasi: analisi del processo, fondamenta riusabili, componenti su misura e interfaccia.">
+<meta property="og:description" content="Il metodo Merkorn in quattro fasi: analisi del processo, fondamenta riusabili, componenti su misura e interfaccia, con esempi di schermate.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
 <meta name="theme-color" content="#08070B">
@@ -55,6 +55,125 @@
         <article class="leg" data-enter><span class="dot">2</span><div class="body"><span class="k">Fondamenta riusabili</span><h3>Partiamo da moduli collaudati</h3><p>Anagrafiche, utenti e permessi, stampe e collegamento con la contabilità sono comuni a quasi tutte le aziende. Usiamo moduli già testati su altri progetti, così tempi e costi restano contenuti.</p><div class="split"><div><b>Cosa facciamo</b><ul><li>Anagrafiche di clienti, fornitori e articoli</li><li>Utenti, ruoli e permessi di accesso</li><li>Modelli di stampa e collegamento con i software già in uso</li></ul></div><div><b>Cosa ricevete</b><ul><li>Una base stabile su cui costruire il resto</li><li>Dati esistenti importati e verificati</li></ul></div></div></div></article>
         <article class="leg" data-enter><span class="dot">3</span><div class="body"><span class="k">Componenti su misura</span><h3>Sviluppiamo le parti specifiche</h3><p>Commesse, documenti di trasporto, pianificazione delle consegne e controlli di qualità vengono sviluppati sul vostro flusso di lavoro. Ogni componente viene provato con le persone che lo useranno.</p><div class="split"><div><b>Cosa facciamo</b><ul><li>Sviluppo per rilasci successivi, un componente alla volta</li><li>Prove con il personale prima di ogni rilascio</li><li>Correzioni in base a come viene usato nella pratica</li></ul></div><div><b>Cosa ricevete</b><ul><li>Componenti in uso già durante il progetto</li><li>Un avanzamento che potete verificare di settimana in settimana</li></ul></div></div></div></article>
         <article class="leg" data-enter><span class="dot">4</span><div class="body"><span class="k">Interfaccia</span><h3>Progettiamo ogni schermata per un'attività</h3><p>In reparto usiamo pulsanti grandi e pochi passaggi, in ufficio tabelle complete per confrontare i dati. L'obiettivo è che ogni operazione richieda il minor numero possibile di passaggi.</p><div class="split"><div><b>Cosa facciamo</b><ul><li>Schermate diverse per ruoli diversi</li><li>Versioni per computer, tablet e smartphone</li><li>Verifica della leggibilità nei luoghi di lavoro reali</li></ul></div><div><b>Cosa ricevete</b><ul><li>Un software che si impara in poco tempo</li><li>Meno errori di inserimento dei dati</li></ul></div></div></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="screens-intro" data-name="Esempi">
+    <div class="wrap">
+      <div class="sec-head centered" data-enter><span class="eyebrow">Fase 4 in pratica</span><h2>Come si vedono i dati</h2><p>Alcune schermate di esempio di un gestionale Merkorn, nello stesso stile di questo sito. Sono interattive e usano dati inventati, per mostrare come ogni schermata risponde a una domanda precisa di chi la usa.</p></div>
+    </div>
+  </section>
+
+  <section class="screen" data-name="Cruscotto">
+    <div class="wrap screen-grid">
+      <div class="screen-txt" data-enter>
+        <span class="eyebrow">Esempi di schermate</span>
+        <h2>Il cruscotto della direzione</h2>
+        <p>Una sola schermata per capire come sta andando l'azienda. Il periodo si sceglie una volta e aggiorna tutti i numeri e i grafici insieme.</p>
+        <ul class="ticks"><li>I quattro valori principali in evidenza, con il confronto rispetto al periodo precedente</li><li>L'anno in corso in viola, l'anno precedente in grigio per confrontarli a colpo d'occhio</li><li>Passando sul grafico si leggono i valori di ogni mese, e ogni grafico ha la sua tabella</li></ul>
+      </div>
+      <div class="app desk" data-enter>
+        <div class="app-bar"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="crumb">Direzione / Cruscotto</span><span class="sample">Dati di esempio</span></div>
+        <div class="app-body">
+          <div class="filters" role="group" aria-label="Periodo">
+            <button type="button" class="chip" data-range="3">Ultimi 3 mesi</button>
+            <button type="button" class="chip" data-range="6">Ultimi 6 mesi</button>
+            <button type="button" class="chip" data-range="12" aria-pressed="true">Ultimi 12 mesi</button>
+          </div>
+          <div class="tiles" id="dash-tiles"></div>
+          <div class="viz-row">
+            <figure class="viz wide">
+              <figcaption><strong>Fatturato mensile</strong><span>Migliaia di euro, IVA esclusa</span></figcaption>
+              <div class="legend"><span><i class="lk s1"></i>Anno in corso</span><span><i class="lk s0"></i>Anno precedente</span></div>
+              <div class="chart" id="dash-line"></div>
+              <details class="tview"><summary>Mostra i dati in tabella</summary><div id="dash-line-t"></div></details>
+            </figure>
+            <figure class="viz">
+              <figcaption><strong>Ordini per categoria</strong><span>Numero di ordini evasi nel periodo</span></figcaption>
+              <div class="chart" id="dash-bars"></div>
+              <details class="tview"><summary>Mostra i dati in tabella</summary><div id="dash-bars-t"></div></details>
+            </figure>
+          </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen flip" data-name="Magazzino">
+    <div class="wrap screen-grid">
+      <div class="screen-txt" data-enter>
+        <span class="eyebrow">Esempi di schermate</span>
+        <h2>Le scorte da riordinare</h2>
+        <p>Chi gestisce il magazzino vede subito quali articoli stanno finendo e quanto riordinare. Lo stato è indicato con colore, simbolo e testo, così è leggibile da tutti.</p>
+        <ul class="ticks"><li>La barra mostra la giacenza e il segno verticale la soglia minima</li><li>I filtri e la ricerca restringono l'elenco senza cambiare pagina</li><li>Il riordino suggerito è calcolato sulla scorta massima dell'articolo</li></ul>
+      </div>
+      <div class="app desk" data-enter>
+        <div class="app-bar"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="crumb">Magazzino / Scorte</span><span class="sample">Dati di esempio</span></div>
+        <div class="app-body">
+          <div class="tiles three" id="stock-tiles"></div>
+          <div class="filters" role="group" aria-label="Filtra gli articoli">
+            <button type="button" class="chip" data-st="all" aria-pressed="true">Tutti</button>
+            <button type="button" class="chip" data-st="low">Sotto soglia</button>
+            <button type="button" class="chip" data-st="warn">In esaurimento</button>
+            <label class="search"><span class="sr">Cerca un articolo</span><input type="search" id="stock-q" placeholder="Cerca per codice o nome" autocomplete="off"></label>
+          </div>
+          <div class="tbl-wrap"><table class="tbl" id="stock-table">
+            <thead><tr><th scope="col">Codice</th><th scope="col">Articolo</th><th scope="col">Giacenza</th><th scope="col" class="num">Riordino</th><th scope="col">Stato</th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+          <p class="empty" id="stock-empty" hidden>Nessun articolo corrisponde alla ricerca.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" data-name="Produzione">
+    <div class="wrap screen-grid">
+      <div class="screen-txt" data-enter>
+        <span class="eyebrow">Esempi di schermate</span>
+        <h2>Il carico dei reparti</h2>
+        <p>Il responsabile di produzione confronta le ore lavorate settimana per settimana e controlla l'avanzamento delle commesse aperte.</p>
+        <ul class="ticks"><li>Le colonne sommano le ore dei tre reparti, con il totale in cima</li><li>Le commesse a rischio o in ritardo sono segnalate accanto alla data di consegna</li><li>Il calo di agosto si vede senza bisogno di leggere i numeri</li></ul>
+      </div>
+      <div class="app desk" data-enter>
+        <div class="app-bar"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="crumb">Produzione / Carico dei reparti</span><span class="sample">Dati di esempio</span></div>
+        <div class="app-body">
+          <div class="viz-row">
+            <figure class="viz wide">
+              <figcaption><strong>Ore lavorate per reparto</strong><span>Ultime otto settimane</span></figcaption>
+              <div class="legend"><span><i class="sw s1"></i>Taglio</span><span><i class="sw s2"></i>Assemblaggio</span><span><i class="sw s3"></i>Collaudo</span></div>
+              <div class="chart" id="prod-cols"></div>
+              <details class="tview"><summary>Mostra i dati in tabella</summary><div id="prod-cols-t"></div></details>
+            </figure>
+            <figure class="viz">
+              <figcaption><strong>Avanzamento commesse</strong><span>Percentuale completata e consegna prevista</span></figcaption>
+              <ul class="jobs" id="prod-jobs"></ul>
+            </figure>
+          </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen flip" data-name="Consegne">
+    <div class="wrap screen-grid">
+      <div class="screen-txt" data-enter>
+        <span class="eyebrow">Esempi di schermate</span>
+        <h2>Il giro consegne sul telefono</h2>
+        <p>L'autista vede una consegna alla volta, con indirizzo e merce da scaricare. Un solo pulsante grande conferma la consegna e passa alla successiva.</p>
+        <ul class="ticks"><li>Pulsanti grandi, utilizzabili anche con i guanti</li><li>L'avanzamento del giro sempre visibile in alto</li><li>Provate a premere Consegna completata</li></ul>
+      </div>
+      <div class="app phone" data-enter>
+        <div class="app-bar"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="crumb">Consegne / Giro di oggi</span><span class="sample">Dati di esempio</span></div>
+        <div class="app-body">
+          <div class="ph-head"><span class="ph-k">Giro di oggi</span><strong id="ph-count"></strong><div class="meter"><i id="ph-meter"></i></div></div>
+          <div class="ph-next">
+            <span class="ph-k">Prossima consegna</span>
+            <h3 id="ph-name"></h3>
+            <p id="ph-addr"></p>
+            <ul class="ph-items" id="ph-items"></ul>
+          </div>
+          <button type="button" class="ph-go" id="ph-go">Consegna completata</button>
+          <button type="button" class="ph-alt" id="ph-reset">Ricomincia il giro</button>
+          <ul class="ph-list" id="ph-list" aria-label="Consegne successive"></ul></div>
       </div>
     </div>
   </section>
@@ -138,5 +257,6 @@
 <div class="hud" aria-hidden="true"><span class="pm"><i></i><i></i><i></i><i></i><i></i></span><div><b>Sezione</b><span class="hud-name">Inizio</span><small class="hud-by">powered by <strong>Merkorn</strong></small></div></div>
 <script src="assets/nebula.js" defer></script>
 <script src="assets/site.js" defer></script>
+<script src="assets/schermate.js" defer></script>
 </body>
 </html>
