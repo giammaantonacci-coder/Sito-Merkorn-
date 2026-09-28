@@ -446,6 +446,28 @@
   }
   tiles(); stockTiles(); stockTable(); flow(); homeTiles(); homeTodo();
   drawCharts();
+
+  // the floating windows lean slightly toward the pointer (mouse only, never on touch)
+  if (!reduce && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.float').forEach(f => {
+      let raf = 0;
+      f.addEventListener('pointermove', e => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const r = f.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+          f.classList.add('tilt');
+          f.style.setProperty('--ry', (x * 5).toFixed(2) + 'deg');
+          f.style.setProperty('--rx', (-y * 4).toFixed(2) + 'deg');
+        });
+      });
+      f.addEventListener('pointerleave', () => {
+        cancelAnimationFrame(raf);
+        f.classList.remove('tilt');
+        f.style.setProperty('--rx', '0deg'); f.style.setProperty('--ry', '0deg');
+      });
+    });
+  }
   let rw = 0, t;
   const ro = new ResizeObserver(() => {
     const w = document.querySelector('.dash-main').clientWidth;

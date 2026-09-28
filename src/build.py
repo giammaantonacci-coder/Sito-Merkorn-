@@ -196,7 +196,7 @@ def chips(labels, on):
 
 def frame(active, title, body):
     nav = "".join(f'<span class="nav-item{" on" if k == active else ""}">{icon(k)}<span>{label}</span></span>' for k, label in VIEWS)
-    return f"""<div class="app dash" data-enter aria-hidden="true">
+    return f"""<div class="float" data-enter><div class="app dash" aria-hidden="true">
         <div class="side">
           <div class="side-brand"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span><span>Gestionale</span></div>
           <div class="side-nav">{nav}</div>
@@ -206,7 +206,7 @@ def frame(active, title, body):
           <div class="dash-top"><strong>{title}</strong><span class="dash-date">Lunedì 28 settembre</span></div>
           <div class="view">{body}</div>
         </div>
-      </div>"""
+      </div></div>"""
 
 
 def screen(n, name, title, purpose, frame_html, notes):
