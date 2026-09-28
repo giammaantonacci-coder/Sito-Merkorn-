@@ -12,7 +12,7 @@
   const vs = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0., 1.); }`;
   const fs = `
   precision highp float;
-  uniform vec2 R; uniform float T, Z, V, C, S; uniform vec2 M;
+  uniform vec2 R; uniform float T, Z, V, C, S, W; uniform vec2 M;
   float h31(vec3 p){ p = fract(p * .1031); p += dot(p, p.yzx + 33.33); return fract((p.x + p.y) * p.z); }
   float h21(vec2 p){ vec3 q = fract(vec3(p.xyx) * .1031); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y) * q.z); }
   float noise(vec3 x){
@@ -33,13 +33,30 @@
       vec2 id = floor(g), f = fract(g) - .5;
       float r = h21(id);
       vec2 o = vec2(h21(id + 3.1), h21(id + 7.7)) - .5;
-      float d = length(f - o * .7);
+      vec2 dp = f - o * .7;
+      vec2 rd = normalize(uv + 1e-4);
+      float d = length(vec2(dot(dp, rd) / (1. + W * 9. * z), dot(dp, vec2(-rd.y, rd.x))));
       float size = .018 + .05 * z * z;
       float fade = smoothstep(0., .25, z) * smoothstep(1., .75, z);
       float tw = .6 + .4 * sin(T * (1. + r * 3.) + r * 40.);
       s += step(.72, r) * smoothstep(size, 0., d) * fade * tw;
     }
     return s;
+  }
+
+  // a thin shooting star crosses the sky every few seconds
+  float comet(vec2 uv){
+    float slot = floor(T / 4.5), k = fract(T / 4.5);
+    float r1 = h21(vec2(slot, 1.7)), r2 = h21(vec2(slot, 8.3)), r3 = h21(vec2(slot, 4.1));
+    if (r3 < .35) return 0.;
+    vec2 a = vec2(mix(-.9, .9, r1), mix(.1, .55, r2));
+    vec2 dir = normalize(vec2(r1 > .5 ? -1. : 1., -.45 - r2 * .3));
+    float life = smoothstep(0., .08, k) * smoothstep(.45, .2, k);
+    vec2 head = a + dir * k * 1.6;
+    vec2 pa = uv - head;
+    float along = dot(pa, -dir), across = abs(dot(pa, vec2(-dir.y, dir.x)));
+    float tail = smoothstep(.28, 0., along) * step(0., along);
+    return tail * smoothstep(.0035, 0., across) * life;
   }
 
   void main(){
@@ -70,6 +87,7 @@
     col = mix(col, mix(deep, dust, .25), C * .35 * smoothstep(.3, .9, n));
 
     col += dust * stars(uv, Z * .25 + T * .01 + V) * (.55 + .45 * (1. - dens));
+    col += mix(dust, acc, .3) * comet(uv) * .9;
 
     // keep it quiet behind reading areas
     col *= .78;
@@ -88,7 +106,7 @@
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
   const U = n => gl.getUniformLocation(prog, n);
-  const uR = U('R'), uT = U('T'), uZ = U('Z'), uV = U('V'), uC = U('C'), uM = U('M'), uS = U('S');
+  const uR = U('R'), uT = U('T'), uZ = U('Z'), uV = U('V'), uC = U('C'), uM = U('M'), uS = U('S'), uW = U('W');
 
   let scale = .6;
   function size() {
@@ -125,6 +143,8 @@
     gl.uniform2f(uR, canvas.width, canvas.height);
     gl.uniform1f(uT, T); gl.uniform1f(uZ, z + warp * 2); gl.uniform1f(uV, travel); gl.uniform1f(uC, cloud);
     gl.uniform1f(uS, seed); gl.uniform2f(uM, mx, my);
+    gl.uniform1f(uW, Math.min(1, Math.abs(vel) / 60 + warp));
+    window.merkornSpeed = vel;
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 
     frames++;

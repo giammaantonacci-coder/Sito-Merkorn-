@@ -18,6 +18,7 @@
 </head>
 <body data-seed="3.9">
 <canvas id="sky" aria-hidden="true"></canvas>
+<div class="drift" id="drift" aria-hidden="true"></div>
 <a class="skip" href="#contenuto">Vai al contenuto</a>
 <header class="nav">
   <div class="pill">
@@ -28,7 +29,7 @@
   </div>
 </header>
 <main id="contenuto">
-  <section class="page-hero" data-name="Chi siamo">
+  <section class="page-hero" data-exit data-name="Chi siamo">
     <div class="wrap">
       <span class="eyebrow">Chi siamo</span>
       <h1><span class="ln"><span style="--i:0">Una software house che parte dalla <em>UX</em></span></span></h1>
@@ -38,7 +39,7 @@
   </section>
 
   <section data-name="Missione">
-    <div class="wrap prose">
+    <div class="wrap prose" data-enter>
       <div><span class="eyebrow">Missione</span><h2 style="margin-top:22px">Portare il digitale nelle PMI partendo dalle persone</h2></div>
       <div class="txt">
         <p>La digitalizzazione di una piccola o media impresa riesce quando il software rispetta il modo in cui l'azienda lavora. Per questo ogni nostro progetto parte dall'osservazione del lavoro quotidiano e solo dopo passa allo sviluppo.</p>
@@ -48,7 +49,7 @@
   </section>
 
   <section data-name="UX design first">
-    <div class="wrap prose">
+    <div class="wrap prose" data-enter>
       <div><span class="eyebrow">UX design first</span><h2 style="margin-top:22px">Prima si progetta l'uso, poi si scrive il codice</h2></div>
       <div class="txt">
         <p>La progettazione dell'esperienza d'uso, in inglese UX design, stabilisce come una persona svolge un'attività con il software. Per noi è il primo passo di ogni progetto, prima della scelta delle tecnologie.</p>
@@ -61,9 +62,9 @@
     <div class="wrap">
       <div class="sec-head"><span class="eyebrow">Come lavoriamo con i clienti</span><h2>Tre impegni che manteniamo</h2></div>
       <div class="cards three">
-        <article class="card rise"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Concretezza</span><h3>Esempi reali, non concetti</h3><p>Parliamo di ordini, documenti e reparti. Ogni proposta descrive cosa cambierà nel lavoro di tutti i giorni.</p></article>
-        <article class="card rise"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Chiarezza</span><h3>Tempi e costi definiti</h3><p>Ogni fase ha obiettivi, durata e costo concordati prima di iniziare.</p></article>
-        <article class="card rise"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Continuità</span><h3>Lo stesso team nel tempo</h3><p>Chi ha sviluppato il software lo segue anche dopo il rilascio.</p></article>
+        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Concretezza</span><h3>Esempi reali, non concetti</h3><p>Parliamo di ordini, documenti e reparti. Ogni proposta descrive cosa cambierà nel lavoro di tutti i giorni.</p></article>
+        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Chiarezza</span><h3>Tempi e costi definiti</h3><p>Ogni fase ha obiettivi, durata e costo concordati prima di iniziare.</p></article>
+        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Continuità</span><h3>Lo stesso team nel tempo</h3><p>Chi ha sviluppato il software lo segue anche dopo il rilascio.</p></article>
       </div>
     </div>
   </section>

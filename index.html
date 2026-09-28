@@ -18,6 +18,7 @@
 </head>
 <body data-seed="0.0">
 <canvas id="sky" aria-hidden="true"></canvas>
+<div class="drift" id="drift" aria-hidden="true"></div>
 <a class="skip" href="#contenuto">Vai al contenuto</a>
 <header class="nav">
   <div class="pill">
@@ -28,75 +29,87 @@
   </div>
 </header>
 <main id="contenuto">
-  <section class="hero" data-name="Inizio">
+  <section class="hero" data-exit data-name="Inizio">
     <div class="wrap">
-      <div class="meta"><span class="eyebrow">Software house per le PMI italiane</span><span class="eyebrow">Puglia</span></div>
-      <div class="grid">
-        <div>
-          <h1>
-            <span class="ln"><span style="--i:0">Software gestionale</span></span>
-            <span class="ln"><span style="--i:1"><em>su misura</em></span></span>
-            <span class="ln"><span style="--i:2">per le PMI</span></span>
-          </h1>
-          <p class="lead">Progettiamo e sviluppiamo gestionali partendo da come lavora la vostra azienda. Prima analizziamo il processo, poi costruiamo il software che lo segue, dall'ordine alla fattura.</p>
-          <div class="actions">
-            <a class="btn" href="contattaci.html"><span>Richiedi un'analisi</span></a>
-            <a class="btn ghost" href="metodo.html"><span>Come lavoriamo</span></a>
-          </div>
+      <div class="center">
+        <span class="eyebrow">Software house per le PMI italiane in Puglia</span>
+        <h1>
+          <span class="ln" style="margin-top:28px"><span style="--i:0">Software gestionale</span></span>
+          <span class="ln"><span style="--i:1"><em>su misura</em> per le PMI</span></span>
+        </h1>
+        <p class="lead">Progettiamo e sviluppiamo gestionali partendo da come lavora la vostra azienda. Prima analizziamo il processo, poi costruiamo il software che lo segue, dall'ordine alla fattura.</p>
+        <div class="actions">
+          <a class="btn" href="contattaci.html"><span>Richiedi un'analisi</span></a>
+          <a class="btn ghost" href="metodo.html"><span>Come lavoriamo</span></a>
         </div>
-        <div class="constellation" aria-hidden="true">
-          <svg viewBox="0 0 100 66" preserveAspectRatio="none">
-            <line x1="10" y1="56" x2="30" y2="33"/><line x1="30" y1="33" x2="50" y2="10"/><line x1="50" y1="10" x2="70" y2="33"/><line x1="70" y1="33" x2="90" y2="56"/><line x1="10" y1="56" x2="90" y2="56"/>
-          </svg>
-          <i class="s" style="left:50%;top:15%;--d:4"></i><i class="s" style="left:30%;top:50%;--d:2"></i><i class="s" style="left:70%;top:50%;--d:3"></i><i class="s" style="left:10%;top:85%;--d:0"></i><i class="s" style="left:90%;top:85%;--d:1"></i>
-        </div>
+        <div class="scroll-cue"><i aria-hidden="true"></i>Scorri per continuare</div>
       </div>
-      <div class="scroll-cue"><i aria-hidden="true"></i>Scorri per continuare</div>
     </div>
   </section>
 
-  <section class="statement" data-name="Approccio">
-    <div class="wrap">
-      <span class="eyebrow">Il nostro approccio</span>
-      <p data-hl="persone,lavoro">Molti gestionali chiedono alle persone di adattarsi al software. Noi partiamo dal lavoro che si svolge ogni giorno in ufficio, in magazzino e in produzione.</p>
-      <small>Un software costruito sul processo reale viene adottato più facilmente e riduce i passaggi manuali, come ricopiare gli stessi dati tra fogli di calcolo e programmi diversi.</small>
+  <section class="statement pinned" data-scrub data-name="Approccio">
+    <div class="pin">
+      <div class="wrap">
+        <span class="eyebrow">Il nostro approccio</span>
+        <p data-hl="persone,lavoro">Molti gestionali chiedono alle persone di adattarsi al software. Noi partiamo dal lavoro che si svolge ogni giorno in ufficio, in magazzino e in produzione.</p>
+        <small>Un software costruito sul processo reale viene adottato più facilmente e riduce i passaggi manuali, come ricopiare gli stessi dati tra fogli di calcolo e programmi diversi.</small>
+      </div>
     </div>
   </section>
 
-  <section data-name="Come lavoriamo">
-    <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Come lavoriamo</span><h2>Quattro fasi, sempre nello stesso ordine</h2></div>
-      <div class="legs">
-        <article class="leg rise"><span class="dot">1</span><div class="body"><span class="k">Analisi del processo</span><h3>Studiamo come lavora l'azienda</h3><p>Passiamo del tempo in azienda per capire come si muove un ordine tra ufficio, magazzino e produzione. Annotiamo dove i dati vengono ricopiati a mano e dove si creano attese.</p></div></article>
-        <article class="leg rise"><span class="dot">2</span><div class="body"><span class="k">Fondamenta riusabili</span><h3>Partiamo da moduli collaudati</h3><p>Anagrafiche, utenti e permessi, stampe e collegamento con la contabilità sono comuni a quasi tutte le aziende. Usiamo moduli già testati su altri progetti, così tempi e costi restano contenuti.</p></div></article>
-        <article class="leg rise"><span class="dot">3</span><div class="body"><span class="k">Componenti su misura</span><h3>Sviluppiamo le parti specifiche</h3><p>Commesse, documenti di trasporto, pianificazione delle consegne e controlli di qualità vengono sviluppati sul vostro flusso di lavoro. Ogni componente viene provato con le persone che lo useranno.</p></div></article>
-        <article class="leg rise"><span class="dot">4</span><div class="body"><span class="k">Interfaccia</span><h3>Progettiamo ogni schermata per un'attività</h3><p>In reparto usiamo pulsanti grandi e pochi passaggi, in ufficio tabelle complete per confrontare i dati. L'obiettivo è che ogni operazione richieda il minor numero possibile di passaggi.</p></div></article>
+  <section class="hscroll" data-scrub data-name="Come lavoriamo">
+    <div class="pin">
+      <div class="wrap head">
+        <div class="sec-head"><span class="eyebrow">Come lavoriamo</span><h2>Quattro fasi, sempre nello stesso ordine</h2></div>
+        <a class="more-link" href="metodo.html">Il metodo nel dettaglio <span aria-hidden="true">→</span></a>
       </div>
-      <a class="more-link" href="metodo.html">Il metodo nel dettaglio <span aria-hidden="true">→</span></a>
+      <div class="track">
+          <article class="panel"><span class="num">01</span><span class="k">Analisi del processo</span><h3>Studiamo come lavora l'azienda</h3><p>Passiamo del tempo in azienda per capire come si muove un ordine tra ufficio, magazzino e produzione. Annotiamo dove i dati vengono ricopiati a mano e dove si creano attese.</p></article>
+          <article class="panel"><span class="num">02</span><span class="k">Fondamenta riusabili</span><h3>Partiamo da moduli collaudati</h3><p>Anagrafiche, utenti e permessi, stampe e collegamento con la contabilità sono comuni a quasi tutte le aziende. Usiamo moduli già testati su altri progetti, così tempi e costi restano contenuti.</p></article>
+          <article class="panel"><span class="num">03</span><span class="k">Componenti su misura</span><h3>Sviluppiamo le parti specifiche</h3><p>Commesse, documenti di trasporto, pianificazione delle consegne e controlli di qualità vengono sviluppati sul vostro flusso di lavoro. Ogni componente viene provato con le persone che lo useranno.</p></article>
+          <article class="panel"><span class="num">04</span><span class="k">Interfaccia</span><h3>Progettiamo ogni schermata per un'attività</h3><p>In reparto usiamo pulsanti grandi e pochi passaggi, in ufficio tabelle complete per confrontare i dati. L'obiettivo è che ogni operazione richieda il minor numero possibile di passaggi.</p></article>
+      </div>
+      <div class="wrap"><div class="bar" aria-hidden="true"><i></i></div></div>
     </div>
+  </section>
+
+  <section class="marquee" aria-label="Processi che gestiamo" data-name="Processi">
+    <div class="row" data-drift="-1"><span>Ordini</span><i aria-hidden="true"></i><span>Magazzino</span><i aria-hidden="true"></i><span>Produzione</span><i aria-hidden="true"></i><span>Commesse</span><i aria-hidden="true"></i><span>Consegne</span><i aria-hidden="true"></i><span>Fatturazione</span><i aria-hidden="true"></i><span>Qualità</span><i aria-hidden="true"></i><span>Assistenza</span><i aria-hidden="true"></i><span>Ordini</span><i aria-hidden="true"></i><span>Magazzino</span><i aria-hidden="true"></i><span>Produzione</span><i aria-hidden="true"></i><span>Commesse</span><i aria-hidden="true"></i><span>Consegne</span><i aria-hidden="true"></i><span>Fatturazione</span><i aria-hidden="true"></i><span>Qualità</span><i aria-hidden="true"></i><span>Assistenza</span><i aria-hidden="true"></i></div>
+    <div class="row outline" data-drift="1"><span>Ordini</span><i aria-hidden="true"></i><span>Magazzino</span><i aria-hidden="true"></i><span>Produzione</span><i aria-hidden="true"></i><span>Commesse</span><i aria-hidden="true"></i><span>Consegne</span><i aria-hidden="true"></i><span>Fatturazione</span><i aria-hidden="true"></i><span>Qualità</span><i aria-hidden="true"></i><span>Assistenza</span><i aria-hidden="true"></i><span>Ordini</span><i aria-hidden="true"></i><span>Magazzino</span><i aria-hidden="true"></i><span>Produzione</span><i aria-hidden="true"></i><span>Commesse</span><i aria-hidden="true"></i><span>Consegne</span><i aria-hidden="true"></i><span>Fatturazione</span><i aria-hidden="true"></i><span>Qualità</span><i aria-hidden="true"></i><span>Assistenza</span><i aria-hidden="true"></i></div>
   </section>
 
   <section data-name="Servizi">
     <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Servizi</span><h2>Cosa facciamo</h2><p>Lavoriamo con piccole e medie imprese che hanno processi specifici e hanno bisogno di un software che li gestisca in modo completo.</p></div>
+      <div class="sec-head" data-enter><span class="eyebrow">Servizi</span><h2>Cosa facciamo</h2><p>Lavoriamo con piccole e medie imprese che hanno processi specifici e hanno bisogno di un software che li gestisca in modo completo.</p></div>
       <div class="cards">
-        <a class="card rise" href="servizi.html"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Sviluppo</span><h3>Gestionali su misura</h3><p>Ordini, magazzino, produzione e commesse gestiti in un unico sistema, costruito sul flusso di lavoro reale dell'azienda.</p></a>
-        <a class="card rise" href="servizi.html"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Consulenza</span><h3>Analisi dei processi</h3><p>Un documento che descrive come lavora oggi l'azienda e dove il software può ridurre tempi ed errori. Resta di vostra proprietà in ogni caso.</p></a>
-        <a class="card rise" href="servizi.html"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Mobile</span><h3>App per reparto e consegne</h3><p>Applicazioni per tablet e smartphone pensate per magazzino e trasporti, utilizzabili anche con una connessione lenta.</p></a>
-        <a class="card rise" href="servizi.html"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Dopo il rilascio</span><h3>Assistenza ed evoluzione</h3><p>Il software viene seguito dallo stesso team che lo ha sviluppato. Le nuove funzioni vengono aggiunte quando emergono esigenze concrete.</p></a>
+        <a class="card" data-enter style="--dir:-1" href="servizi.html"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Sviluppo</span><h3>Gestionali su misura</h3><p>Ordini, magazzino, produzione e commesse gestiti in un unico sistema, costruito sul flusso di lavoro reale dell'azienda.</p></a>
+        <a class="card" data-enter style="--dir:1" href="servizi.html"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Consulenza</span><h3>Analisi dei processi</h3><p>Un documento che descrive come lavora oggi l'azienda e dove il software può ridurre tempi ed errori. Resta di vostra proprietà in ogni caso.</p></a>
+        <a class="card" data-enter style="--dir:-1" href="servizi.html"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Mobile</span><h3>App per reparto e consegne</h3><p>Applicazioni per tablet e smartphone pensate per magazzino e trasporti, utilizzabili anche con una connessione lenta.</p></a>
+        <a class="card" data-enter style="--dir:1" href="servizi.html"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Dopo il rilascio</span><h3>Assistenza ed evoluzione</h3><p>Il software viene seguito dallo stesso team che lo ha sviluppato. Le nuove funzioni vengono aggiunte quando emergono esigenze concrete.</p></a>
       </div>
       <a class="more-link" href="servizi.html">Tutti i servizi <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
-  <section data-name="Principi">
+  <section class="band-wrap" data-name="Primo incontro">
     <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Principi di progettazione</span><h2>Come progettiamo le interfacce</h2><p>La progettazione dell'esperienza d'uso viene prima dello sviluppo. Queste sono le regole che applichiamo a ogni progetto.</p></div>
-      <ol class="rules">
-        <li class="rise"><div><strong>Una schermata per ogni attività</strong><span>Ogni pagina è dedicata a un compito preciso, così chi la usa sa subito cosa fare.</span></div></li>
-        <li class="rise"><div><strong>Funzioni principali a portata di mano</strong><span>Le operazioni di tutti i giorni si raggiungono con un tocco, senza menu annidati.</span></div></li>
-        <li class="rise"><div><strong>Leggibile su qualsiasi dispositivo</strong><span>Testi chiari e pagine leggere, pensati anche per telefoni meno recenti e connessioni lente.</span></div></li>
-        <li class="rise"><div><strong>Nuove funzioni solo quando servono</strong><span>Ogni aggiunta parte da un'esigenza del lavoro quotidiano e viene introdotta in modo graduale.</span></div></li>
+      <div class="band" data-enter>
+        <span class="eyebrow">Primo incontro</span>
+        <h2>Il primo incontro è un'analisi del vostro processo</h2>
+        <p>Veniamo in azienda o ci colleghiamo online, osserviamo come lavorate e vi diciamo se e come un software su misura può esservi utile.</p>
+        <a class="btn light" href="contattaci.html"><span>Richiedi un'analisi</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="principles" data-name="Principi">
+    <div class="wrap">
+      <div class="sec-head" data-enter><span class="eyebrow">Principi di progettazione</span><h2>Come progettiamo le interfacce</h2><p>La progettazione dell'esperienza d'uso viene prima dello sviluppo. Queste sono le regole che applichiamo a ogni progetto.</p></div>
+      <ol class="rules stack">
+        <li style="--i:0"><div><strong>Una schermata per ogni attività</strong><span>Ogni pagina è dedicata a un compito preciso, così chi la usa sa subito cosa fare.</span></div></li>
+        <li style="--i:1"><div><strong>Funzioni principali a portata di mano</strong><span>Le operazioni di tutti i giorni si raggiungono con un tocco, senza menu annidati.</span></div></li>
+        <li style="--i:2"><div><strong>Leggibile su qualsiasi dispositivo</strong><span>Testi chiari e pagine leggere, pensati anche per telefoni meno recenti e connessioni lente.</span></div></li>
+        <li style="--i:3"><div><strong>Nuove funzioni solo quando servono</strong><span>Ogni aggiunta parte da un'esigenza del lavoro quotidiano e viene introdotta in modo graduale.</span></div></li>
       </ol>
     </div>
   </section>

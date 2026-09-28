@@ -18,6 +18,7 @@
 </head>
 <body data-seed="2.6">
 <canvas id="sky" aria-hidden="true"></canvas>
+<div class="drift" id="drift" aria-hidden="true"></div>
 <a class="skip" href="#contenuto">Vai al contenuto</a>
 <header class="nav">
   <div class="pill">
@@ -28,7 +29,7 @@
   </div>
 </header>
 <main id="contenuto">
-  <section class="page-hero" data-name="Servizi">
+  <section class="page-hero" data-exit data-name="Servizi">
     <div class="wrap">
       <span class="eyebrow">Servizi</span>
       <h1><span class="ln"><span style="--i:0">Software su misura per il <em>vostro processo</em></span></span></h1>
@@ -37,14 +38,19 @@
     </div>
   </section>
 
+  <section class="marquee" aria-label="Processi che gestiamo" data-name="Processi">
+    <div class="row" data-drift="-1"><span>Ordini</span><i aria-hidden="true"></i><span>Magazzino</span><i aria-hidden="true"></i><span>Produzione</span><i aria-hidden="true"></i><span>Commesse</span><i aria-hidden="true"></i><span>Consegne</span><i aria-hidden="true"></i><span>Fatturazione</span><i aria-hidden="true"></i><span>Qualità</span><i aria-hidden="true"></i><span>Assistenza</span><i aria-hidden="true"></i><span>Ordini</span><i aria-hidden="true"></i><span>Magazzino</span><i aria-hidden="true"></i><span>Produzione</span><i aria-hidden="true"></i><span>Commesse</span><i aria-hidden="true"></i><span>Consegne</span><i aria-hidden="true"></i><span>Fatturazione</span><i aria-hidden="true"></i><span>Qualità</span><i aria-hidden="true"></i><span>Assistenza</span><i aria-hidden="true"></i></div>
+    <div class="row outline" data-drift="1"><span>Ordini</span><i aria-hidden="true"></i><span>Magazzino</span><i aria-hidden="true"></i><span>Produzione</span><i aria-hidden="true"></i><span>Commesse</span><i aria-hidden="true"></i><span>Consegne</span><i aria-hidden="true"></i><span>Fatturazione</span><i aria-hidden="true"></i><span>Qualità</span><i aria-hidden="true"></i><span>Assistenza</span><i aria-hidden="true"></i><span>Ordini</span><i aria-hidden="true"></i><span>Magazzino</span><i aria-hidden="true"></i><span>Produzione</span><i aria-hidden="true"></i><span>Commesse</span><i aria-hidden="true"></i><span>Consegne</span><i aria-hidden="true"></i><span>Fatturazione</span><i aria-hidden="true"></i><span>Qualità</span><i aria-hidden="true"></i><span>Assistenza</span><i aria-hidden="true"></i></div>
+  </section>
+
   <section data-name="Cosa facciamo">
     <div class="wrap">
       <div class="sec-head"><span class="eyebrow">Cosa facciamo</span><h2>Quattro servizi collegati tra loro</h2><p>Si possono richiedere separatamente, ma danno il risultato migliore quando fanno parte dello stesso progetto.</p></div>
       <div class="cards">
-        <article class="card rise"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Sviluppo</span><h3>Gestionali su misura</h3><p>Ordini, magazzino, produzione e commesse gestiti in un unico sistema, costruito sul flusso di lavoro reale dell'azienda.</p><ul><li>Ordini e offerte</li><li>Magazzino</li><li>Produzione</li><li>Commesse</li><li>Documenti di trasporto</li></ul></article>
-        <article class="card rise"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Consulenza</span><h3>Analisi dei processi</h3><p>Un documento che descrive come lavora oggi l'azienda e dove il software può ridurre tempi ed errori. Resta di vostra proprietà in ogni caso.</p><ul><li>Mappa del processo</li><li>Punti critici</li><li>Priorità di intervento</li></ul></article>
-        <article class="card rise"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Mobile</span><h3>App per reparto e consegne</h3><p>Applicazioni per tablet e smartphone pensate per magazzino e trasporti, utilizzabili anche con una connessione lenta.</p><ul><li>Carico e scarico merce</li><li>Consegne</li><li>Firma del cliente</li><li>Foto e note</li></ul></article>
-        <article class="card rise"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Dopo il rilascio</span><h3>Assistenza ed evoluzione</h3><p>Il software viene seguito dallo stesso team che lo ha sviluppato. Le nuove funzioni vengono aggiunte quando emergono esigenze concrete.</p><ul><li>Assistenza agli utenti</li><li>Aggiornamenti</li><li>Nuove funzioni</li></ul></article>
+        <article class="card" data-enter style="--dir:-1"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Sviluppo</span><h3>Gestionali su misura</h3><p>Ordini, magazzino, produzione e commesse gestiti in un unico sistema, costruito sul flusso di lavoro reale dell'azienda.</p><ul><li>Ordini e offerte</li><li>Magazzino</li><li>Produzione</li><li>Commesse</li><li>Documenti di trasporto</li></ul></article>
+        <article class="card" data-enter style="--dir:1"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Consulenza</span><h3>Analisi dei processi</h3><p>Un documento che descrive come lavora oggi l'azienda e dove il software può ridurre tempi ed errori. Resta di vostra proprietà in ogni caso.</p><ul><li>Mappa del processo</li><li>Punti critici</li><li>Priorità di intervento</li></ul></article>
+        <article class="card" data-enter style="--dir:-1"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Mobile</span><h3>App per reparto e consegne</h3><p>Applicazioni per tablet e smartphone pensate per magazzino e trasporti, utilizzabili anche con una connessione lenta.</p><ul><li>Carico e scarico merce</li><li>Consegne</li><li>Firma del cliente</li><li>Foto e note</li></ul></article>
+        <article class="card" data-enter style="--dir:1"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Dopo il rilascio</span><h3>Assistenza ed evoluzione</h3><p>Il software viene seguito dallo stesso team che lo ha sviluppato. Le nuove funzioni vengono aggiunte quando emergono esigenze concrete.</p><ul><li>Assistenza agli utenti</li><li>Aggiornamenti</li><li>Nuove funzioni</li></ul></article>
       </div>
     </div>
   </section>
@@ -53,15 +59,15 @@
     <div class="wrap">
       <div class="sec-head"><span class="eyebrow">Per chi lavoriamo</span><h2>Aziende con processi specifici</h2><p>Lavoriamo soprattutto con imprese che hanno superato i fogli di calcolo ma non trovano un software pronto adatto al loro modo di lavorare.</p></div>
       <div class="cards three">
-        <article class="card rise"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Produzione</span><h3>Aziende manifatturiere</h3><p>Commesse, distinte, avanzamento della produzione e controlli di qualità.</p></article>
-        <article class="card rise"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Distribuzione</span><h3>Commercio e logistica</h3><p>Ordini, magazzino su più depositi, documenti di trasporto e consegne.</p></article>
-        <article class="card rise"><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Servizi</span><h3>Squadre sul territorio</h3><p>Interventi programmati, rapportini digitali e comunicazione con l'ufficio.</p></article>
+        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Produzione</span><h3>Aziende manifatturiere</h3><p>Commesse, distinte, avanzamento della produzione e controlli di qualità.</p></article>
+        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Distribuzione</span><h3>Commercio e logistica</h3><p>Ordini, magazzino su più depositi, documenti di trasporto e consegne.</p></article>
+        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Servizi</span><h3>Squadre sul territorio</h3><p>Interventi programmati, rapportini digitali e comunicazione con l'ufficio.</p></article>
       </div>
     </div>
   </section>
 
   <section data-name="Integrazioni">
-    <div class="wrap prose">
+    <div class="wrap prose" data-enter>
       <div><span class="eyebrow">Integrazioni</span><h2 style="margin-top:22px">Collegato ai software che usate già</h2></div>
       <div class="txt">
         <p>Il gestionale non sostituisce per forza tutto quello che avete. Quando serve lo colleghiamo ai programmi già in uso in azienda, per esempio il software di contabilità o quello per la fatturazione elettronica, in modo che i dati vengano inseriti una sola volta.</p>

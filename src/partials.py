@@ -134,6 +134,7 @@ def page(path, title, description, seed, body, form=True):
     return f"""{head(title, description, path)}
 <body data-seed="{seed}">
 <canvas id="sky" aria-hidden="true"></canvas>
+<div class="drift" id="drift" aria-hidden="true"></div>
 {nav(path)}
 <main id="contenuto">
 {body}

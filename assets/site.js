@@ -26,7 +26,7 @@
   });
   addEventListener('pageshow', () => { document.body.classList.remove('leaving'); if (window.merkornWarp) window.merkornWarp(0); });
 
-  /* ---------- statement: split into words for the scroll reveal ---------- */
+  /* ---------- statement: split into words ---------- */
   document.querySelectorAll('.statement p[data-hl]').forEach(p => {
     const hl = p.dataset.hl.split(',');
     p.innerHTML = p.textContent.trim().split(/\s+/).map(w => `<span class="w${hl.includes(w.replace(/[.,]/g, '')) ? ' hl' : ''}">${w}</span>`).join(' ');
@@ -37,6 +37,113 @@
   if (legs.length) {
     const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('on', e.isIntersecting)), { rootMargin: '-40% 0px -40% 0px' });
     legs.forEach(l => io.observe(l));
+  }
+
+  /* ---------- scroll engine ----------
+     data-scrub  pinned section, --p from 0 to 1 while it is pinned
+     data-enter  --e from 0 to 1 while the element enters the screen
+     data-exit   --x from 0 to 1 while the section leaves the top
+     data-line   --l fills the dashed line of the method phases
+     data-drift  marquee rows move sideways with the scroll            */
+  const clamp = v => Math.max(0, Math.min(1, v));
+  const scrubs = [...document.querySelectorAll('[data-scrub]')];
+  const enters = [...document.querySelectorAll('[data-enter]')];
+  const exits = [...document.querySelectorAll('[data-exit]')];
+  const lines = [...document.querySelectorAll('[data-line]')];
+  const drifts = [...document.querySelectorAll('[data-drift]')];
+  const stacks = [...document.querySelectorAll('.rules.stack')].map(ol => [...ol.children]);
+  const statements = [...document.querySelectorAll('.statement.pinned')].map(sec => ({ sec, words: [...sec.querySelectorAll('.w')] }));
+  const hs = [...document.querySelectorAll('.hscroll')].map(sec => ({ sec, track: sec.querySelector('.track') }));
+  const desktop = () => innerWidth > 760;
+
+  function sizeTracks() {
+    hs.forEach(({ sec, track }) => {
+      track.style.transform = '';
+      if (!desktop() || reduce) { sec.style.height = ''; return; }
+      const extra = Math.max(0, track.scrollWidth - innerWidth);
+      sec.dataset.extra = extra;
+      sec.style.height = (innerHeight + extra) + 'px';
+    });
+  }
+  sizeTracks(); addEventListener('resize', sizeTracks); addEventListener('load', sizeTracks);
+
+  let lastY = -1, lastH = -1;
+  function tick() {
+    const y = scrollY, vh = innerHeight;
+    if (y !== lastY || vh !== lastH) {
+      lastY = y; lastH = vh;
+      scrubs.forEach(el => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--p', clamp(-r.top / Math.max(1, r.height - vh)).toFixed(4));
+      });
+      statements.forEach(({ sec, words }) => {
+        const p = parseFloat(sec.style.getPropertyValue('--p')) || 0;
+        const lit = Math.round(clamp(p * 1.35) * words.length);
+        words.forEach((w, i) => w.classList.toggle('lit', i < lit));
+      });
+      hs.forEach(({ sec, track }) => {
+        if (!desktop() || reduce) return;
+        const p = parseFloat(sec.style.getPropertyValue('--p')) || 0;
+        track.style.transform = `translate3d(${-p * (parseFloat(sec.dataset.extra) || 0)}px, 0, 0)`;
+      });
+      enters.forEach(el => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--e', reduce ? 1 : clamp((vh - r.top) / (vh * .4)).toFixed(3));
+      });
+      exits.forEach(el => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--x', reduce ? 0 : clamp(-r.top / (r.height * .8)).toFixed(3));
+      });
+      lines.forEach(el => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--l', clamp((vh * .5 - r.top) / r.height).toFixed(3));
+      });
+      drifts.forEach(el => {
+        const r = el.parentElement.getBoundingClientRect();
+        const half = el.scrollWidth / 2, dir = parseFloat(el.dataset.drift);
+        const x = ((((vh - r.top) * .45) % half) + half) % half;
+        el.style.transform = `translate3d(${dir < 0 ? -x : x - half}px, 0, 0)`;
+      });
+      stacks.forEach(items => items.forEach((li, i) => {
+        const next = items[i + 1];
+        if (!next) { li.style.setProperty('--k', 0); return; }
+        const a = li.getBoundingClientRect(), b = next.getBoundingClientRect();
+        li.style.setProperty('--k', clamp((a.bottom - b.top) / a.height).toFixed(3));
+      }));
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  /* ---------- floating blocks in front of the nebula ---------- */
+  const drift = document.getElementById('drift');
+  if (drift && !reduce) {
+    const kinds = ['f', 'o', 'o', 'p', 'f', 'o', 'f', 'o', 'p', 'o', 'f', 'o'];
+    const blocks = kinds.map((k, i) => {
+      const el = document.createElement('i'); el.className = k;
+      const depth = .15 + (i % 4) * .22;
+      const size = 6 + depth * 26;
+      el.style.width = el.style.height = size + 'px';
+      el.style.opacity = (.25 + depth * .55).toFixed(2);
+      drift.appendChild(el);
+      return { el, depth, x: Math.random(), y: Math.random(), spin: (Math.random() - .5) * 40, phase: Math.random() * 6.28 };
+    });
+    const t0 = performance.now();
+    let push = 0;
+    (function float(now) {
+      const t = (now - t0) / 1000, vh = innerHeight, vw = innerWidth;
+      push += ((window.merkornSpeed || 0) - push) * .08;
+      blocks.forEach(b => {
+        const span = vh + 120;
+        let y = (b.y * span - scrollY * b.depth * .6 - t * 8 * b.depth) % span;
+        if (y < 0) y += span;
+        const x = b.x * vw + Math.sin(t * .3 + b.phase) * 30 * b.depth;
+        const rot = t * b.spin * .3 + push * b.depth * 2;
+        const stretch = 1 + Math.min(.45, Math.abs(push) * .01 * b.depth);
+        b.el.style.transform = `translate3d(${x.toFixed(1)}px, ${(y - 60).toFixed(1)}px, 0) rotate(${rot.toFixed(1)}deg) scaleY(${stretch.toFixed(2)})`;
+      });
+      requestAnimationFrame(float);
+    })(t0);
   }
 
   /* ---------- HUD: current section ---------- */
