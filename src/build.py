@@ -186,93 +186,123 @@ def icon(name):
     return f'<svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">{ICONS[name]}</svg>'
 
 
-def dashboard():
-    tabs = "".join(
-        f'<button type="button" role="tab" id="tab-{k}" aria-controls="view-{k}" aria-selected="{"true" if i == 0 else "false"}" tabindex="{0 if i == 0 else -1}" data-view="{k}">{icon(k)}<span>{label}</span></button>'
-        for i, (k, label) in enumerate(VIEWS))
-    return f"""<section class="dash-sec" data-name="Dashboard">
-    <div class="wrap">
-      <div class="sec-head centered" data-enter><span class="eyebrow">Fase 4 in pratica</span><h2>Come si vedono i dati</h2><p>La dashboard di un gestionale Merkorn. Provatela: è interattiva e usa dati di esempio.</p></div>
-      <div class="app dash" data-enter>
-        <aside class="side">
-          <div class="side-brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span>Gestionale</span></div>
-          <nav class="side-nav" role="tablist" aria-label="Sezioni della dashboard">{tabs}</nav>
-          <div class="side-foot"><span class="avatar" aria-hidden="true">UF</span><span>Ufficio<small>Dati di esempio</small></span></div>
-        </aside>
-        <div class="dash-main">
-          <header class="dash-top"><h3 id="dash-title">Home</h3><span class="dash-date">Lunedì 28 settembre</span></header>
+def pin(n):
+    return f'<span class="mk" aria-hidden="true">{n}</span>'
 
-          <div class="view" id="view-home" role="tabpanel" aria-labelledby="tab-home">
-            <div class="tiles" id="home-tiles"></div>
+
+def chips(labels, on):
+    return "".join(f'<span class="chip{" on" if i == on else ""}">{l}</span>' for i, l in enumerate(labels))
+
+
+def frame(active, title, body):
+    nav = "".join(f'<span class="nav-item{" on" if k == active else ""}">{icon(k)}<span>{label}</span></span>' for k, label in VIEWS)
+    return f"""<div class="app dash" data-enter aria-hidden="true">
+        <div class="side">
+          <div class="side-brand"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span><span>Gestionale</span></div>
+          <div class="side-nav">{nav}</div>
+          <div class="side-foot"><span class="avatar">UF</span><span>Ufficio<small>Amministrazione</small></span></div>
+        </div>
+        <div class="dash-main">
+          <div class="dash-top"><strong>{title}</strong><span class="dash-date">Lunedì 28 settembre</span></div>
+          <div class="view">{body}</div>
+        </div>
+      </div>"""
+
+
+def screen(n, name, title, purpose, frame_html, notes):
+    items = "".join(f'<li><span class="mk">{i}</span><div><strong>{t}</strong><p>{d}</p></div></li>' for i, (t, d) in enumerate(notes, 1))
+    return f"""<section class="screen" data-name="{name}">
+    <div class="wrap">
+      <div class="screen-head" data-enter><span class="eyebrow">Schermata {n} di 4</span><h2>{title}</h2><p>{purpose}</p></div>
+      {frame_html}
+      <ol class="notes">{items}</ol>
+    </div>
+  </section>"""
+
+
+SCREEN_HOME = frame("home", "Home", f"""
+            <div class="tiles rel" id="home-tiles">{pin(1)}</div>
             <div class="viz-row">
-              <figure class="viz wide">
+              <figure class="viz wide">{pin(2)}
                 <figcaption><strong>Ordini degli ultimi 14 giorni</strong><span>Ordini ricevuti al giorno</span></figcaption>
                 <div class="chart" id="home-cols"></div>
-                <details class="tview"><summary>Mostra i dati in tabella</summary><div id="home-cols-t"></div></details>
               </figure>
-              <figure class="viz">
-                <figcaption><strong>Da fare oggi</strong><span>Tocca una voce per aprire la sezione</span></figcaption>
+              <figure class="viz">{pin(3)}
+                <figcaption><strong>Da fare oggi</strong><span>In ordine di urgenza</span></figcaption>
                 <ul class="todo" id="home-todo"></ul>
               </figure>
-            </div>
-          </div>
+            </div>""")
 
-          <div class="view" id="view-analytics" role="tabpanel" aria-labelledby="tab-analytics" hidden>
-            <div class="filters" role="group" aria-label="Periodo">
-              <button type="button" class="chip" data-range="3">Ultimi 3 mesi</button>
-              <button type="button" class="chip" data-range="6">Ultimi 6 mesi</button>
-              <button type="button" class="chip" data-range="12" aria-pressed="true">Ultimi 12 mesi</button>
-            </div>
+SCREEN_ANALYTICS = frame("analytics", "Analitiche", f"""
+            <div class="filters rel">{chips(["Ultimi 3 mesi", "Ultimi 6 mesi", "Ultimi 12 mesi"], 2)}{pin(1)}</div>
             <div class="tiles" id="dash-tiles"></div>
             <div class="viz-row">
-              <figure class="viz wide">
+              <figure class="viz wide">{pin(2)}
                 <figcaption><strong>Fatturato mensile</strong><span>Migliaia di euro, IVA esclusa</span></figcaption>
                 <div class="legend"><span><i class="lk s1"></i>Anno in corso</span><span><i class="lk s0"></i>Anno precedente</span></div>
                 <div class="chart" id="dash-line"></div>
-                <details class="tview"><summary>Mostra i dati in tabella</summary><div id="dash-line-t"></div></details>
               </figure>
-              <figure class="viz">
-                <figcaption><strong>Ordini per categoria</strong><span>Ordini evasi nel periodo</span></figcaption>
+              <figure class="viz">{pin(3)}
+                <figcaption><strong>Ordini per categoria</strong><span>Ordini evasi negli ultimi 12 mesi</span></figcaption>
                 <div class="chart" id="dash-bars"></div>
-                <details class="tview"><summary>Mostra i dati in tabella</summary><div id="dash-bars-t"></div></details>
               </figure>
-            </div>
-          </div>
+            </div>""")
 
-          <div class="view" id="view-stock" role="tabpanel" aria-labelledby="tab-stock" hidden>
-            <div class="tiles three" id="stock-tiles"></div>
-            <div class="filters" role="group" aria-label="Filtra gli articoli">
-              <button type="button" class="chip" data-st="all" aria-pressed="true">Tutti</button>
-              <button type="button" class="chip" data-st="low">Sotto soglia</button>
-              <button type="button" class="chip" data-st="warn">In esaurimento</button>
-              <label class="search"><span class="sr">Cerca un articolo</span><input type="search" id="stock-q" placeholder="Cerca per codice o nome" autocomplete="off"></label>
-            </div>
+SCREEN_STOCK = frame("stock", "Magazzino", f"""
+            <div class="tiles three rel" id="stock-tiles">{pin(1)}</div>
+            <div class="filters">{chips(["Tutti", "Sotto soglia", "In esaurimento"], 0)}<span class="search"><span>Cerca per codice o nome</span></span></div>
             <div class="tbl-wrap"><table class="tbl" id="stock-table">
-              <thead><tr><th scope="col">Codice</th><th scope="col">Articolo</th><th scope="col">Giacenza</th><th scope="col" class="num">Riordino</th><th scope="col">Stato</th></tr></thead>
+              <thead><tr><th>Codice</th><th>Articolo</th><th>{pin(2)}Giacenza</th><th class="num">{pin(4)}Riordino</th><th>{pin(3)}Stato</th></tr></thead>
               <tbody></tbody>
-            </table></div>
-            <p class="empty" id="stock-empty" hidden>Nessun articolo corrisponde alla ricerca.</p>
-          </div>
+            </table></div>""")
 
-          <div class="view" id="view-prod" role="tabpanel" aria-labelledby="tab-prod" hidden>
-            <ol class="flow" id="prod-flow" aria-label="Ordini in lavorazione per fase"></ol>
+SCREEN_PROD = frame("prod", "Produzione", f"""
+            <div class="rel">{pin(1)}<ol class="flow" id="prod-flow"></ol></div>
             <div class="viz-row">
-              <figure class="viz wide">
+              <figure class="viz wide">{pin(2)}
                 <figcaption><strong>Ore lavorate per reparto</strong><span>Ultime otto settimane</span></figcaption>
                 <div class="legend"><span><i class="sw s1"></i>Taglio</span><span><i class="sw s2"></i>Assemblaggio</span><span><i class="sw s3"></i>Collaudo</span></div>
                 <div class="chart" id="prod-cols"></div>
-                <details class="tview"><summary>Mostra i dati in tabella</summary><div id="prod-cols-t"></div></details>
               </figure>
-              <figure class="viz">
+              <figure class="viz">{pin(3)}
                 <figcaption><strong>Avanzamento commesse</strong><span>Completamento e consegna prevista</span></figcaption>
                 <ul class="jobs" id="prod-jobs"></ul>
               </figure>
-            </div>
-          </div>
-        </div>
-      </div>
+            </div>""")
+
+SCREENS = "\n\n  ".join([
+    screen(1, "Home", "Home", "La prima schermata della giornata: cosa sta succedendo e cosa richiede attenzione.", SCREEN_HOME, [
+        ("Quattro numeri, sempre nello stesso posto", "Gli indicatori del giorno stanno in alto e non cambiano ordine, così l'occhio li ritrova senza cercarli. Il confronto con ieri è una freccia e un valore, non un altro grafico."),
+        ("Un colore per una serie", "Le colonne hanno un solo colore perché raccontano un solo dato. Il valore di oggi è scritto sopra l'ultima colonna, gli altri si leggono sull'asse."),
+        ("Priorità in forma di elenco", "Le cose da fare sono ordinate per urgenza. Ogni stato ha colore, simbolo e parola, quindi resta chiaro anche a chi distingue male i colori."),
+    ]),
+    screen(2, "Analitiche", "Analitiche", "L'andamento dell'azienda nel tempo, per chi prende decisioni.", SCREEN_ANALYTICS, [
+        ("Un periodo per tutta la schermata", "Il periodo si sceglie una sola volta, in alto. Numeri e grafici raccontano sempre lo stesso intervallo e non si contraddicono."),
+        ("Il dato che conta in primo piano", "L'anno in corso è viola, quello precedente grigio. Il confronto c'è, ma l'attenzione va subito al presente. Il valore finale è scritto accanto alla linea."),
+        ("Barre orizzontali per i nomi lunghi", "Le categorie si leggono senza ruotare il testo e il valore sta alla fine di ogni barra. Le barre partono tutte dalla stessa linea, così il confronto è immediato."),
+    ]),
+    screen(3, "Magazzino", "Magazzino", "Le scorte da tenere sotto controllo, per chi gestisce il magazzino.", SCREEN_STOCK, [
+        ("Prima il riepilogo", "Sopra l'elenco, quanti articoli richiedono un intervento. Si capisce subito se oggi c'è qualcosa da fare."),
+        ("Giacenza e soglia nella stessa barra", "La barra mostra quanto resta, la tacca chiara indica la soglia minima. Chi è sotto soglia si vede senza leggere i numeri."),
+        ("Stato con colore, simbolo e parola", "Rosso, giallo e verde hanno sempre un simbolo diverso e un'etichetta. Il colore aiuta, ma non è l'unica informazione."),
+        ("Numeri solo dove serve un'azione", "La quantità da riordinare compare solo per gli articoli sotto soglia. Nelle altre righe un trattino lascia la tabella pulita."),
+    ]),
+    screen(4, "Produzione", "Produzione", "Il carico dei reparti e lo stato delle commesse, per il responsabile di produzione.", SCREEN_PROD, [
+        ("Le fasi nell'ordine reale", "Gli ordini in lavorazione seguono il percorso del processo, da sinistra a destra, dal taglio alla spedizione."),
+        ("Tre reparti, tre colori distinguibili", "I colori delle colonne sono scelti per essere distinti anche da chi è daltonico. Il totale sta in cima a ogni colonna, il dettaglio nella legenda."),
+        ("Avanzamento e scadenza sulla stessa riga", "La barra dice quanto manca, l'etichetta dice se la commessa è in tempo. Le due informazioni si leggono insieme."),
+    ]),
+])
+
+
+def dashboard():
+    return f"""<section class="screens-intro" data-name="Come si vedono i dati">
+    <div class="wrap">
+      <div class="sec-head centered" data-enter><span class="eyebrow">Fase 4 in pratica</span><h2>Come si vedono i dati</h2><p>Quattro schermate di un gestionale Merkorn, con dati di esempio. Per ognuna spieghiamo le scelte di UX che rendono i dati leggibili a colpo d'occhio.</p></div>
     </div>
-  </section>"""
+  </section>
+
+  {SCREENS}"""
 
 
 # ---------------------------------------------------------------- pagine
@@ -388,7 +418,7 @@ PRIVACY = f"""  {page_hero("Privacy", ["Informativa sul trattamento dei dati"], 
 
 PAGES = [
     ("index.html", "Merkorn", "Merkorn sviluppa software gestionale su misura per le piccole e medie imprese italiane, partendo dal processo aziendale.", 0.0, HOME, True),
-    ("metodo.html", "Come lavoriamo", "Il metodo Merkorn in quattro fasi e una dashboard di esempio di un gestionale su misura.", 1.3, METODO, True, ("assets/schermate.js",)),
+    ("metodo.html", "Come lavoriamo", "Il metodo Merkorn in quattro fasi e quattro schermate di esempio che mostrano come la UX rende leggibili i dati.", 1.3, METODO, True, ("assets/schermate.js",)),
     ("servizi.html", "Servizi", "Gestionali su misura, analisi dei processi, app per reparto e consegne, assistenza ed evoluzione del software.", 2.6, SERVIZI, True),
     ("chi-siamo.html", "Chi siamo", "Merkorn è una software house pugliese che sviluppa gestionali su misura per le PMI partendo dalla UX.", 3.9, CHI, True),
     ("contattaci.html", "Contattaci", "Contattate Merkorn per prenotare un appuntamento o chiedere informazioni sui servizi.", 5.2, CONTATTI, False),

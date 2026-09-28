@@ -22,6 +22,7 @@
   const vBarTop = (x, y, w, h, r = 4) => { r = Math.min(r, h, w / 2); return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`; };
 
   function table(el, head, rows) {
+    if (!el) return;
     el.textContent = '';
     const wrap = document.createElement('div'); wrap.className = 'tbl-wrap';
     const t = document.createElement('table'); t.className = 'tbl';
@@ -33,8 +34,10 @@
     t.appendChild(tb); wrap.appendChild(t); el.appendChild(wrap);
   }
 
-  // one tooltip per figure; content is built with textContent only
+  // the screens are static illustrations: no tooltips, no hover targets
+  const STATIC = true;
   function tooltip(fig) {
+    if (STATIC) return { show() {}, hide() {} };
     const tip = document.createElement('div'); tip.className = 'tip'; tip.setAttribute('aria-hidden', 'true');
     fig.appendChild(tip);
     return {
@@ -161,13 +164,6 @@
       at(Math.max(0, Math.min(cur.length - 1, Math.round((x - m.l) / (iw / Math.max(1, cur.length - 1))))));
     });
     hit.addEventListener('pointerleave', off);
-    host.tabIndex = 0;
-    host.onkeydown = e => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); at(Math.max(0, Math.min(cur.length - 1, (idx < 0 ? last : idx) + (e.key === 'ArrowRight' ? 1 : -1)))); }
-      if (e.key === 'Escape') off();
-    };
-    host.onblur = off;
-    host.onfocus = () => at(last);
 
     // trace the lines
     const lines = [lp, lc];
@@ -239,7 +235,7 @@
   };
   let stFilter = 'all', query = '';
   function stockTiles() {
-    const box = $('stock-tiles'); box.textContent = '';
+    const box = $('stock-tiles'); box.querySelectorAll('.tile').forEach(t => t.remove());
     const low = STOCK.filter(s => s.st === 'low'), warn = STOCK.filter(s => s.st === 'warn');
     [['Sotto soglia', low.length + ' articoli', 'da riordinare subito'], ['In esaurimento', warn.length + ' articoli', 'sotto una volta e mezza la soglia'], ['Riordini suggeriti', nf.format(low.length) + ' ordini', 'pronti da inviare ai fornitori']].forEach(([l, v, n]) => {
       const d = document.createElement('div'); d.className = 'tile';
@@ -270,14 +266,13 @@
       span.appendChild(document.createTextNode(label)); st.appendChild(span);
       tb.appendChild(tr);
     });
-    $('stock-empty').hidden = rows.length > 0;
+    if ($('stock-empty')) $('stock-empty').hidden = rows.length > 0;
   }
   document.querySelectorAll('[data-st]').forEach(b => b.addEventListener('click', () => {
     stFilter = b.dataset.st;
     document.querySelectorAll('[data-st]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     stockTable();
   }));
-  $('stock-q').addEventListener('input', e => { query = e.target.value; stockTable(); });
 
   /* ================= produzione ================= */
   const WEEKS = ['30', '31', '32', '33', '34', '35', '36', '37'];
@@ -375,7 +370,7 @@
   const DAY_LABEL = DAYS.map(d => d + ' set');
   const DAILY = [12, 15, 11, 17, 14, 13, 16, 19, 15, 12, 14, 17, 20, 18];
   function homeTiles() {
-    const box = $('home-tiles'); box.textContent = '';
+    const box = $('home-tiles'); box.querySelectorAll('.tile').forEach(t => t.remove());
     const low = STOCK.filter(s => s.st === 'low').length;
     [['Ordini di oggi', nf.format(DAILY[DAILY.length - 1]), '▼ 2', 'bad', 'rispetto a ieri'],
      ['Consegne in giro', '9 di 14', '', '', 'completate oggi'],
@@ -433,61 +428,29 @@
     [[`${low} articoli sotto soglia da riordinare`, 'low', 'stock'],
      ['1 commessa in ritardo, 1 a rischio', 'warn', 'prod'],
      ['Fatturato di settembre sopra l\'anno scorso', 'ok', 'analytics'],
-     ['5 consegne ancora da completare', 'warn', 'home']].forEach(([label, st, view]) => {
+     ['5 consegne ancora da completare', 'warn']].forEach(([label, st]) => {
       const li = document.createElement('li');
-      const b = document.createElement('button'); b.type = 'button'; b.dataset.go = view;
       const [, color, ico] = ST[st];
-      b.innerHTML = `<svg viewBox="0 0 14 14" aria-hidden="true" fill="${color}">${ico}</svg>`;
-      const s = document.createElement('span'); s.textContent = label; b.appendChild(s);
-      if (view !== 'home') { const a = document.createElement('i'); a.setAttribute('aria-hidden', 'true'); a.textContent = '→'; b.appendChild(a); }
-      else b.disabled = true;
-      li.appendChild(b); ul.appendChild(li);
+      li.innerHTML = `<svg viewBox="0 0 14 14" aria-hidden="true" fill="${color}">${ico}</svg>`;
+      const s = document.createElement('span'); s.textContent = label; li.appendChild(s);
+      ul.appendChild(li);
     });
   }
-
-  /* ================= sezioni della dashboard ================= */
-  const TITLES = { home: 'Home', analytics: 'Analitiche', stock: 'Magazzino', prod: 'Produzione' };
-  const tabs = [...document.querySelectorAll('.side-nav [role="tab"]')];
-  const rendered = {};
-  let current = 'home';
-  // charts need a visible container to measure, so each view is drawn when it is shown
-  function draw(view, mode) {
-    if (view === 'home') { homeCols(mode); }
-    if (view === 'analytics') { lineChart(mode); barChart(mode); }
-    if (view === 'prod') { columns(mode); jobs(mode); }
-    rendered[view] = true;
-  }
-  function show(view, focus) {
-    if (view === current) return;
-    current = view;
-    tabs.forEach(t => {
-      const on = t.dataset.view === view;
-      t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
-      if (on && focus) t.focus();
-    });
-    document.querySelectorAll('.dash .view').forEach(v => { v.hidden = v.id !== 'view-' + view; });
-    $('dash-title').textContent = TITLES[view];
-    draw(view, 'now');
-  }
-  tabs.forEach((t, i) => {
-    t.addEventListener('click', () => show(t.dataset.view));
-    t.addEventListener('keydown', e => {
-      const dir = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
-      if (!dir) return;
-      e.preventDefault();
-      show(tabs[(i + dir + tabs.length) % tabs.length].dataset.view, true);
-    });
-  });
-  $('home-todo').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b && !b.disabled) show(b.dataset.go); });
 
   /* ================= avvio e ridimensionamento ================= */
+  // all four screens are visible at once, each chart draws itself when it scrolls into view
+  function drawCharts() {
+    homeCols(); lineChart(); barChart(); columns(); jobs();
+    // static screens: drop the hover targets so nothing inside a screen can take focus
+    document.querySelectorAll('.app .hit').forEach(h => h.remove());
+  }
   tiles(); stockTiles(); stockTable(); flow(); homeTiles(); homeTodo();
-  draw('home');
+  drawCharts();
   let rw = 0, t;
   const ro = new ResizeObserver(() => {
     const w = document.querySelector('.dash-main').clientWidth;
     if (w === rw) return; rw = w;
-    clearTimeout(t); t = setTimeout(() => draw(current), 120);
+    clearTimeout(t); t = setTimeout(drawCharts, 120);
   });
   ro.observe(document.querySelector('.dash-main'));
 })();

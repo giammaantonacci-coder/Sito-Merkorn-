@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Come lavoriamo | Merkorn</title>
-<meta name="description" content="Il metodo Merkorn in quattro fasi e una dashboard di esempio di un gestionale su misura.">
+<meta name="description" content="Il metodo Merkorn in quattro fasi e quattro schermate di esempio che mostrano come la UX rende leggibili i dati.">
 <meta property="og:title" content="Come lavoriamo | Merkorn">
-<meta property="og:description" content="Il metodo Merkorn in quattro fasi e una dashboard di esempio di un gestionale su misura.">
+<meta property="og:description" content="Il metodo Merkorn in quattro fasi e quattro schermate di esempio che mostrano come la UX rende leggibili i dati.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
 <meta name="theme-color" content="#08070B">
@@ -49,87 +49,123 @@
     </div>
   </section>
 
-  <section class="dash-sec" data-name="Dashboard">
+  <section class="screens-intro" data-name="Come si vedono i dati">
     <div class="wrap">
-      <div class="sec-head centered" data-enter><span class="eyebrow">Fase 4 in pratica</span><h2>Come si vedono i dati</h2><p>La dashboard di un gestionale Merkorn. Provatela: è interattiva e usa dati di esempio.</p></div>
-      <div class="app dash" data-enter>
-        <aside class="side">
-          <div class="side-brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span>Gestionale</span></div>
-          <nav class="side-nav" role="tablist" aria-label="Sezioni della dashboard"><button type="button" role="tab" id="tab-home" aria-controls="view-home" aria-selected="true" tabindex="0" data-view="home"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1Z"/></svg><span>Home</span></button><button type="button" role="tab" id="tab-analytics" aria-controls="view-analytics" aria-selected="false" tabindex="-1" data-view="analytics"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V11M8.5 16V7M13 16v-6M17 16V4"/></svg><span>Analitiche</span></button><button type="button" role="tab" id="tab-stock" aria-controls="view-stock" aria-selected="false" tabindex="-1" data-view="stock"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5 10 4l7 3.5v7L10 18l-7-3.5Z"/><path d="M3 7.5 10 11l7-3.5M10 11v7"/></svg><span>Magazzino</span></button><button type="button" role="tab" id="tab-prod" aria-controls="view-prod" aria-selected="false" tabindex="-1" data-view="prod"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="2.5"/><path d="M10 2.5v2.2M10 15.3v2.2M17.5 10h-2.2M4.7 10H2.5M15.3 4.7l-1.6 1.6M6.3 13.7l-1.6 1.6M15.3 15.3l-1.6-1.6M6.3 6.3 4.7 4.7"/></svg><span>Produzione</span></button></nav>
-          <div class="side-foot"><span class="avatar" aria-hidden="true">UF</span><span>Ufficio<small>Dati di esempio</small></span></div>
-        </aside>
-        <div class="dash-main">
-          <header class="dash-top"><h3 id="dash-title">Home</h3><span class="dash-date">Lunedì 28 settembre</span></header>
+      <div class="sec-head centered" data-enter><span class="eyebrow">Fase 4 in pratica</span><h2>Come si vedono i dati</h2><p>Quattro schermate di un gestionale Merkorn, con dati di esempio. Per ognuna spieghiamo le scelte di UX che rendono i dati leggibili a colpo d'occhio.</p></div>
+    </div>
+  </section>
 
-          <div class="view" id="view-home" role="tabpanel" aria-labelledby="tab-home">
-            <div class="tiles" id="home-tiles"></div>
+  <section class="screen" data-name="Home">
+    <div class="wrap">
+      <div class="screen-head" data-enter><span class="eyebrow">Schermata 1 di 4</span><h2>Home</h2><p>La prima schermata della giornata: cosa sta succedendo e cosa richiede attenzione.</p></div>
+      <div class="app dash" data-enter aria-hidden="true">
+        <div class="side">
+          <div class="side-brand"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span><span>Gestionale</span></div>
+          <div class="side-nav"><span class="nav-item on"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1Z"/></svg><span>Home</span></span><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V11M8.5 16V7M13 16v-6M17 16V4"/></svg><span>Analitiche</span></span><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5 10 4l7 3.5v7L10 18l-7-3.5Z"/><path d="M3 7.5 10 11l7-3.5M10 11v7"/></svg><span>Magazzino</span></span><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="2.5"/><path d="M10 2.5v2.2M10 15.3v2.2M17.5 10h-2.2M4.7 10H2.5M15.3 4.7l-1.6 1.6M6.3 13.7l-1.6 1.6M15.3 15.3l-1.6-1.6M6.3 6.3 4.7 4.7"/></svg><span>Produzione</span></span></div>
+          <div class="side-foot"><span class="avatar">UF</span><span>Ufficio<small>Amministrazione</small></span></div>
+        </div>
+        <div class="dash-main">
+          <div class="dash-top"><strong>Home</strong><span class="dash-date">Lunedì 28 settembre</span></div>
+          <div class="view">
+            <div class="tiles rel" id="home-tiles"><span class="mk" aria-hidden="true">1</span></div>
             <div class="viz-row">
-              <figure class="viz wide">
+              <figure class="viz wide"><span class="mk" aria-hidden="true">2</span>
                 <figcaption><strong>Ordini degli ultimi 14 giorni</strong><span>Ordini ricevuti al giorno</span></figcaption>
                 <div class="chart" id="home-cols"></div>
-                <details class="tview"><summary>Mostra i dati in tabella</summary><div id="home-cols-t"></div></details>
               </figure>
-              <figure class="viz">
-                <figcaption><strong>Da fare oggi</strong><span>Tocca una voce per aprire la sezione</span></figcaption>
+              <figure class="viz"><span class="mk" aria-hidden="true">3</span>
+                <figcaption><strong>Da fare oggi</strong><span>In ordine di urgenza</span></figcaption>
                 <ul class="todo" id="home-todo"></ul>
               </figure>
-            </div>
-          </div>
+            </div></div>
+        </div>
+      </div>
+      <ol class="notes"><li><span class="mk">1</span><div><strong>Quattro numeri, sempre nello stesso posto</strong><p>Gli indicatori del giorno stanno in alto e non cambiano ordine, così l'occhio li ritrova senza cercarli. Il confronto con ieri è una freccia e un valore, non un altro grafico.</p></div></li><li><span class="mk">2</span><div><strong>Un colore per una serie</strong><p>Le colonne hanno un solo colore perché raccontano un solo dato. Il valore di oggi è scritto sopra l'ultima colonna, gli altri si leggono sull'asse.</p></div></li><li><span class="mk">3</span><div><strong>Priorità in forma di elenco</strong><p>Le cose da fare sono ordinate per urgenza. Ogni stato ha colore, simbolo e parola, quindi resta chiaro anche a chi distingue male i colori.</p></div></li></ol>
+    </div>
+  </section>
 
-          <div class="view" id="view-analytics" role="tabpanel" aria-labelledby="tab-analytics" hidden>
-            <div class="filters" role="group" aria-label="Periodo">
-              <button type="button" class="chip" data-range="3">Ultimi 3 mesi</button>
-              <button type="button" class="chip" data-range="6">Ultimi 6 mesi</button>
-              <button type="button" class="chip" data-range="12" aria-pressed="true">Ultimi 12 mesi</button>
-            </div>
+  <section class="screen" data-name="Analitiche">
+    <div class="wrap">
+      <div class="screen-head" data-enter><span class="eyebrow">Schermata 2 di 4</span><h2>Analitiche</h2><p>L'andamento dell'azienda nel tempo, per chi prende decisioni.</p></div>
+      <div class="app dash" data-enter aria-hidden="true">
+        <div class="side">
+          <div class="side-brand"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span><span>Gestionale</span></div>
+          <div class="side-nav"><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1Z"/></svg><span>Home</span></span><span class="nav-item on"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V11M8.5 16V7M13 16v-6M17 16V4"/></svg><span>Analitiche</span></span><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5 10 4l7 3.5v7L10 18l-7-3.5Z"/><path d="M3 7.5 10 11l7-3.5M10 11v7"/></svg><span>Magazzino</span></span><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="2.5"/><path d="M10 2.5v2.2M10 15.3v2.2M17.5 10h-2.2M4.7 10H2.5M15.3 4.7l-1.6 1.6M6.3 13.7l-1.6 1.6M15.3 15.3l-1.6-1.6M6.3 6.3 4.7 4.7"/></svg><span>Produzione</span></span></div>
+          <div class="side-foot"><span class="avatar">UF</span><span>Ufficio<small>Amministrazione</small></span></div>
+        </div>
+        <div class="dash-main">
+          <div class="dash-top"><strong>Analitiche</strong><span class="dash-date">Lunedì 28 settembre</span></div>
+          <div class="view">
+            <div class="filters rel"><span class="chip">Ultimi 3 mesi</span><span class="chip">Ultimi 6 mesi</span><span class="chip on">Ultimi 12 mesi</span><span class="mk" aria-hidden="true">1</span></div>
             <div class="tiles" id="dash-tiles"></div>
             <div class="viz-row">
-              <figure class="viz wide">
+              <figure class="viz wide"><span class="mk" aria-hidden="true">2</span>
                 <figcaption><strong>Fatturato mensile</strong><span>Migliaia di euro, IVA esclusa</span></figcaption>
                 <div class="legend"><span><i class="lk s1"></i>Anno in corso</span><span><i class="lk s0"></i>Anno precedente</span></div>
                 <div class="chart" id="dash-line"></div>
-                <details class="tview"><summary>Mostra i dati in tabella</summary><div id="dash-line-t"></div></details>
               </figure>
-              <figure class="viz">
-                <figcaption><strong>Ordini per categoria</strong><span>Ordini evasi nel periodo</span></figcaption>
+              <figure class="viz"><span class="mk" aria-hidden="true">3</span>
+                <figcaption><strong>Ordini per categoria</strong><span>Ordini evasi negli ultimi 12 mesi</span></figcaption>
                 <div class="chart" id="dash-bars"></div>
-                <details class="tview"><summary>Mostra i dati in tabella</summary><div id="dash-bars-t"></div></details>
               </figure>
-            </div>
-          </div>
+            </div></div>
+        </div>
+      </div>
+      <ol class="notes"><li><span class="mk">1</span><div><strong>Un periodo per tutta la schermata</strong><p>Il periodo si sceglie una sola volta, in alto. Numeri e grafici raccontano sempre lo stesso intervallo e non si contraddicono.</p></div></li><li><span class="mk">2</span><div><strong>Il dato che conta in primo piano</strong><p>L'anno in corso è viola, quello precedente grigio. Il confronto c'è, ma l'attenzione va subito al presente. Il valore finale è scritto accanto alla linea.</p></div></li><li><span class="mk">3</span><div><strong>Barre orizzontali per i nomi lunghi</strong><p>Le categorie si leggono senza ruotare il testo e il valore sta alla fine di ogni barra. Le barre partono tutte dalla stessa linea, così il confronto è immediato.</p></div></li></ol>
+    </div>
+  </section>
 
-          <div class="view" id="view-stock" role="tabpanel" aria-labelledby="tab-stock" hidden>
-            <div class="tiles three" id="stock-tiles"></div>
-            <div class="filters" role="group" aria-label="Filtra gli articoli">
-              <button type="button" class="chip" data-st="all" aria-pressed="true">Tutti</button>
-              <button type="button" class="chip" data-st="low">Sotto soglia</button>
-              <button type="button" class="chip" data-st="warn">In esaurimento</button>
-              <label class="search"><span class="sr">Cerca un articolo</span><input type="search" id="stock-q" placeholder="Cerca per codice o nome" autocomplete="off"></label>
-            </div>
+  <section class="screen" data-name="Magazzino">
+    <div class="wrap">
+      <div class="screen-head" data-enter><span class="eyebrow">Schermata 3 di 4</span><h2>Magazzino</h2><p>Le scorte da tenere sotto controllo, per chi gestisce il magazzino.</p></div>
+      <div class="app dash" data-enter aria-hidden="true">
+        <div class="side">
+          <div class="side-brand"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span><span>Gestionale</span></div>
+          <div class="side-nav"><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1Z"/></svg><span>Home</span></span><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V11M8.5 16V7M13 16v-6M17 16V4"/></svg><span>Analitiche</span></span><span class="nav-item on"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5 10 4l7 3.5v7L10 18l-7-3.5Z"/><path d="M3 7.5 10 11l7-3.5M10 11v7"/></svg><span>Magazzino</span></span><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="2.5"/><path d="M10 2.5v2.2M10 15.3v2.2M17.5 10h-2.2M4.7 10H2.5M15.3 4.7l-1.6 1.6M6.3 13.7l-1.6 1.6M15.3 15.3l-1.6-1.6M6.3 6.3 4.7 4.7"/></svg><span>Produzione</span></span></div>
+          <div class="side-foot"><span class="avatar">UF</span><span>Ufficio<small>Amministrazione</small></span></div>
+        </div>
+        <div class="dash-main">
+          <div class="dash-top"><strong>Magazzino</strong><span class="dash-date">Lunedì 28 settembre</span></div>
+          <div class="view">
+            <div class="tiles three rel" id="stock-tiles"><span class="mk" aria-hidden="true">1</span></div>
+            <div class="filters"><span class="chip on">Tutti</span><span class="chip">Sotto soglia</span><span class="chip">In esaurimento</span><span class="search"><span>Cerca per codice o nome</span></span></div>
             <div class="tbl-wrap"><table class="tbl" id="stock-table">
-              <thead><tr><th scope="col">Codice</th><th scope="col">Articolo</th><th scope="col">Giacenza</th><th scope="col" class="num">Riordino</th><th scope="col">Stato</th></tr></thead>
+              <thead><tr><th>Codice</th><th>Articolo</th><th><span class="mk" aria-hidden="true">2</span>Giacenza</th><th class="num"><span class="mk" aria-hidden="true">4</span>Riordino</th><th><span class="mk" aria-hidden="true">3</span>Stato</th></tr></thead>
               <tbody></tbody>
-            </table></div>
-            <p class="empty" id="stock-empty" hidden>Nessun articolo corrisponde alla ricerca.</p>
-          </div>
+            </table></div></div>
+        </div>
+      </div>
+      <ol class="notes"><li><span class="mk">1</span><div><strong>Prima il riepilogo</strong><p>Sopra l'elenco, quanti articoli richiedono un intervento. Si capisce subito se oggi c'è qualcosa da fare.</p></div></li><li><span class="mk">2</span><div><strong>Giacenza e soglia nella stessa barra</strong><p>La barra mostra quanto resta, la tacca chiara indica la soglia minima. Chi è sotto soglia si vede senza leggere i numeri.</p></div></li><li><span class="mk">3</span><div><strong>Stato con colore, simbolo e parola</strong><p>Rosso, giallo e verde hanno sempre un simbolo diverso e un'etichetta. Il colore aiuta, ma non è l'unica informazione.</p></div></li><li><span class="mk">4</span><div><strong>Numeri solo dove serve un'azione</strong><p>La quantità da riordinare compare solo per gli articoli sotto soglia. Nelle altre righe un trattino lascia la tabella pulita.</p></div></li></ol>
+    </div>
+  </section>
 
-          <div class="view" id="view-prod" role="tabpanel" aria-labelledby="tab-prod" hidden>
-            <ol class="flow" id="prod-flow" aria-label="Ordini in lavorazione per fase"></ol>
+  <section class="screen" data-name="Produzione">
+    <div class="wrap">
+      <div class="screen-head" data-enter><span class="eyebrow">Schermata 4 di 4</span><h2>Produzione</h2><p>Il carico dei reparti e lo stato delle commesse, per il responsabile di produzione.</p></div>
+      <div class="app dash" data-enter aria-hidden="true">
+        <div class="side">
+          <div class="side-brand"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span><span>Gestionale</span></div>
+          <div class="side-nav"><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1Z"/></svg><span>Home</span></span><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V11M8.5 16V7M13 16v-6M17 16V4"/></svg><span>Analitiche</span></span><span class="nav-item"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5 10 4l7 3.5v7L10 18l-7-3.5Z"/><path d="M3 7.5 10 11l7-3.5M10 11v7"/></svg><span>Magazzino</span></span><span class="nav-item on"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="2.5"/><path d="M10 2.5v2.2M10 15.3v2.2M17.5 10h-2.2M4.7 10H2.5M15.3 4.7l-1.6 1.6M6.3 13.7l-1.6 1.6M15.3 15.3l-1.6-1.6M6.3 6.3 4.7 4.7"/></svg><span>Produzione</span></span></div>
+          <div class="side-foot"><span class="avatar">UF</span><span>Ufficio<small>Amministrazione</small></span></div>
+        </div>
+        <div class="dash-main">
+          <div class="dash-top"><strong>Produzione</strong><span class="dash-date">Lunedì 28 settembre</span></div>
+          <div class="view">
+            <div class="rel"><span class="mk" aria-hidden="true">1</span><ol class="flow" id="prod-flow"></ol></div>
             <div class="viz-row">
-              <figure class="viz wide">
+              <figure class="viz wide"><span class="mk" aria-hidden="true">2</span>
                 <figcaption><strong>Ore lavorate per reparto</strong><span>Ultime otto settimane</span></figcaption>
                 <div class="legend"><span><i class="sw s1"></i>Taglio</span><span><i class="sw s2"></i>Assemblaggio</span><span><i class="sw s3"></i>Collaudo</span></div>
                 <div class="chart" id="prod-cols"></div>
-                <details class="tview"><summary>Mostra i dati in tabella</summary><div id="prod-cols-t"></div></details>
               </figure>
-              <figure class="viz">
+              <figure class="viz"><span class="mk" aria-hidden="true">3</span>
                 <figcaption><strong>Avanzamento commesse</strong><span>Completamento e consegna prevista</span></figcaption>
                 <ul class="jobs" id="prod-jobs"></ul>
               </figure>
-            </div>
-          </div>
+            </div></div>
         </div>
       </div>
+      <ol class="notes"><li><span class="mk">1</span><div><strong>Le fasi nell'ordine reale</strong><p>Gli ordini in lavorazione seguono il percorso del processo, da sinistra a destra, dal taglio alla spedizione.</p></div></li><li><span class="mk">2</span><div><strong>Tre reparti, tre colori distinguibili</strong><p>I colori delle colonne sono scelti per essere distinti anche da chi è daltonico. Il totale sta in cima a ogni colonna, il dettaglio nella legenda.</p></div></li><li><span class="mk">3</span><div><strong>Avanzamento e scadenza sulla stessa riga</strong><p>La barra dice quanto manca, l'etichetta dice se la commessa è in tempo. Le due informazioni si leggono insieme.</p></div></li></ol>
     </div>
   </section>
 
