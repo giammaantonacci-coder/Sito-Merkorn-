@@ -1,0 +1,504 @@
+<title>Dentro i blocchi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;9..40,700&family=Inter:wght@400;600&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --accent: #9747FF; --bg: #100E13; --lift: #17141B; --lift2: #1E1A23; --text: #F2EFEA; --muted: #A7A2AE;
+    --field: #6D28D9; --scene: #08070B; --paper: #EFEBE3; --note: #F0E7C4; --ink: #100E13; --ink-muted: #5E5866;
+    --rule: rgba(242,239,234,.12); --rule-dark: rgba(16,14,19,.16);
+    --display: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --r-card: 24px; --r-cta: 14px; --r-block: 22%;
+    --gutter: clamp(16px, 5vw, 64px);
+    --ease: cubic-bezier(.2,.8,.2,1); --spring: cubic-bezier(.34,1.4,.5,1);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--scene); color: var(--text); font: 400 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  ::selection { background: var(--accent); color: var(--text); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -.03em; text-wrap: balance; margin: 0; }
+  body::after {
+    content: ""; position: fixed; inset: -50%; z-index: 90; pointer-events: none; opacity: .09;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 1s steps(4) infinite;
+  }
+  @keyframes grain { 25% { transform: translate(-3%,2%); } 50% { transform: translate(2%,-3%); } 75% { transform: translate(-1%,3%); } }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 600 11px/1 var(--body); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+  .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 2px; background: var(--accent); }
+  .mark { display: inline-block; width: 26px; height: 16px; position: relative; flex: none; }
+  .mark i { position: absolute; width: 18%; height: 30%; border-radius: var(--r-block); background: var(--accent); }
+  .mark i:nth-child(1) { left: 41%; top: 0; } .mark i:nth-child(2) { left: 20.5%; top: 35%; } .mark i:nth-child(3) { left: 61.5%; top: 35%; } .mark i:nth-child(4) { left: 0; top: 70%; } .mark i:nth-child(5) { left: 82%; top: 70%; }
+
+  .btn { position: relative; display: inline-flex; align-items: center; gap: 12px; overflow: hidden; font: 600 15px/1 var(--body); text-decoration: none; cursor: pointer; border: 0; padding: 16px 22px; border-radius: var(--r-cta); background: var(--accent); color: var(--text); transition: transform .4s var(--spring), border-radius .4s var(--ease); }
+  .btn span { position: relative; z-index: 1; transition: color .3s; }
+  .btn::before { content: ""; position: absolute; inset: 0; background: var(--text); transform: translateY(101%); transition: transform .45s var(--ease); }
+  .btn:hover { transform: translateY(-2px); border-radius: 20px; }
+  .btn:hover::before { transform: none; }
+  .btn:hover span { color: var(--ink); }
+
+  /* ---------- 3D stage ---------- */
+  #gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+  #track { position: relative; z-index: -1; }
+
+  /* ---------- nav + HUD ---------- */
+  .nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 60; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px var(--gutter); pointer-events: none; }
+  .nav > * { pointer-events: auto; }
+  .pill { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 16px; background: rgba(16,14,19,.8); box-shadow: inset 0 0 0 1px var(--rule); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); text-decoration: none; font: 700 14px/1 var(--display); letter-spacing: .32em; color: var(--text); }
+  .nav .btn { padding: 13px 18px; font-size: 14px; }
+
+  .minimap { position: fixed; right: var(--gutter); bottom: calc(22px + env(safe-area-inset-bottom, 0px)); z-index: 60; width: 96px; height: 62px; }
+  .minimap button { position: absolute; width: 18%; height: 29%; padding: 0; border: 0; border-radius: var(--r-block); background: #3A3540; cursor: pointer; transition: background .4s, transform .4s var(--spring); }
+  .minimap button:hover { transform: scale(1.25); }
+  .minimap button.seen { background: #6A5B7E; }
+  .minimap button.now { background: var(--accent); transform: scale(1.2); }
+  .hud { position: fixed; left: var(--gutter); bottom: calc(22px + env(safe-area-inset-bottom, 0px)); z-index: 60; display: grid; gap: 6px; pointer-events: none; }
+  .hud b { font: 600 11px/1 var(--body); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+  .hud span { font: 700 16px/1.2 var(--display); letter-spacing: -.01em; }
+  .hud .bar { width: 160px; height: 3px; border-radius: 2px; background: var(--rule); overflow: hidden; }
+  .hud .bar i { display: block; height: 100%; width: 0; background: var(--accent); }
+  body.inroom-light .hud b { color: var(--ink-muted); }
+  body.inroom-light .hud span { color: var(--ink); }
+  body.inroom-light .hud .bar { background: var(--rule-dark); }
+
+  /* ---------- hero overlay ---------- */
+  .hero { position: fixed; inset: 0; z-index: 10; pointer-events: none; display: grid; align-content: space-between; padding: 96px var(--gutter) 96px; }
+  .hero .meta { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .hero h1 { font-size: clamp(40px, 5.6vw, 88px); line-height: .96; max-width: 11ch; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero .row { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
+  .hero p { margin: 18px 0 0; color: var(--muted); max-width: 40ch; }
+  .hero .cue { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
+  .hero .cue i { width: 22px; height: 34px; border-radius: 10px; box-shadow: inset 0 0 0 1px var(--rule); position: relative; }
+  .hero .cue i::after { content: ""; position: absolute; left: 50%; top: 7px; width: 4px; height: 7px; margin-left: -2px; border-radius: 2px; background: var(--accent); animation: cue 1.8s var(--ease) infinite; }
+  @keyframes cue { 70%, 100% { transform: translateY(12px); opacity: 0; } }
+
+  /* labels floating over the 3D blocks */
+  .tags { position: fixed; inset: 0; z-index: 12; pointer-events: none; }
+  .tag { position: absolute; left: 0; top: 0; translate: -50% -100%; white-space: nowrap; font: 600 12px/1 var(--body); letter-spacing: .04em; padding: 8px 11px; border-radius: 10px; background: rgba(16,14,19,.85); box-shadow: inset 0 0 0 1px var(--rule); opacity: 0; pointer-events: auto; cursor: pointer; border: 0; color: var(--text); }
+  .tag b { color: var(--accent); margin-right: 6px; }
+
+  /* ---------- rooms: the inside of each block ---------- */
+  .room {
+    position: fixed; inset: 0; z-index: 30; overflow: auto; visibility: hidden;
+    display: grid; align-items: center; padding: 96px var(--gutter) 110px;
+    clip-path: inset(50% round 24px);
+  }
+  .room .in { max-width: 1240px; width: 100%; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .room .txt > * { transition: transform .9s var(--ease), opacity .9s var(--ease); }
+  .room:not(.shown) .txt > * { transform: translateY(26px); opacity: 0; }
+  .room .txt > *:nth-child(2) { transition-delay: .06s; } .room .txt > *:nth-child(3) { transition-delay: .12s; } .room .txt > *:nth-child(4) { transition-delay: .18s; }
+  .room .obj { transition: transform 1.1s var(--spring) .15s, opacity .8s var(--ease) .15s; }
+  .room:not(.shown) .obj { transform: translateY(40px) scale(.94); opacity: 0; }
+  .room h2 { font-size: clamp(34px, 4.8vw, 68px); line-height: 1; margin-top: 22px; }
+  .room p { margin: 22px 0 0; font-size: clamp(16px, 1.3vw, 18px); max-width: 46ch; }
+  .room .exit { position: absolute; left: 50%; bottom: 28px; translate: -50% 0; font-size: 12px; letter-spacing: .06em; opacity: .6; white-space: nowrap; }
+  .r-paper { background: var(--paper); color: var(--ink); }
+  .r-paper .eyebrow, .r-paper p { color: var(--ink-muted); }
+  .r-dark { background: var(--bg); }
+  .r-dark p { color: var(--muted); }
+  .r-field { background: var(--field); }
+  .r-field .eyebrow { color: rgba(242,239,234,.8); }
+  .r-field .eyebrow::before { background: var(--text); }
+  .r-scene { background: var(--scene); }
+  .r-scene p { color: var(--muted); }
+  @media (max-width: 860px) { .room .in { grid-template-columns: 1fr; } .room { align-items: start; } }
+
+  /* room 1: spreadsheet */
+  .sheet { rotate: -3deg; background: #fff; border-radius: 10px; box-shadow: 0 30px 50px -30px rgba(16,14,19,.5); overflow: hidden; font: 12px/1 var(--body); color: #333; max-width: 460px; }
+  .sheet div { display: grid; grid-template-columns: 28px repeat(4, 1fr); }
+  .sheet span { border-right: 1px solid #DDD; border-bottom: 1px solid #DDD; padding: 9px 6px; white-space: nowrap; overflow: hidden; }
+  .sheet div:first-child span { background: #F1F1F1; font-weight: 600; }
+  .sheet .y { background: #FFF3A6; }
+  /* room 2: foundation pieces */
+  .found { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .found div { padding: 22px; border-radius: 20px; background: var(--lift); box-shadow: inset 0 0 0 1px var(--rule); display: grid; gap: 10px; transition: transform .4s var(--spring), box-shadow .3s; }
+  .found div:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(151,71,255,.6); }
+  .found i { width: 18px; height: 18px; border-radius: 5px; background: var(--accent); }
+  .found strong { font: 700 19px/1.15 var(--display); letter-spacing: -.01em; }
+  .found span { font-size: 14px; color: var(--muted); }
+  /* room 3: process chain */
+  .chain { display: grid; gap: 10px; }
+  .chain div { display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-radius: 18px; background: rgba(16,14,19,.22); box-shadow: inset 0 0 0 1px rgba(242,239,234,.2); transition: transform .45s var(--spring), background .3s; }
+  .chain div:hover { transform: translateX(8px); background: rgba(16,14,19,.34); }
+  .chain b { width: 30px; height: 30px; flex: none; display: grid; place-items: center; border-radius: 9px; background: var(--text); color: var(--field); font: 700 13px/1 var(--display); }
+  .chain strong { font: 700 18px/1.2 var(--display); }
+  .chain span { margin-left: auto; font-size: 13px; opacity: .75; text-align: right; }
+  /* room 4: a working screen */
+  .screen { width: min(100%, 420px); justify-self: center; display: grid; gap: 14px; padding: 24px; border-radius: 28px; background: var(--bg); color: var(--text); box-shadow: 0 40px 60px -36px rgba(16,14,19,.6); }
+  .screen .who { font: 600 11px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+  .screen h3 { font-size: 28px; line-height: 1.05; }
+  .screen .items { border-radius: 18px; background: var(--lift); box-shadow: inset 0 0 0 1px var(--rule); }
+  .screen .items div { display: flex; justify-content: space-between; padding: 13px 16px; border-bottom: 1px solid var(--rule); font-size: 15px; font-variant-numeric: tabular-nums; }
+  .screen .items div:last-child { border: 0; }
+  .screen .items span { color: var(--muted); }
+  .screen .choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .screen .choice button { font: 600 15px/1.2 var(--body); padding: 18px 12px; border-radius: 16px; border: 0; cursor: pointer; color: var(--text); transition: transform .3s var(--spring); }
+  .screen .choice button:hover { transform: translateY(-2px); }
+  .screen .yes { background: var(--accent); }
+  .screen .no { background: var(--lift2); box-shadow: inset 0 0 0 1px var(--rule); }
+  .screen .done { font-size: 13px; color: var(--muted); min-height: 1.4em; }
+  /* room 5: contact */
+  .r-scene h2.big { font-size: clamp(56px, 10vw, 150px); line-height: .9; letter-spacing: -.045em; }
+  .r-scene h2.big em { font-style: normal; color: var(--accent); }
+  .mailbox { display: grid; gap: 12px; padding: 24px; border-radius: var(--r-card); background: var(--lift); box-shadow: inset 0 0 0 1px var(--rule); }
+  .mailbox .lbl { font: 600 11px/1 var(--body); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+  .mailbox output { font: 700 clamp(19px, 2vw, 26px)/1.2 var(--display); user-select: all; word-break: break-all; }
+  .mailbox .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .copy { font: 600 13px/1 var(--body); color: var(--text); background: transparent; border: 0; padding: 12px 14px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--rule); cursor: pointer; }
+  .copy:hover { background: var(--bg); }
+
+  /* ---------- flat fallback (no WebGL or reduced motion) ---------- */
+  html.flat #gl, html.flat #track, html.flat .tags, html.flat .minimap, html.flat .hud, html.flat .room .exit { display: none; }
+  html.flat .hero { position: relative; min-height: 80vh; background: var(--scene); }
+  html.flat .hero .cue { display: none; }
+  html.flat .room { position: relative; visibility: visible; clip-path: none; min-height: 90vh; }
+  html.flat .room:not(.shown) .txt > *, html.flat .room:not(.shown) .obj { transform: none; opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<header class="nav">
+  <a class="pill" href="#" id="home" aria-label="Merkorn, torna all'inizio"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>MERKORN</a>
+  <a class="btn" href="#" id="toContact"><span>Parliamone</span></a>
+</header>
+
+<section class="hero" id="hero">
+  <div class="meta"><span class="eyebrow">Software house · PMI italiane</span><span class="eyebrow">Puglia · Mezzogiorno</span></div>
+  <div class="row">
+    <div>
+      <h1>Lo strumento si piega al <em>processo.</em></h1>
+      <p>Cinque blocchi, cinque stanze. Scorrete ed entrate in ognuno: è il modo in cui costruiamo il software per le PMI.</p>
+    </div>
+    <div class="cue"><i aria-hidden="true"></i>Scorri per entrare nel primo blocco</div>
+  </div>
+</section>
+
+<div class="tags" id="tags"></div>
+
+<!-- room 1 -->
+<section class="room r-paper" data-light="1" aria-label="Blocco 1, prima il lavoro reale">
+  <div class="in">
+    <div class="txt">
+      <span class="eyebrow">Blocco 1 di 5 · Prima il lavoro reale</span>
+      <h2>Veniamo in azienda a vedere come lavorate.</h2>
+      <p>Il primo incontro è un'analisi, non una presentazione commerciale. Seguiamo un ordine dall'ufficio al reparto e segniamo dove si ferma, dove si ricopia, dove torna fuori il foglio Excel.</p>
+    </div>
+    <div class="obj sheet" aria-hidden="true">
+      <div><span></span><span>A</span><span>B</span><span>C</span><span>D</span></div>
+      <div><span>1</span><span>Ordine</span><span>Cliente</span><span>Stato</span><span>Note</span></div>
+      <div><span>2</span><span>2381</span><span>Rossi</span><span class="y">??</span><span>chiamare</span></div>
+      <div><span>3</span><span>2382</span><span>Bianchi</span><span>ok</span><span>vedi mail</span></div>
+      <div><span>4</span><span>2383</span><span>Rossi (2)</span><span class="y">manca</span><span>chiedi a Pino</span></div>
+      <div><span>5</span><span>2384</span><span>Esposito</span><span>ok?</span><span></span></div>
+      <div><span>6</span><span>2385</span><span>Bianchi</span><span class="y">??</span><span>FINALE_v3</span></div>
+    </div>
+  </div>
+  <span class="exit">Scorri per uscire dal blocco ↓</span>
+</section>
+
+<!-- room 2 -->
+<section class="room r-dark" aria-label="Blocco 2, fondamenta riusabili">
+  <div class="in">
+    <div class="txt">
+      <span class="eyebrow">Blocco 2 di 5 · Fondamenta riusabili</span>
+      <h2>Le parti che ogni azienda ha, fatte bene una volta.</h2>
+      <p>Sono pezzi collaudati su altri progetti. Non li paghi come se li inventassimo da zero, e reggono il resto.</p>
+    </div>
+    <div class="obj found">
+      <div><i></i><strong>Anagrafiche</strong><span>Clienti, fornitori, articoli.</span></div>
+      <div><i></i><strong>Utenti e permessi</strong><span>Chi vede cosa, partendo da persone vere.</span></div>
+      <div><i></i><strong>Stampe e documenti</strong><span>DDT, offerte, etichette.</span></div>
+      <div><i></i><strong>Contabilità</strong><span>Collegamento con il gestionale che avete.</span></div>
+    </div>
+  </div>
+  <span class="exit">Scorri per uscire dal blocco ↓</span>
+</section>
+
+<!-- room 3 -->
+<section class="room r-field" aria-label="Blocco 3, componenti compositi">
+  <div class="in">
+    <div class="txt">
+      <span class="eyebrow">Blocco 3 di 5 · Componenti compositi</span>
+      <h2>Sopra, i pezzi del vostro processo.</h2>
+      <p>Li montiamo uno alla volta e li proviamo con chi li userà, prima di passare al successivo.</p>
+    </div>
+    <div class="obj chain">
+      <div><b>1</b><strong>Commessa</strong><span>ufficio tecnico</span></div>
+      <div><b>2</b><strong>Controllo qualità</strong><span>fine linea</span></div>
+      <div><b>3</b><strong>DDT</strong><span>spedizioni</span></div>
+      <div><b>4</b><strong>Giro del furgone</strong><span>consegne</span></div>
+    </div>
+  </div>
+  <span class="exit">Scorri per uscire dal blocco ↓</span>
+</section>
+
+<!-- room 4 -->
+<section class="room r-paper" data-light="1" aria-label="Blocco 4, superficie su misura">
+  <div class="in">
+    <div class="txt">
+      <span class="eyebrow">Blocco 4 di 5 · Superficie su misura</span>
+      <h2>Una schermata, una decisione.</h2>
+      <p>L'ultimo strato è quello che le persone toccano. Pulsanti grandi dove si lavora coi guanti, tabelle dense dove serve confrontare. Provate questa.</p>
+    </div>
+    <div class="obj screen">
+      <span class="who">Magazzino · arrivo merce · esempio</span>
+      <h3>È arrivato l'ordine 2381?</h3>
+      <div class="items">
+        <div>Staffa 40 mm<span>200 pz</span></div>
+        <div>Staffa 60 mm<span>150 pz</span></div>
+        <div>Vite M6 zincata<span>40 conf.</span></div>
+      </div>
+      <div class="choice"><button class="yes" type="button" id="yes">Sì, tutto</button><button class="no" type="button" id="no">Manca qualcosa</button></div>
+      <span class="done" id="done" aria-live="polite"></span>
+    </div>
+  </div>
+  <span class="exit">Scorri per salire all'ultimo blocco ↓</span>
+</section>
+
+<!-- room 5 -->
+<section class="room r-scene" aria-label="Blocco 5, contatti">
+  <div class="in">
+    <div class="txt">
+      <span class="eyebrow">Blocco 5 di 5 · La cima</span>
+      <h2 class="big">Parliamone<em>.</em></h2>
+      <p>Il primo incontro è un'analisi, non una presentazione commerciale. Veniamo a capire come lavorate e vi diciamo con franchezza se e come possiamo essere utili.</p>
+    </div>
+    <div class="obj mailbox">
+      <span class="lbl">Scrivici</span>
+      <output id="mail">merkornsh@gmail.com</output>
+      <div class="row"><button class="copy" id="copy" type="button">Copia indirizzo</button><a class="btn" href="#" id="restart"><span>Rivedi dall'inizio</span></a></div>
+    </div>
+  </div>
+</section>
+
+<div class="hud" id="hud" aria-hidden="true"><b id="hudK">Merkorn</b><span id="hudT">Fuori dai blocchi</span><div class="bar"><i id="hudBar"></i></div></div>
+<nav class="minimap" id="minimap" aria-label="Vai a un blocco">
+  <button type="button" style="left:0;top:71%" aria-label="Blocco 1, prima il lavoro reale"></button>
+  <button type="button" style="left:82%;top:71%" aria-label="Blocco 2, fondamenta riusabili"></button>
+  <button type="button" style="left:20.5%;top:35.5%" aria-label="Blocco 3, componenti compositi"></button>
+  <button type="button" style="left:61.5%;top:35.5%" aria-label="Blocco 4, superficie su misura"></button>
+  <button type="button" style="left:41%;top:0" aria-label="Blocco 5, contatti"></button>
+</nav>
+<div id="track"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(() => {
+  const rooms = [...document.querySelectorAll('.room')];
+  const titles = ['Prima il lavoro reale', 'Fondamenta riusabili', 'Componenti compositi', 'Superficie su misura', 'Parliamone'];
+
+  /* small interactions that work in both modes */
+  const done = document.getElementById('done');
+  document.getElementById('yes').addEventListener('click', () => done.textContent = 'Carico registrato. Il magazzino è aggiornato.');
+  document.getElementById('no').addEventListener('click', () => done.textContent = 'Si apre solo la lista: tocca cosa manca.');
+  const copy = document.getElementById('copy'), mail = document.getElementById('mail');
+  copy.addEventListener('click', () => {
+    const sel = () => { getSelection().selectAllChildren(mail); copy.textContent = 'Selezionato, premi Ctrl+C'; };
+    try { navigator.clipboard.writeText(mail.textContent).then(() => { copy.textContent = 'Copiato'; setTimeout(() => copy.textContent = 'Copia indirizzo', 1800); }, sel); } catch (e) { sel(); }
+  });
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let gl = null;
+  try { const c = document.createElement('canvas'); gl = c.getContext('webgl') || c.getContext('experimental-webgl'); } catch (e) {}
+  if (reduce || !gl || !window.THREE) {
+    document.documentElement.classList.add('flat');
+    rooms.forEach(r => r.classList.add('shown'));
+    const go = i => rooms[i].scrollIntoView({ behavior: 'smooth' });
+    document.querySelectorAll('#toContact').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go(4); }));
+    return;
+  }
+
+  /* ================= scene ================= */
+  const canvas = document.getElementById('gl');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x08070B);
+  scene.fog = new THREE.Fog(0x08070B, 13, 30);
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.03, 80);
+
+  scene.add(new THREE.HemisphereLight(0xF2EFEA, 0x100E13, 0.42));
+  const sun = new THREE.DirectionalLight(0xF2EFEA, 1.05);
+  sun.position.set(-5, 9, 7);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 1, far: 30 });
+  sun.shadow.bias = -0.0008;
+  scene.add(sun);
+  const fill = new THREE.DirectionalLight(0x9747FF, 0.12); fill.position.set(6, 2, 4); scene.add(fill);
+
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.MeshStandardMaterial({ color: 0x151219, roughness: 1, metalness: 0 }));
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -0.15; floor.receiveShadow = true; scene.add(floor);
+
+  // rounded block: a soft-cornered square, extruded with a small bevel (the logo block in 3D)
+  function roundedBlock() {
+    const s = 0.84, r = 0.19, h = s / 2, bev = 0.08;
+    const sh = new THREE.Shape();
+    sh.moveTo(-h + r, -h); sh.lineTo(h - r, -h); sh.quadraticCurveTo(h, -h, h, -h + r);
+    sh.lineTo(h, h - r); sh.quadraticCurveTo(h, h, h - r, h); sh.lineTo(-h + r, h);
+    sh.quadraticCurveTo(-h, h, -h, h - r); sh.lineTo(-h, -h + r); sh.quadraticCurveTo(-h, -h, -h + r, -h);
+    const g = new THREE.ExtrudeGeometry(sh, { depth: 1 - 2 * bev, bevelEnabled: true, bevelThickness: bev, bevelSize: bev, bevelSegments: 12, curveSegments: 14 });
+    g.translate(0, 0, -(1 - 2 * bev) / 2);
+    g.computeVertexNormals();
+    return g;
+  }
+  const geo = roundedBlock();
+  const P = 1.3;
+  // build order = chapter order: bottom-left, bottom-right, mid-left, mid-right, top
+  const cells = [[0, 2], [4, 2], [1, 1], [3, 1], [2, 0]];
+  const centers = cells.map(([c, r]) => new THREE.Vector3((c - 2) * P, (2 - r) * P * .95 + .62, 0));
+  const blocks = centers.map((c, i) => {
+    const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x9747FF, roughness: .82, metalness: 0 }));
+    m.castShadow = m.receiveShadow = true;
+    m.position.copy(c); scene.add(m); return m;
+  });
+
+  /* ================= camera timeline ================= */
+  const pyrCenter = new THREE.Vector3(0, 1.85, 0);
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+  let overview = { pos: V(0, 2.2, 11), look: pyrCenter.clone() };
+  const approach = centers.map(c => ({ pos: c.clone().add(V(c.x * .12, .3, 3.4)), look: c.clone() }));
+  const inside = centers.map(c => ({ pos: c.clone().add(V(0, 0, .53)), look: c.clone().add(V(0, 0, -1)) }));
+  const D = { hold: .55, travel: .85, dive: .85, room: 1.5, out: .5 };
+  const segs = [];
+  segs.push({ a: () => overview, b: () => overview, d: D.hold, kind: 'hold', i: -1 });
+  for (let i = 0; i < 5; i++) {
+    const prev = i === 0 ? () => overview : (k => () => approach[k])(i - 1);
+    segs.push({ a: prev, b: () => approach[i], d: D.travel, kind: 'travel', i });
+    segs.push({ a: () => approach[i], b: () => inside[i], d: D.dive, kind: 'dive', i });
+    segs.push({ a: () => inside[i], b: () => inside[i], d: i === 4 ? D.room * .8 : D.room, kind: 'room', i });
+    if (i < 4) segs.push({ a: () => inside[i], b: () => approach[i], d: D.out, kind: 'out', i });
+  }
+  let acc = 0; segs.forEach(s => { s.t0 = acc; acc += s.d; });
+  const TOTAL = acc;
+  const track = document.getElementById('track');
+  function layout() {
+    const w = innerWidth, h = innerHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+    // pull back on narrow screens so the whole pyramid fits
+    const hf = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(25)) * camera.aspect);
+    const dist = Math.max(10.5, 4.2 / Math.tan(hf / 2) + 1);
+    // on wide screens slide the pyramid to the right so the headline has room
+    const shift = camera.aspect > 1.15 ? -Math.min(3.6, (camera.aspect - 1) * 5.5) : 0;
+    overview = { pos: V(shift, 2.2 + (dist - 10.5) * .08, dist), look: pyrCenter.clone().add(V(shift, 0, 0)) };
+    track.style.height = (TOTAL * 100 + 100) + 'vh';
+  }
+  layout(); addEventListener('resize', layout);
+
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const smooth = (a, b, t) => { t = Math.min(1, Math.max(0, (t - a) / (b - a))); return t * t * (3 - 2 * t); };
+  const maxScroll = () => Math.max(1, document.documentElement.scrollHeight - innerHeight);
+  const segAt = u => segs.find(s => u < s.t0 + s.d) || segs[segs.length - 1];
+  const jump = i => { const s = segs.find(x => x.kind === 'room' && x.i === i); scrollTo({ top: (s.t0 + s.d * .35) / TOTAL * maxScroll(), behavior: 'smooth' }); };
+
+  /* ================= HTML overlays ================= */
+  const hero = document.getElementById('hero');
+  const tagsEl = document.getElementById('tags');
+  const tags = centers.map((c, i) => {
+    const b = document.createElement('button'); b.className = 'tag'; b.type = 'button';
+    b.innerHTML = `<b>0${i + 1}</b>${titles[i]}`; b.addEventListener('click', () => jump(i));
+    tagsEl.appendChild(b); return b;
+  });
+  const miniBtns = [...document.querySelectorAll('#minimap button')];
+  miniBtns.forEach((b, i) => b.addEventListener('click', () => jump(i)));
+  document.getElementById('toContact').addEventListener('click', e => { e.preventDefault(); jump(4); });
+  document.getElementById('home').addEventListener('click', e => { e.preventDefault(); scrollTo({ top: 0, behavior: 'smooth' }); });
+  document.getElementById('restart').addEventListener('click', e => { e.preventDefault(); scrollTo({ top: 0, behavior: 'smooth' }); });
+  const hudK = document.getElementById('hudK'), hudT = document.getElementById('hudT'), hudBar = document.getElementById('hudBar');
+  const seen = new Set();
+
+  /* ================= loop ================= */
+  let cur = 0, px = 0, py = 0, tpx = 0, tpy = 0;
+  addEventListener('pointermove', e => { tpx = e.clientX / innerWidth - .5; tpy = e.clientY / innerHeight - .5; }, { passive: true });
+  const t0 = performance.now();
+  const pos = new THREE.Vector3(), look = new THREE.Vector3(), tmp = new THREE.Vector3();
+  let lastRoom = -2;
+
+  function frame(now) {
+    const target = scrollY / maxScroll() * TOTAL;
+    cur += (target - cur) * .085;
+    if (Math.abs(target - cur) < 1e-4) cur = target;
+    px += (tpx - px) * .06; py += (tpy - py) * .06;
+    const time = (now - t0) / 1000;
+
+    // intro: blocks rise into the pyramid
+    blocks.forEach((m, i) => {
+      const k = Math.min(1, Math.max(0, (time - .2 - i * .14) / 1.1));
+      const e = 1 + 2.4 * Math.pow(k - 1, 3) + 1.4 * Math.pow(k - 1, 2);
+      m.position.y = centers[i].y - (1 - e) * 4;
+      m.rotation.z = (1 - e) * (i % 2 ? .6 : -.6);
+    });
+
+    const s = segAt(cur), lt = Math.min(1, Math.max(0, (cur - s.t0) / s.d)), e = ease(lt);
+    const A = s.a(), B = s.b();
+    pos.copy(A.pos).lerp(B.pos, e); look.copy(A.look).lerp(B.look, e);
+    let calm = 1; // how much the free-look parallax applies
+    if (s.kind === 'dive') calm = 1 - smooth(0, .8, lt);
+    if (s.kind === 'room') calm = 0;
+    if (s.kind === 'out') calm = smooth(.3, 1, lt);
+    pos.x += (px * 1.1 + Math.sin(time * .5) * .08) * calm;
+    pos.y += (-py * .7 + Math.cos(time * .4) * .05) * calm;
+    camera.position.copy(pos); camera.lookAt(look);
+    renderer.render(scene, camera);
+
+    // hero copy only while outside, before the first dive
+    const heroO = s.kind === 'hold' ? 1 : (s.kind === 'travel' && s.i === 0 ? 1 - smooth(0, .55, lt) : 0);
+    hero.style.opacity = heroO; hero.style.transform = `translateY(${(1 - heroO) * -30}px)`;
+    hero.style.visibility = heroO > 0 ? 'visible' : 'hidden';
+
+    // floating labels over the blocks
+    tags.forEach((tg, i) => {
+      let o = 0;
+      if (s.kind === 'hold') o = 1;
+      else if (s.kind === 'travel') o = s.i === i ? 1 : (s.i === 0 ? 1 - smooth(0, .4, lt) : 0);
+      else if (s.kind === 'dive' && s.i === i) o = 1 - smooth(0, .3, lt);
+      else if (s.kind === 'out' && s.i + 1 === i) o = smooth(.5, 1, lt);
+      tg.style.opacity = o; tg.style.visibility = o > .02 ? 'visible' : 'hidden';
+      if (o > .02) {
+        tmp.copy(blocks[i].position); tmp.y += .62; tmp.project(camera);
+        tg.style.transform = `translate(${(tmp.x * .5 + .5) * innerWidth}px, ${(-tmp.y * .5 + .5) * innerHeight}px)`;
+      }
+    });
+
+    // rooms open like a door inside the block face
+    let active = -1;
+    rooms.forEach((r, i) => {
+      let o = 0;
+      if (s.i === i) {
+        if (s.kind === 'dive') o = smooth(.72, 1, lt);
+        else if (s.kind === 'room') o = 1;
+        else if (s.kind === 'out') o = 1 - smooth(0, .38, lt);
+      }
+      if (o > 0) {
+        const k = 1 - o;
+        r.style.clipPath = `inset(${k * 50}% ${k * 50}% round ${24 + k * 60}px)`;
+        r.style.visibility = 'visible';
+        active = o > .5 ? i : active;
+      } else if (r.style.visibility !== 'hidden') { r.style.visibility = 'hidden'; }
+      r.classList.toggle('shown', o > .8);
+      r.setAttribute('aria-hidden', String(o < .5));
+    });
+    if (active !== lastRoom) {
+      lastRoom = active;
+      if (active >= 0) seen.add(active);
+      document.body.classList.toggle('inroom-light', active >= 0 && rooms[active].dataset.light === '1');
+      miniBtns.forEach((b, i) => { b.classList.toggle('now', i === active); b.classList.toggle('seen', seen.has(i)); });
+    }
+    const near = s.i < 0 ? -1 : s.i;
+    hudK.textContent = near < 0 ? 'Merkorn' : (active >= 0 ? `Dentro il blocco ${active + 1} di 5` : `Verso il blocco ${near + 1} di 5`);
+    hudT.textContent = near < 0 ? 'Fuori dai blocchi' : titles[near];
+    hudBar.style.width = (cur / TOTAL * 100).toFixed(1) + '%';
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
