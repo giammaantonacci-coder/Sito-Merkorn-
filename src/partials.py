@@ -122,7 +122,7 @@ def footer():
 </footer>"""
 
 
-HUD = """<div class="hud" aria-hidden="true"><span class="pm"><i></i><i></i><i></i><i></i><i></i></span><div><b>Sezione</b><span class="hud-name">Inizio</span></div></div>"""
+HUD = """<div class="hud" aria-hidden="true"><span class="pm"><i></i><i></i><i></i><i></i><i></i></span><div><b>Sezione</b><span class="hud-name">Inizio</span><small class="hud-by">powered by <strong>Merkorn</strong></small></div></div>"""
 
 
 def page(path, title, description, seed, body, form=True):

@@ -97,7 +97,9 @@ body.leaving main, body.leaving .site-foot { opacity: 0; filter: blur(6px); }
 .hud .pm i:nth-child(1) { left: 0; top: 71%; } .hud .pm i:nth-child(2) { left: 82%; top: 71%; } .hud .pm i:nth-child(3) { left: 20.5%; top: 35.5%; } .hud .pm i:nth-child(4) { left: 61.5%; top: 35.5%; } .hud .pm i:nth-child(5) { left: 41%; top: 0; }
 .hud .pm i.on { background: var(--accent); }
 .hud b { display: block; font: 600 10px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
-.hud .hud-name { font: 700 14px/1 var(--display); white-space: nowrap; }
+.hud .hud-name { display: block; font: 700 14px/1 var(--display); white-space: nowrap; }
+.hud .hud-by { display: block; margin-top: 7px; padding-top: 6px; border-top: 1px solid var(--rule); font: 400 10px/1 var(--body); letter-spacing: .04em; color: var(--muted); white-space: nowrap; }
+.hud .hud-by strong { font-weight: 600; color: var(--text); }
 @media (max-width: 560px) { .hud { display: none; } }
 
 /* ---------- sections ---------- */
