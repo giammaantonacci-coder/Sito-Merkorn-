@@ -282,7 +282,7 @@
   /* ================= produzione ================= */
   const WEEKS = ['30', '31', '32', '33', '34', '35', '36', '37'];
   const DEPTS = [['Taglio', 'var(--s1)', 's1', [120, 132, 128, 140, 96, 60, 135, 142]], ['Assemblaggio', 'var(--s2)', 's2', [160, 171, 165, 180, 120, 70, 176, 184]], ['Collaudo', 'var(--s3)', 's3', [48, 52, 50, 56, 40, 22, 54, 58]]];
-  function columns() {
+  function columns(animate) {
     const host = $('prod-cols'), fig = host.closest('figure');
     const W = Math.max(280, host.clientWidth), H = 230, m = { l: 36, r: 8, t: 22, b: 26 };
     const iw = W - m.l - m.r, ih = H - m.t - m.b;
@@ -321,7 +321,7 @@
       });
       if (band > 30) text(root, x + cw / 2, Y(totals[i]) - 6, nf.format(totals[i]), { 'text-anchor': 'middle', class: 'val' });
     });
-    anim(host, null,
+    anim(host, animate,
       () => segs.forEach(s => { s.style.transition = 'none'; s.style.transform = 'scaleY(0)'; }),
       () => segs.forEach((s, i) => { s.style.transition = ''; s.style.transitionDelay = (Math.floor(i / 3) * 50) + 'ms'; s.style.transform = 'scaleY(1)'; }));
     table($('prod-cols-t'), ['Settimana', 'Taglio (ore)', 'Assemblaggio (ore)', 'Collaudo (ore)', 'Totale (ore)'], WEEKS.map((w, i) => ['Settimana ' + w, ...DEPTS.map(d => nf.format(d[3][i])), nf.format(totals[i])]));
@@ -334,7 +334,7 @@
     ['C-2615', 'Soppalco officina', 12, '7 novembre', 'ok'],
   ];
   const JST = { ok: 'In linea', warn: 'A rischio', low: 'In ritardo' };
-  function jobs() {
+  function jobs(animate) {
     const ul = $('prod-jobs'); ul.textContent = '';
     const meters = [];
     JOBS.forEach(([code, name, pct, due, st]) => {
@@ -349,52 +349,145 @@
       const m = li.querySelector('.meter i'); m.style.scale = (pct / 100) + ' 1'; meters.push([m, pct]);
       ul.appendChild(li);
     });
-    anim(ul, null,
+    anim(ul, animate,
       () => meters.forEach(([m]) => { m.style.transition = 'none'; m.style.scale = '0 1'; }),
       () => meters.forEach(([m, pct], i) => { m.style.transition = ''; m.style.transitionDelay = (i * 80) + 'ms'; m.style.scale = (pct / 100) + ' 1'; }));
   }
 
-  /* ================= consegne ================= */
-  const STOPS = [
-    ['Ferramenta Bianco', 'Via Roma 12, Altamura', [['Staffe angolari', '4 scatole'], ['Viti M6', '10 conf.']]],
-    ['Idraulica Sud', 'Via dei Mille 48, Gravina', [['Raccordi ottone', '2 scatole']]],
-    ['Edil Casa', 'Zona industriale, lotto 7, Matera', [['Tasselli 10 mm', '6 scatole'], ['Cavo 2,5 mmq', '3 matasse']]],
-    ['Elettro Service', 'Corso Italia 90, Santeramo', [['Interruttori', '1 scatola']]],
-    ['Giardini Verdi', 'Via Bari 221, Acquaviva', [['Guarnizioni', '2 conf.']]],
-  ];
-  const TOTAL = 14; let done = 9;
-  function phone() {
-    const left = TOTAL - done;
-    $('ph-count').textContent = left ? `${done} di ${TOTAL} consegne` : 'Giro completato';
-    $('ph-meter').style.scale = (done / TOTAL) + ' 1';
-    const i = done - 9, next = STOPS[i];
-    const box = document.querySelector('.ph-next');
-    if (next) {
-      box.hidden = false;
-      $('ph-name').textContent = next[0]; $('ph-addr').textContent = next[1];
-      const ul = $('ph-items'); ul.textContent = '';
-      next[2].forEach(([a, q]) => { const li = document.createElement('li'); li.textContent = a; const s = document.createElement('span'); s.textContent = q; li.appendChild(s); ul.appendChild(li); });
-    } else box.hidden = true;
-    const go = $('ph-go'); go.disabled = !left; go.textContent = left ? 'Consegna completata' : 'Tutte le consegne fatte';
-    const list = $('ph-list'); list.textContent = '';
-    STOPS.slice(i + 1, i + 3).forEach((s, k) => {
-      const li = document.createElement('li'); li.className = 'new';
-      const b = document.createElement('b'); b.textContent = String(done + 2 + k);
-      const d = document.createElement('div'); d.textContent = s[0];
-      const sp = document.createElement('span'); sp.textContent = s[1]; d.appendChild(sp);
-      li.append(b, d); list.appendChild(li);
+  // orders currently in each production stage
+  const FLOW = [['Taglio', 6], ['Assemblaggio', 9], ['Collaudo', 4], ['Spedizione', 3]];
+  function flow() {
+    const ol = $('prod-flow'); ol.textContent = '';
+    const tot = sum(FLOW.map(f => f[1]));
+    FLOW.forEach(([name, n]) => {
+      const li = document.createElement('li');
+      const k = document.createElement('span'); k.className = 'f-k'; k.textContent = name;
+      const v = document.createElement('strong'); v.textContent = n + (n === 1 ? ' ordine' : ' ordini');
+      const m = document.createElement('div'); m.className = 'meter'; m.setAttribute('aria-hidden', 'true');
+      const i = document.createElement('i'); i.style.scale = (n / tot) + ' 1'; m.appendChild(i);
+      li.append(k, v, m); ol.appendChild(li);
     });
   }
-  $('ph-go').addEventListener('click', () => { if (done < TOTAL) { done++; phone(); } });
-  $('ph-reset').addEventListener('click', () => { done = 9; phone(); });
+
+  /* ================= home ================= */
+  // the last 14 working days up to Monday 28 September, the date shown in the dashboard header
+  const DAYS = ['9', '10', '11', '14', '15', '16', '17', '18', '21', '22', '23', '24', '25', '28'];
+  const DAY_LABEL = DAYS.map(d => d + ' set');
+  const DAILY = [12, 15, 11, 17, 14, 13, 16, 19, 15, 12, 14, 17, 20, 18];
+  function homeTiles() {
+    const box = $('home-tiles'); box.textContent = '';
+    const low = STOCK.filter(s => s.st === 'low').length;
+    [['Ordini di oggi', nf.format(DAILY[DAILY.length - 1]), '▼ 2', 'bad', 'rispetto a ieri'],
+     ['Consegne in giro', '9 di 14', '', '', 'completate oggi'],
+     ['Incassi della settimana', '42.300 €', '▲ +8,4%', 'good', 'sulla settimana scorsa'],
+     ['Articoli sotto soglia', String(low), '', '', 'da riordinare']].forEach(([l, v, d, cls, note]) => {
+      const t = document.createElement('div'); t.className = 'tile';
+      const a = document.createElement('span'); a.className = 't-label'; a.textContent = l;
+      const b = document.createElement('span'); b.className = 't-value'; b.textContent = v;
+      const c = document.createElement('span'); c.className = 't-delta';
+      if (d) { const x = document.createElement('b'); x.className = cls; x.textContent = d; c.appendChild(x); }
+      c.appendChild(document.createTextNode(note));
+      t.append(a, b, c); box.appendChild(t);
+    });
+  }
+  function homeCols(animate) {
+    const host = $('home-cols'), fig = host.closest('figure');
+    const W = Math.max(260, host.clientWidth), H = 200, m = { l: 30, r: 6, t: 20, b: 24 };
+    const iw = W - m.l - m.r, ih = H - m.t - m.b, max = niceMax(Math.max(...DAILY), 5);
+    const band = iw / DAILY.length, cw = Math.min(24, band * .6);
+    const Y = v => m.t + ih - v / max * ih;
+    host.textContent = '';
+    const root = svg('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': 'Ordini ricevuti al giorno negli ultimi 14 giorni lavorativi' }, host);
+    const g = svg('g', { class: 'grid' }, root);
+    for (let v = 0; v <= max; v += 5) { svg('line', { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v) }, g); text(root, m.l - 8, Y(v) + 4, String(v), { 'text-anchor': 'end' }); }
+    svg('line', { class: 'base', x1: m.l, x2: W - m.r, y1: Y(0), y2: Y(0) }, root);
+    const tip = fig._tip || (fig._tip = tooltip(fig));
+    const bars = [];
+    const every = band < 26 ? 2 : 1;
+    DAILY.forEach((v, i) => {
+      const x = m.l + band * i + (band - cw) / 2;
+      const p = svg('path', { class: 'm s1 grow', d: vBarTop(x, Y(v), cw, Y(0) - Y(v)) }, root);
+      p.style.transformOrigin = `${x + cw / 2}px ${Y(0)}px`;
+      bars.push(p);
+      if ((DAILY.length - 1 - i) % every === 0) text(root, x + cw / 2, H - 6, DAYS[i], { 'text-anchor': 'middle' });
+      const hit = svg('rect', { class: 'hit', x: m.l + band * i, y: m.t, width: band, height: ih, tabindex: 0, 'aria-label': `${DAY_LABEL[i]}, ${v} ordini` }, root);
+      const on = () => {
+        root.classList.add('dim'); bars.forEach(b => b.classList.toggle('on', b === p));
+        const hr = host.getBoundingClientRect(), fr = fig.getBoundingClientRect(), k = hr.width / W;
+        tip.show(DAY_LABEL[i], [['ordini', String(v), 'var(--s1)']], hr.left - fr.left + (x + cw) * k, hr.top - fr.top + Y(v) * k);
+      };
+      const off = () => { root.classList.remove('dim'); tip.hide(); };
+      hit.addEventListener('pointerenter', on); hit.addEventListener('pointerleave', off);
+      hit.addEventListener('focus', on); hit.addEventListener('blur', off);
+    });
+    const li = DAILY.length - 1, xl = m.l + band * li + band / 2;
+    text(root, xl, Y(DAILY[li]) - 6, String(DAILY[li]), { 'text-anchor': 'middle', class: 'val' });
+    anim(host, animate,
+      () => bars.forEach(b => { b.style.transition = 'none'; b.style.transform = 'scaleY(0)'; }),
+      () => bars.forEach((b, i) => { b.style.transition = ''; b.style.transitionDelay = (i * 30) + 'ms'; b.style.transform = 'scaleY(1)'; }));
+    table($('home-cols-t'), ['Giorno', 'Ordini'], DAILY.map((v, i) => [DAY_LABEL[i], String(v)]));
+  }
+  function homeTodo() {
+    const ul = $('home-todo'); ul.textContent = '';
+    const low = STOCK.filter(s => s.st === 'low').length;
+    [[`${low} articoli sotto soglia da riordinare`, 'low', 'stock'],
+     ['1 commessa in ritardo, 1 a rischio', 'warn', 'prod'],
+     ['Fatturato di settembre sopra l\'anno scorso', 'ok', 'analytics'],
+     ['5 consegne ancora da completare', 'warn', 'home']].forEach(([label, st, view]) => {
+      const li = document.createElement('li');
+      const b = document.createElement('button'); b.type = 'button'; b.dataset.go = view;
+      const [, color, ico] = ST[st];
+      b.innerHTML = `<svg viewBox="0 0 14 14" aria-hidden="true" fill="${color}">${ico}</svg>`;
+      const s = document.createElement('span'); s.textContent = label; b.appendChild(s);
+      if (view !== 'home') { const a = document.createElement('i'); a.setAttribute('aria-hidden', 'true'); a.textContent = '→'; b.appendChild(a); }
+      else b.disabled = true;
+      li.appendChild(b); ul.appendChild(li);
+    });
+  }
+
+  /* ================= sezioni della dashboard ================= */
+  const TITLES = { home: 'Home', analytics: 'Analitiche', stock: 'Magazzino', prod: 'Produzione' };
+  const tabs = [...document.querySelectorAll('.side-nav [role="tab"]')];
+  const rendered = {};
+  let current = 'home';
+  // charts need a visible container to measure, so each view is drawn when it is shown
+  function draw(view, mode) {
+    if (view === 'home') { homeCols(mode); }
+    if (view === 'analytics') { lineChart(mode); barChart(mode); }
+    if (view === 'prod') { columns(mode); jobs(mode); }
+    rendered[view] = true;
+  }
+  function show(view, focus) {
+    if (view === current) return;
+    current = view;
+    tabs.forEach(t => {
+      const on = t.dataset.view === view;
+      t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
+      if (on && focus) t.focus();
+    });
+    document.querySelectorAll('.dash .view').forEach(v => { v.hidden = v.id !== 'view-' + view; });
+    $('dash-title').textContent = TITLES[view];
+    draw(view, 'now');
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => show(t.dataset.view));
+    t.addEventListener('keydown', e => {
+      const dir = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+      if (!dir) return;
+      e.preventDefault();
+      show(tabs[(i + dir + tabs.length) % tabs.length].dataset.view, true);
+    });
+  });
+  $('home-todo').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b && !b.disabled) show(b.dataset.go); });
 
   /* ================= avvio e ridimensionamento ================= */
-  tiles(); lineChart(); barChart(); stockTiles(); stockTable(); columns(); jobs(); phone();
+  tiles(); stockTiles(); stockTable(); flow(); homeTiles(); homeTodo();
+  draw('home');
   let rw = 0, t;
   const ro = new ResizeObserver(() => {
-    const w = $('dash-line').clientWidth + $('prod-cols').clientWidth + $('dash-bars').clientWidth;
+    const w = document.querySelector('.dash-main').clientWidth;
     if (w === rw) return; rw = w;
-    clearTimeout(t); t = setTimeout(() => { lineChart(); barChart(); columns(); }, 120);
+    clearTimeout(t); t = setTimeout(() => draw(current), 120);
   });
-  ['dash-line', 'dash-bars', 'prod-cols'].forEach(id => ro.observe($(id)));
+  ro.observe(document.querySelector('.dash-main'));
 })();
