@@ -1,0 +1,479 @@
+<title>Merkorn Direzioni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;9..40,700&family=Inter:wght@400;600&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --accent: #9747FF; --bg: #100E13; --lift: #17141B; --lift2: #1E1A23; --text: #F2EFEA; --muted: #A7A2AE;
+    --field: #6D28D9; --scene: #08070B; --paper: #EFEBE3; --note: #F0E7C4; --ink: #100E13;
+    --rule: rgba(242,239,234,.12); --rule-dark: rgba(16,14,19,.16); --ink-muted: #5E5866;
+    --display: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --r-card: 24px; --r-cta: 14px; --r-block: 22%;
+    --gutter: clamp(16px, 5vw, 64px);
+    --ease: cubic-bezier(.2,.8,.2,1); --spring: cubic-bezier(.34,1.4,.5,1);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 400 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  ::selection { background: var(--accent); color: var(--text); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding-inline: var(--gutter); }
+  h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -.03em; text-wrap: balance; margin: 0; }
+  body::after {
+    content: ""; position: fixed; inset: -50%; z-index: 90; pointer-events: none; opacity: .09;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 1s steps(4) infinite;
+  }
+  @keyframes grain { 25% { transform: translate(-3%,2%); } 50% { transform: translate(2%,-3%); } 75% { transform: translate(-1%,3%); } }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 600 11px/1 var(--body); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+  .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 2px; background: var(--accent); }
+  .mark { display: inline-block; width: 26px; height: 16px; position: relative; flex: none; }
+  .mark i { position: absolute; width: 18%; height: 30%; border-radius: var(--r-block); background: var(--accent); }
+  .mark i:nth-child(1) { left: 41%; top: 0; } .mark i:nth-child(2) { left: 20.5%; top: 35%; } .mark i:nth-child(3) { left: 61.5%; top: 35%; } .mark i:nth-child(4) { left: 0; top: 70%; } .mark i:nth-child(5) { left: 82%; top: 70%; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; font: 700 15px/1 var(--display); letter-spacing: .32em; text-decoration: none; }
+
+  .btn { position: relative; display: inline-flex; align-items: center; gap: 12px; overflow: hidden; font: 600 15px/1 var(--body); text-decoration: none; cursor: pointer; border: 0; padding: 16px 22px; border-radius: var(--r-cta); background: var(--accent); color: var(--text); transition: transform .4s var(--spring), border-radius .4s var(--ease); }
+  .btn span { position: relative; z-index: 1; transition: color .3s; }
+  .btn::before { content: ""; position: absolute; inset: 0; background: var(--text); transform: translateY(101%); transition: transform .45s var(--ease); }
+  .btn:hover { transform: translateY(-2px); border-radius: 20px; }
+  .btn:hover::before { transform: none; }
+  .btn:hover span { color: var(--ink); }
+  .btn.ghost { background: transparent; box-shadow: inset 0 0 0 1px var(--rule); }
+  .btn.ghost::before { background: var(--lift2); }
+  .btn.ghost:hover span { color: var(--text); }
+
+  /* ---------- switcher ---------- */
+  .switch { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 70; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 10px 16px; background: var(--scene); border-bottom: 1px solid var(--rule); }
+  .switch .lbl { font: 600 11px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); display: inline-flex; gap: 10px; align-items: center; }
+  .switch nav { display: flex; gap: 6px; flex-wrap: wrap; }
+  .switch button { font: 500 13px/1 var(--body); color: var(--text); background: transparent; border: 0; box-shadow: inset 0 0 0 1px var(--rule); border-radius: 12px; padding: 9px 14px; cursor: pointer; transition: background .2s, box-shadow .2s; }
+  .switch button:hover { box-shadow: inset 0 0 0 1px var(--muted); }
+  .switch button[aria-selected="true"] { background: var(--accent); box-shadow: none; }
+  .switch .note { margin-left: auto; font-size: 12px; color: var(--muted); }
+  @media (max-width: 700px) { .switch .note { display: none; } }
+
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 22px; }
+  .menu { display: flex; gap: 4px; flex-wrap: wrap; }
+  .menu a { font-size: 14px; text-decoration: none; color: var(--muted); padding: 9px 13px; border-radius: 12px; transition: color .2s, background .2s; }
+  .menu a:hover { color: var(--text); background: var(--lift); }
+  @media (max-width: 700px) { .menu { display: none; } }
+
+  .brief { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px 32px; padding-block: 28px 40px; margin-top: 56px; border-top: 1px solid var(--rule); font-size: 13px; line-height: 1.55; color: var(--muted); }
+  .brief b { display: block; font: 600 10px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 8px; color: var(--text); }
+
+  /* =========================================================
+     D · FILO
+     ========================================================= */
+  #d .hero { padding-block: 40px 0; display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: end; }
+  #d h1 { font-size: clamp(42px, 6.6vw, 100px); line-height: .96; }
+  #d h1 em { font-style: normal; color: var(--accent); }
+  #d .hero p { margin: 0 0 8px; color: var(--muted); max-width: 42ch; font-size: 17px; }
+  #d .hero .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+  #d .line-box { position: relative; margin-top: 48px; border-radius: var(--r-card); background: var(--scene); box-shadow: inset 0 0 0 1px var(--rule); overflow: hidden; touch-action: pan-y; }
+  #d svg { display: block; width: 100%; height: auto; }
+  #d .node rect { fill: var(--lift2); stroke: var(--rule); stroke-width: 1; transition: fill .35s, stroke .35s; }
+  #d .node text { fill: var(--text); font: 600 15px var(--body); text-anchor: middle; dominant-baseline: central; }
+  #d .node .sub { fill: var(--muted); font: 400 11px var(--body); letter-spacing: .12em; }
+  #d .node.hit rect { fill: var(--accent); stroke: var(--accent); }
+  #d .node.hit .sub { fill: var(--text); }
+  #d .line-box .cap { position: absolute; left: 20px; bottom: 16px; font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: center; pointer-events: none; }
+  #d .line-box .cap i { width: 8px; height: 8px; border-radius: 2px; background: var(--accent); }
+  #d .layers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 64px; }
+  #d .layer { padding: 28px; border-radius: var(--r-card); background: var(--lift); box-shadow: inset 0 0 0 1px var(--rule); display: grid; gap: 12px; align-content: start; transition: transform .5s var(--spring), box-shadow .3s; }
+  #d .layer:hover { transform: translateY(-6px); box-shadow: inset 0 0 0 1px rgba(151,71,255,.55); }
+  #d .layer .n { font: 600 11px/1 var(--body); letter-spacing: .2em; color: var(--accent); }
+  #d .layer h3 { font-size: 26px; line-height: 1.05; }
+  #d .layer p { margin: 0; color: var(--muted); }
+  #d .stack { display: flex; gap: 5px; align-items: flex-end; height: 40px; margin-bottom: 8px; }
+  #d .stack i { width: 16px; height: 16px; border-radius: 5px; background: var(--accent); opacity: .3; }
+  #d .stack i.on { opacity: 1; }
+  @media (max-width: 860px) { #d .hero { grid-template-columns: 1fr; } #d .layers { grid-template-columns: 1fr; } }
+
+  /* =========================================================
+     E · CAROSELLO
+     ========================================================= */
+  #e .deck-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 8px; margin-bottom: 16px; }
+  #e .progress { display: flex; align-items: center; gap: 14px; font: 600 12px/1 var(--body); letter-spacing: .14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+  #e .pmark { position: relative; width: 58px; height: 36px; }
+  #e .pmark i { position: absolute; width: 18%; height: 30%; border-radius: var(--r-block); background: #2D2833; transition: background .5s var(--ease), transform .6s var(--spring); }
+  #e .pmark i.on { background: var(--accent); transform: translateY(-2px); }
+  #e .arrows { display: flex; gap: 8px; }
+  #e .arrows button { width: 48px; height: 48px; border-radius: 14px; border: 0; background: var(--lift); color: var(--text); box-shadow: inset 0 0 0 1px var(--rule); cursor: pointer; display: grid; place-items: center; transition: background .2s, transform .3s var(--spring); }
+  #e .arrows button:hover { background: var(--accent); transform: scale(1.06); }
+  #e .arrows button:disabled { opacity: .35; pointer-events: none; }
+  #e .deck { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; border-radius: var(--r-card); scrollbar-width: none; }
+  #e .deck::-webkit-scrollbar { display: none; }
+  #e .slide { scroll-snap-align: start; border-radius: var(--r-card); min-height: clamp(460px, 70vh, 700px); padding: clamp(28px, 5vw, 64px); display: grid; align-content: space-between; gap: 32px; position: relative; overflow: hidden; }
+  #e .slide .k { font: 600 11px/1 var(--body); letter-spacing: .22em; text-transform: uppercase; }
+  #e .slide h2 { font-size: clamp(38px, 6.4vw, 96px); line-height: .98; max-width: 14ch; }
+  #e .slide p { margin: 0; max-width: 46ch; font-size: 17px; }
+  #e .slide .row { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
+  #e .slide.on h2 { animation: eIn .9s var(--ease) both; }
+  #e .slide.on p, #e .slide.on .k { animation: eIn .9s var(--ease) .12s both; }
+  @keyframes eIn { from { transform: translateY(24px); opacity: .2; } }
+  #e .s-dark { background: var(--lift); box-shadow: inset 0 0 0 1px var(--rule); }
+  #e .s-dark .k, #e .s-scene .k { color: var(--accent); }
+  #e .s-dark p { color: var(--muted); }
+  #e .s-paper { background: var(--paper); color: var(--ink); }
+  #e .s-paper .k { color: var(--field); }
+  #e .s-paper p { color: var(--ink-muted); }
+  #e .s-field { background: var(--field); }
+  #e .s-scene { background: var(--scene); box-shadow: inset 0 0 0 1px var(--rule); }
+  #e .s-scene p { color: var(--muted); }
+  #e .bigmark { position: absolute; right: clamp(24px, 6vw, 80px); top: 50%; width: min(34vw, 340px); aspect-ratio: 5 / 3.2; translate: 0 -50%; }
+  #e .bigmark i { position: absolute; width: 18%; height: 28%; border-radius: var(--r-block); background: var(--accent); }
+  #e .slide.on .bigmark i { animation: eBuild 1s var(--spring) both; animation-delay: calc(var(--d) * 90ms + 200ms); }
+  @keyframes eBuild { from { transform: translateY(160%) rotate(-12deg); opacity: 0; } }
+  #e .sheet { position: absolute; right: clamp(24px, 6vw, 80px); top: 50%; translate: 0 -50%; rotate: -3deg; width: min(38vw, 380px); background: #fff; border-radius: 8px; box-shadow: 0 20px 40px -20px rgba(16,14,19,.4); overflow: hidden; font: 11px/1 var(--body); color: #333; }
+  #e .sheet div { display: grid; grid-template-columns: 26px repeat(4, 1fr); }
+  #e .sheet span { border-right: 1px solid #DDD; border-bottom: 1px solid #DDD; padding: 7px 5px; white-space: nowrap; overflow: hidden; }
+  #e .sheet div:first-child span { background: #F1F1F1; font-weight: 600; }
+  #e .sheet .y { background: #FFF3A6; }
+  #e .postit { background: var(--note); color: var(--ink); border-radius: 6px 6px 22px 6px; padding: 28px; max-width: 420px; rotate: -2deg; box-shadow: 0 20px 40px -24px rgba(0,0,0,.6); }
+  #e .postit h3 { font-size: 26px; margin-bottom: 12px; }
+  #e .postit ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+  #e .mail { font: 700 clamp(20px, 2.4vw, 28px)/1.2 var(--display); }
+  @media (max-width: 760px) { #e .bigmark, #e .sheet { position: relative; right: auto; top: auto; translate: none; width: 100%; max-width: 320px; } }
+
+  /* =========================================================
+     F · PRIMA / DOPO
+     ========================================================= */
+  #f .hero { text-align: left; padding-block: 36px 40px; display: grid; gap: 22px; }
+  #f h1 { font-size: clamp(40px, 6vw, 92px); line-height: .96; max-width: 15ch; }
+  #f h1 s { text-decoration-thickness: .08em; text-decoration-color: var(--accent); color: var(--muted); }
+  #f .hero p { margin: 0; color: var(--muted); max-width: 52ch; font-size: 17px; }
+  #f .compare { position: relative; border-radius: var(--r-card); overflow: hidden; height: clamp(460px, 62vh, 600px); box-shadow: inset 0 0 0 1px var(--rule); user-select: none; touch-action: pan-y; cursor: ew-resize; --x: 50%; }
+  #f .pane { position: absolute; inset: 0; }
+  #f .after { clip-path: inset(0 0 0 var(--x)); }
+  #f .handle { position: absolute; top: 0; bottom: 0; left: var(--x); width: 2px; margin-left: -1px; background: var(--accent); pointer-events: none; }
+  #f .handle b { position: absolute; top: 50%; left: 50%; width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 16px; background: var(--accent); display: grid; place-items: center; color: var(--text); font: 700 18px/1 var(--display); box-shadow: 0 0 0 6px rgba(16,14,19,.6); }
+  #f .tag { position: absolute; top: 16px; font: 600 11px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; padding: 8px 10px; border-radius: 10px; z-index: 2; }
+  #f .before .tag { left: 16px; background: #2A2530; color: var(--muted); }
+  #f .after .tag { right: 16px; background: var(--accent); color: var(--text); }
+  /* cluttered catalogue software */
+  #f .before { background: #D9D6DC; color: #222; font: 11px/1.3 Tahoma, var(--body); padding-top: 48px; }
+  #f .tb { display: flex; gap: 3px; padding: 6px; background: #C4C0C8; border-block: 1px solid #A9A4AE; flex-wrap: wrap; }
+  #f .tb i { width: 22px; height: 20px; background: #EEE; border: 1px solid #999; border-radius: 3px; }
+  #f .mb { display: flex; gap: 14px; padding: 5px 8px; background: #EDEBEF; border-bottom: 1px solid #A9A4AE; white-space: nowrap; overflow: hidden; }
+  #f .body-b { display: grid; grid-template-columns: 150px 1fr; height: calc(100% - 90px); }
+  #f .tree { background: #F4F3F5; border-right: 1px solid #A9A4AE; padding: 6px; display: grid; gap: 3px; align-content: start; overflow: hidden; }
+  #f .tree span { white-space: nowrap; }
+  #f .tbl { overflow: hidden; background: #fff; }
+  #f .tbl div { display: grid; grid-template-columns: repeat(9, minmax(60px, 1fr)); }
+  #f .tbl span { border-right: 1px solid #DDD; border-bottom: 1px solid #DDD; padding: 4px; white-space: nowrap; overflow: hidden; }
+  #f .tbl div:first-child span { background: #E4E2E7; font-weight: 700; }
+  #f .popup { position: absolute; right: 12%; top: 38%; width: 240px; background: #F4F3F5; border: 1px solid #777; box-shadow: 4px 4px 0 rgba(0,0,0,.2); }
+  #f .popup b { display: block; background: #5A5A9A; color: #fff; padding: 4px 6px; }
+  #f .popup p { margin: 0; padding: 10px 8px; }
+  #f .popup span { display: inline-block; margin: 0 0 8px 8px; padding: 3px 12px; border: 1px solid #777; background: #E4E2E7; }
+  /* merkorn screen */
+  #f .after { background: var(--bg); display: grid; place-items: center; padding: 64px 24px 24px; }
+  #f .screen { width: min(100%, 440px); display: grid; gap: 18px; }
+  #f .screen .who { font: 600 11px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+  #f .screen h3 { font-size: clamp(26px, 3vw, 36px); line-height: 1.05; }
+  #f .screen .items { border-radius: 18px; background: var(--lift); box-shadow: inset 0 0 0 1px var(--rule); }
+  #f .screen .items div { display: flex; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+  #f .screen .items div:last-child { border: 0; }
+  #f .screen .items span { color: var(--muted); }
+  #f .screen .choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  #f .screen .choice button { font: 600 16px/1.2 var(--body); padding: 20px 16px; border-radius: 16px; border: 0; cursor: pointer; transition: transform .3s var(--spring), background .2s; }
+  #f .screen .choice .yes { background: var(--accent); color: var(--text); }
+  #f .screen .choice .no { background: var(--lift2); color: var(--text); box-shadow: inset 0 0 0 1px var(--rule); }
+  #f .screen .choice button:hover { transform: translateY(-2px); }
+  #f .screen .done { font-size: 14px; color: var(--muted); min-height: 1.6em; }
+  #f .no-list { margin-top: 72px; display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: start; }
+  #f .no-list h2 { font-size: clamp(30px, 3.6vw, 48px); line-height: 1.02; }
+  #f .no-list .intro { color: var(--muted); margin-top: 16px; max-width: 40ch; }
+  #f .feats { display: flex; flex-wrap: wrap; gap: 8px; }
+  #f .feat { font: 500 15px/1 var(--body); padding: 12px 16px; border-radius: 14px; border: 0; cursor: pointer; background: var(--lift); color: var(--muted); box-shadow: inset 0 0 0 1px var(--rule); text-decoration: line-through; text-decoration-color: var(--accent); transition: background .3s, color .3s, transform .4s var(--spring); }
+  #f .feat:hover { transform: translateY(-2px); color: var(--text); }
+  #f .feat[aria-pressed="true"] { background: var(--accent); color: var(--text); text-decoration: none; box-shadow: none; }
+  #f .why { margin-top: 20px; padding: 20px 22px; border-radius: 18px; background: var(--paper); color: var(--ink); min-height: 88px; }
+  #f .why b { display: block; font: 600 11px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--field); margin-bottom: 8px; }
+  @media (max-width: 860px) { #f .no-list { grid-template-columns: 1fr; } #f .body-b { grid-template-columns: 90px 1fr; } }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="switch" role="tablist" aria-label="Direzioni di design">
+  <span class="lbl"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>Merkorn · brand identity</span>
+  <nav>
+    <button role="tab" id="tab-d" aria-controls="d" aria-selected="true" data-t="d">D · Filo</button>
+    <button role="tab" id="tab-e" aria-controls="e" aria-selected="false" data-t="e">E · Carosello</button>
+    <button role="tab" id="tab-f" aria-controls="f" aria-selected="false" data-t="f">F · Prima e dopo</button>
+  </nav>
+  <span class="note">Stessi colori, font e marchio. Cambia l'idea.</span>
+</div>
+
+<!-- ============================ D · FILO ============================ -->
+<section class="dir" id="d" role="tabpanel" aria-labelledby="tab-d">
+  <div class="wrap">
+    <header class="top"><span class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>MERKORN</span><nav class="menu"><a href="#d">Metodo</a><a href="#d">Cosa facciamo</a><a href="#d">Contatti</a></nav></header>
+    <div class="hero">
+      <h1>Lo strumento si piega al <em>processo.</em></h1>
+      <div>
+        <p>Software gestionale su misura per le PMI. Il vostro lavoro è la linea qui sotto. Muovetela: il software la segue, fermata per fermata.</p>
+        <div class="actions"><a class="btn" href="#d"><span>Prenota un'analisi</span></a><a class="btn ghost" href="#d"><span>Come lavoriamo</span></a></div>
+      </div>
+    </div>
+    <div class="line-box" id="dBox">
+      <svg id="dSvg" viewBox="0 0 1200 380" aria-label="Il percorso di un ordine: telefonata, ordine, magazzino, produzione, DDT, fattura">
+        <path id="dPath" fill="none" stroke="rgba(242,239,234,.22)" stroke-width="2"/>
+        <path id="dTrail" fill="none" stroke="#9747FF" stroke-width="2" stroke-linecap="round"/>
+        <rect id="dRunner" width="18" height="18" rx="5" fill="#9747FF"/>
+        <g id="dNodes"></g>
+      </svg>
+      <span class="cap"><i></i>Passa col cursore sulla linea e piegala</span>
+    </div>
+    <div class="layers">
+      <article class="layer"><div class="stack"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div><span class="n">FONDAMENTA RIUSABILI</span><h3>Le parti che ogni azienda ha.</h3><p>Anagrafiche, permessi, stampe, collegamento con la contabilità. Collaudate, non reinventate.</p></article>
+      <article class="layer"><div class="stack"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div><span class="n">COMPONENTI COMPOSITI</span><h3>I pezzi del vostro giro.</h3><p>La commessa, il DDT, il furgone. Montati uno alla volta e provati con chi li usa.</p></article>
+      <article class="layer"><div class="stack"><i class="on"></i><i></i><i></i><i></i><i></i></div><span class="n">SUPERFICIE SU MISURA</span><h3>Quello che si tocca.</h3><p>Una schermata, una decisione. Deve leggersi in capannone e in ufficio.</p></article>
+    </div>
+    <div class="brief">
+      <div><b>Idea</b>Il claim diventa un oggetto: la linea del processo si piega sotto il cursore e il blocco viola la percorre. Il software segue, non comanda.</div>
+      <div><b>Animazione principale</b>Linea SVG elastica con un blocco che viaggia. Leggera, nessuna libreria.</div>
+      <div><b>Registro</b>Tutto su fondo scuro, carte con angoli morbidi, viola solo sul percorso e sui bottoni.</div>
+      <div><b>Adatta a</b>Un sito che spiega il metodo prima dei servizi.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ E · CAROSELLO ============================ -->
+<section class="dir" id="e" role="tabpanel" aria-labelledby="tab-e" hidden>
+  <div class="wrap">
+    <header class="top"><span class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>MERKORN</span><nav class="menu"><a href="#e">Metodo</a><a href="#e">Cosa facciamo</a><a href="#e">Contatti</a></nav></header>
+    <div class="deck-head">
+      <div class="progress"><span class="pmark" id="ePmark" aria-hidden="true"><i style="left:0;top:70%"></i><i style="left:82%;top:70%"></i><i style="left:20.5%;top:35%"></i><i style="left:61.5%;top:35%"></i><i style="left:41%;top:0"></i></span><span id="eCount">1 / 5</span></div>
+      <div class="arrows"><button type="button" id="ePrev" aria-label="Schermata precedente"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15 8H2M7 3 2 8l5 5" stroke="currentColor" stroke-width="1.8"/></svg></button><button type="button" id="eNext" aria-label="Schermata successiva"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8h13M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
+    </div>
+    <div class="deck" id="eDeck" tabindex="0" aria-label="Schermate del sito, una decisione per volta">
+      <article class="slide s-dark on">
+        <span class="k">Software house · PMI italiane · Puglia</span>
+        <div><h2>Una schermata, una decisione.</h2></div>
+        <div class="bigmark" aria-hidden="true"><i style="left:41%;top:0;--d:4"></i><i style="left:20.5%;top:36%;--d:2"></i><i style="left:61.5%;top:36%;--d:3"></i><i style="left:0;top:72%;--d:0"></i><i style="left:82%;top:72%;--d:1"></i></div>
+        <div class="row"><p>Il sito funziona come i nostri gestionali: una cosa per volta. Andate avanti con la freccia o scorrete di lato.</p></div>
+      </article>
+      <article class="slide s-paper">
+        <span class="k">Da dove partiamo</span>
+        <div><h2>In reparto è tornato fuori il foglio Excel.</h2></div>
+        <div class="sheet" aria-hidden="true">
+          <div><span></span><span>A</span><span>B</span><span>C</span><span>D</span></div>
+          <div><span>1</span><span>Ordine</span><span>Cliente</span><span>Stato</span><span>Note</span></div>
+          <div><span>2</span><span>2381</span><span>Rossi</span><span class="y">??</span><span>chiamare</span></div>
+          <div><span>3</span><span>2382</span><span>Bianchi</span><span>ok</span><span>vedi mail</span></div>
+          <div><span>4</span><span>2383</span><span>Rossi (2)</span><span class="y">manca</span><span>chiedi a Pino</span></div>
+          <div><span>5</span><span>2384</span><span>Esposito</span><span>ok?</span><span></span></div>
+          <div><span>6</span><span>2385</span><span>Bianchi</span><span class="y">??</span><span>FINALE_v3</span></div>
+        </div>
+        <div class="row"><p>Quando succede, il software non segue il lavoro. Il primo incontro serve a capire perché, prima di proporre qualsiasi cosa.</p></div>
+      </article>
+      <article class="slide s-scene">
+        <span class="k">Ammettiamolo subito</span>
+        <aside class="postit"><h3>Cosa non facciamo</h3><ul><li>Siti vetrina e campagne social.</li><li>Gestionali pronti da adattare a forza.</li><li>Progetti senza un giorno in azienda.</li></ul></aside>
+        <div class="row"><p>Se ci chiedete una di queste cose, vi diciamo a chi rivolgervi.</p></div>
+      </article>
+      <article class="slide s-field">
+        <span class="k">Come scegliamo</span>
+        <div><h2>Diciamo no a ogni feature.</h2></div>
+        <div class="row"><p>Poi ne riapriamo una alla volta, e solo quando qualcuno spiega quale decisione rende migliore.</p></div>
+      </article>
+      <article class="slide s-scene">
+        <span class="k">Contatti</span>
+        <div><h2>Parliamone.</h2></div>
+        <div class="row"><p>Il primo incontro è un'analisi, non una presentazione commerciale. Vi diciamo con franchezza se e come possiamo essere utili.</p><div style="display:grid;gap:12px;justify-items:start"><span class="mail">merkornsh@gmail.com</span><a class="btn" href="#e"><span>Prenota un'analisi</span></a></div></div>
+      </article>
+    </div>
+    <div class="brief">
+      <div><b>Idea</b>Il sito come un carosello Instagram del brand: una schermata per decisione. Il marchio in alto si costruisce blocco dopo blocco man mano che si avanza.</div>
+      <div><b>Animazione principale</b>Scorrimento laterale a scatto, titoli che salgono, piramide che si monta a ogni pagina.</div>
+      <div><b>Registro</b>Alterna i tre registri del manuale: scuro, carta, campo viola, più il post-it.</div>
+      <div><b>Adatta a</b>Una home breve e d'impatto, uguale nello stile ai post social.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ F · PRIMA E DOPO ============================ -->
+<section class="dir" id="f" role="tabpanel" aria-labelledby="tab-f" hidden>
+  <div class="wrap">
+    <header class="top"><span class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>MERKORN</span><nav class="menu"><a href="#f">Metodo</a><a href="#f">Cosa facciamo</a><a href="#f">Contatti</a></nav></header>
+    <div class="hero">
+      <span class="eyebrow">UX design first</span>
+      <h1><s>Tre menu sotto.</s> Un tocco.</h1>
+      <p>Trascina la maniglia. A sinistra, il gestionale da catalogo che molte aziende hanno già. A destra, la stessa operazione fatta con un software costruito sul processo.</p>
+    </div>
+    <div class="compare" id="fCompare" role="slider" tabindex="0" aria-label="Confronto prima e dopo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+      <div class="pane before" aria-hidden="true">
+        <span class="tag">Da catalogo</span>
+        <div class="tb"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="mb"><span>File</span><span>Modifica</span><span>Anagrafiche</span><span>Documenti</span><span>Magazzino</span><span>Utilità</span><span>Moduli</span><span>Strumenti</span><span>Finestra</span><span>?</span></div>
+        <div class="body-b">
+          <div class="tree"><span>▸ Vendite</span><span>▸ Acquisti</span><span>▾ Magazzino</span><span>&nbsp;&nbsp;▸ Movimenti</span><span>&nbsp;&nbsp;▾ Carichi</span><span>&nbsp;&nbsp;&nbsp;&nbsp;▸ Da ordine</span><span>&nbsp;&nbsp;&nbsp;&nbsp;▸ Manuali</span><span>&nbsp;&nbsp;▸ Inventario</span><span>▸ Produzione</span><span>▸ Contabilità</span><span>▸ Statistiche</span><span>▸ Configurazione</span></div>
+          <div class="tbl">
+            <div><span>Cod.</span><span>Descr.</span><span>UM</span><span>Q.tà ord.</span><span>Q.tà ev.</span><span>Lotto</span><span>Dep.</span><span>Causale</span><span>Rif. doc.</span></div>
+            <div><span>A-0021</span><span>Staffa 40mm</span><span>PZ</span><span>200</span><span>0</span><span></span><span>01</span><span>CAR</span><span>OF 2381</span></div>
+            <div><span>A-0022</span><span>Staffa 60mm</span><span>PZ</span><span>150</span><span>0</span><span></span><span>01</span><span>CAR</span><span>OF 2381</span></div>
+            <div><span>B-1140</span><span>Vite M6 zinc.</span><span>CF</span><span>40</span><span>0</span><span></span><span>02</span><span>CAR</span><span>OF 2381</span></div>
+            <div><span>C-0907</span><span>Tassello 8</span><span>CF</span><span>25</span><span>0</span><span></span><span>02</span><span>CAR</span><span>OF 2381</span></div>
+          </div>
+        </div>
+        <div class="popup"><b>Attenzione</b><p>Causale di magazzino non valida per il deposito selezionato. Continuare?</p><span>Sì</span><span>No</span><span>Annulla</span></div>
+      </div>
+      <div class="pane after">
+        <span class="tag">Merkorn</span>
+        <div class="screen">
+          <span class="who">Magazzino · arrivo merce · esempio</span>
+          <h3>È arrivato l'ordine 2381?</h3>
+          <div class="items">
+            <div>Staffa 40 mm<span>200 pz</span></div>
+            <div>Staffa 60 mm<span>150 pz</span></div>
+            <div>Vite M6 zincata<span>40 conf.</span></div>
+            <div>Tassello 8<span>25 conf.</span></div>
+          </div>
+          <div class="choice"><button class="yes" type="button" id="fYes">Sì, tutto</button><button class="no" type="button" id="fNo">Manca qualcosa</button></div>
+          <span class="done" id="fDone" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="handle" aria-hidden="true"><b>⇆</b></div>
+    </div>
+    <div class="no-list">
+      <div>
+        <span class="eyebrow">Come scegliamo</span>
+        <h2 style="margin-top:20px">Diciamo no a ogni feature.</h2>
+        <p class="intro">Poi ne riapriamo una alla volta. Tocca una funzione per vedere cosa ci serve sentirci dire prima di costruirla.</p>
+      </div>
+      <div>
+        <div class="feats" id="fFeats">
+          <button class="feat" type="button" aria-pressed="false" data-why="Chi guarda il cruscotto ogni mattina, e cosa decide diversamente dopo averlo visto?">Cruscotto</button>
+          <button class="feat" type="button" aria-pressed="false" data-why="Quale scelta in reparto oggi si fa a occhio e andrebbe fatta con un numero?">Report</button>
+          <button class="feat" type="button" aria-pressed="false" data-why="Chi deve sapere cosa, e in quale momento del giro? Una notifica in più è rumore.">Notifiche</button>
+          <button class="feat" type="button" aria-pressed="false" data-why="Quale parte del lavoro si fa lontano da una scrivania?">App mobile</button>
+          <button class="feat" type="button" aria-pressed="false" data-why="Quale file state ricopiando a mano oggi, e ogni quanto?">Esportazione Excel</button>
+          <button class="feat" type="button" aria-pressed="false" data-why="Quale decisione ripetitiva vi porta via tempo, e chi la prende oggi?">Automazioni</button>
+          <button class="feat" type="button" aria-pressed="false" data-why="Chi non deve vedere cosa? Partiamo da una persona reale, non da una tabella di ruoli.">Permessi avanzati</button>
+        </div>
+        <div class="why" id="fWhy"><b>Prima di riaprirla</b><span id="fWhyText">Tocca una funzione barrata.</span></div>
+      </div>
+    </div>
+    <div class="brief">
+      <div><b>Idea</b>Mostrare il principio invece di dichiararlo: il visitatore trascina e vede la stessa operazione in un gestionale da catalogo e in uno su misura.</div>
+      <div><b>Animazione principale</b>Confronto trascinabile che si apre da solo al caricamento, schermata di destra che funziona davvero.</div>
+      <div><b>Registro</b>Scuro con un riquadro carta. Il vecchio gestionale è l'unico elemento fuori palette, apposta.</div>
+      <div><b>Adatta a</b>Convincere un titolare che ha già un gestionale e non ne è contento.</div>
+    </div>
+  </div>
+</section>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const tabs = [...document.querySelectorAll('.switch button')];
+  const started = {};
+  function show(id) {
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.t === id)));
+    document.querySelectorAll('.dir').forEach(s => { s.hidden = s.id !== id; });
+    if (!started[id]) { started[id] = true; init[id](); }
+    try { localStorage.setItem('merkorn-dir2', id); } catch (e) {}
+  }
+  tabs.forEach(t => t.addEventListener('click', () => { show(t.dataset.t); scrollTo({ top: 0 }); }));
+
+  const init = {
+    /* ---------- D: bending process line ---------- */
+    d() {
+      const NS = 'http://www.w3.org/2000/svg';
+      const svg = document.getElementById('dSvg'), path = document.getElementById('dPath'), trail = document.getElementById('dTrail');
+      const runner = document.getElementById('dRunner'), gNodes = document.getElementById('dNodes');
+      const names = [['Telefonata', 'CLIENTE'], ['Ordine', 'UFFICIO'], ['Magazzino', 'REPARTO'], ['Produzione', 'LINEA'], ['DDT', 'SPEDIZIONE'], ['Fattura', 'AMMINISTR.']];
+      const base = names.map((n, i) => ({ x: 110 + i * 196, y: 190 + Math.sin(i * 1.3) * 50 }));
+      const pts = base.map(p => ({ x: p.x, y: p.y, vy: 0 }));
+      const nodes = names.map(([t, s]) => {
+        const g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'node');
+        g.innerHTML = `<rect x="-70" y="-34" width="140" height="68" rx="16"/><text y="-7">${t}</text><text class="sub" y="15">${s}</text>`;
+        gNodes.appendChild(g); return g;
+      });
+      let mx = -1e4, my = -1e4;
+      const box = document.getElementById('dBox');
+      box.addEventListener('pointermove', e => { const r = svg.getBoundingClientRect(); mx = (e.clientX - r.left) / r.width * 1200; my = (e.clientY - r.top) / r.height * 380; });
+      box.addEventListener('pointerleave', () => { mx = my = -1e4; });
+      function d(p) {
+        let s = `M ${p[0].x} ${p[0].y}`;
+        for (let i = 0; i < p.length - 1; i++) {
+          const p0 = p[i - 1] || p[i], p1 = p[i], p2 = p[i + 1], p3 = p[i + 2] || p2;
+          s += ` C ${p1.x + (p2.x - p0.x) / 6} ${p1.y + (p2.y - p0.y) / 6}, ${p2.x - (p3.x - p1.x) / 6} ${p2.y - (p3.y - p1.y) / 6}, ${p2.x} ${p2.y}`;
+        }
+        return s;
+      }
+      let t0 = performance.now();
+      function frame(now) {
+        pts.forEach((p, i) => {
+          const dx = mx - p.x, near = Math.exp(-(dx * dx) / 36000);
+          const target = base[i].y + (my > -1e3 ? (Math.max(60, Math.min(320, my)) - base[i].y) * near * .9 : 0);
+          p.vy += (target - p.y) * .08; p.vy *= .78; p.y += p.vy;
+          nodes[i].setAttribute('transform', `translate(${p.x} ${p.y})`);
+        });
+        const dd = d(pts); path.setAttribute('d', dd); trail.setAttribute('d', dd);
+        const L = path.getTotalLength();
+        const k = reduce ? .5 : ((now - t0) / 7000) % 1;
+        const pt = path.getPointAtLength(k * L);
+        runner.setAttribute('x', pt.x - 9); runner.setAttribute('y', pt.y - 9);
+        trail.setAttribute('stroke-dasharray', `${k * L} ${L}`);
+        nodes.forEach((n, i) => n.classList.toggle('hit', Math.abs(pts[i].x - pt.x) < 70));
+        if (!reduce) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    },
+
+    /* ---------- E: one decision per screen ---------- */
+    e() {
+      const deck = document.getElementById('eDeck'), slides = [...deck.children];
+      const marks = [...document.querySelectorAll('#ePmark i')], count = document.getElementById('eCount');
+      const prev = document.getElementById('ePrev'), next = document.getElementById('eNext');
+      let cur = 0;
+      function mark(i) {
+        cur = i; count.textContent = `${i + 1} / ${slides.length}`;
+        marks.forEach((m, k) => m.classList.toggle('on', k <= i));
+        slides.forEach((s, k) => s.classList.toggle('on', k === i));
+        prev.disabled = i === 0; next.disabled = i === slides.length - 1;
+      }
+      const go = i => deck.scrollTo({ left: slides[Math.max(0, Math.min(slides.length - 1, i))].offsetLeft - deck.offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
+      prev.addEventListener('click', () => go(cur - 1)); next.addEventListener('click', () => go(cur + 1));
+      deck.addEventListener('keydown', e => { if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); } });
+      const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) mark(slides.indexOf(en.target)); }), { root: deck, threshold: .6 });
+      slides.forEach(s => io.observe(s));
+      mark(0);
+    },
+
+    /* ---------- F: before / after ---------- */
+    f() {
+      const cmp = document.getElementById('fCompare');
+      let dragging = false, auto = !reduce;
+      const set = v => { v = Math.max(3, Math.min(97, v)); cmp.style.setProperty('--x', v + '%'); cmp.setAttribute('aria-valuenow', Math.round(v)); };
+      const fromEvent = e => { const r = cmp.getBoundingClientRect(); set((e.clientX - r.left) / r.width * 100); };
+      cmp.addEventListener('pointerdown', e => { if (e.target.closest('button')) return; dragging = true; auto = false; cmp.setPointerCapture(e.pointerId); fromEvent(e); });
+      cmp.addEventListener('pointermove', e => { if (dragging) fromEvent(e); });
+      cmp.addEventListener('pointerup', () => dragging = false);
+      cmp.addEventListener('keydown', e => { const v = parseFloat(cmp.getAttribute('aria-valuenow')); if (e.key === 'ArrowLeft') { auto = false; set(v - 5); } if (e.key === 'ArrowRight') { auto = false; set(v + 5); } });
+      if (auto) { const t0 = performance.now(); (function sweep(now) { if (!auto) return; const k = (now - t0) / 2600; if (k > 1) { set(50); return; } set(50 + Math.sin(k * Math.PI * 2) * 32 * (1 - k)); requestAnimationFrame(sweep); })(t0); }
+      const done = document.getElementById('fDone');
+      document.getElementById('fYes').addEventListener('click', () => done.textContent = 'Carico registrato. Il magazzino è aggiornato.');
+      document.getElementById('fNo').addEventListener('click', () => done.textContent = 'Si apre solo la lista: tocca cosa manca.');
+      const feats = [...document.querySelectorAll('#fFeats .feat')], why = document.getElementById('fWhyText');
+      feats.forEach(b => b.addEventListener('click', () => {
+        const on = b.getAttribute('aria-pressed') !== 'true';
+        feats.forEach(x => x.setAttribute('aria-pressed', 'false'));
+        b.setAttribute('aria-pressed', String(on));
+        why.textContent = on ? b.dataset.why : 'Tocca una funzione barrata.';
+      }));
+    }
+  };
+
+  let start = 'd';
+  const h = location.hash.slice(1);
+  if (['d', 'e', 'f'].includes(h)) start = h;
+  else { try { const s = localStorage.getItem('merkorn-dir2'); if (['d','e','f'].includes(s)) start = s; } catch (e) {} }
+  show(start);
+})();
+</script>
