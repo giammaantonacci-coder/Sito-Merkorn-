@@ -1,6 +1,16 @@
 """Parti comuni a tutte le pagine: head, navigazione, form di contatto, footer."""
 
+import hashlib
+from pathlib import Path
+
 SITE = "Merkorn"
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def asset(path):
+    """Asset URL with a content hash, so browsers fetch the new file after every change."""
+    digest = hashlib.sha1((ROOT / path).read_bytes()).hexdigest()[:10]
+    return f"{path}?v={digest}"
 EMAIL = "merkornsh@gmail.com"
 
 NAV = [
@@ -38,7 +48,7 @@ def head(title, description, path):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;9..40,700&amp;family=Inter:wght@400;600&amp;display=swap">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="{asset('assets/style.css')}">
 </head>"""
 
 
@@ -136,9 +146,9 @@ def page(path, title, description, seed, body, form=True, scripts=()):
 </main>
 {footer()}
 {HUD}
-<script src="assets/nebula.js" defer></script>
-<script src="assets/site.js" defer></script>
-{"".join(f'<script src="{x}" defer></script>' for x in scripts)}
+<script src="{asset('assets/nebula.js')}" defer></script>
+<script src="{asset('assets/site.js')}" defer></script>
+{"".join(f'<script src="{asset(x)}" defer></script>' for x in scripts)}
 </body>
 </html>
 """
