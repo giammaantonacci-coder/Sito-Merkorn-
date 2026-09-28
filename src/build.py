@@ -2,11 +2,15 @@
 
 Uso:  python3 src/build.py
 Header, footer e form di contatto stanno in partials.py e sono uguali su ogni pagina.
+I blocchi di sezione qui sotto (frase fissata, scorrimento orizzontale, campo viola,
+card impilate) sono riutilizzati tra le pagine, ognuna con i propri contenuti.
 """
 from pathlib import Path
 from partials import page, contact_form, EMAIL
 
 ROOT = Path(__file__).resolve().parent.parent
+
+# ---------------------------------------------------------------- contenuti
 
 PHASES = [
     ("Analisi del processo", "Studiamo come lavora l'azienda",
@@ -49,23 +53,12 @@ SERVICES = [
      ["Assistenza agli utenti", "Aggiornamenti", "Nuove funzioni"]),
 ]
 
-MARQUEE_WORDS = ["Ordini", "Magazzino", "Produzione", "Commesse", "Consegne", "Fatturazione", "Qualità", "Assistenza"]
+CHAT_TEXT = ("Ci raccontate come lavorate e di cosa avete bisogno, noi vi spieghiamo come potremmo aiutarvi. "
+             "Senza impegno, in azienda oppure online.")
 
+ICO = '<span class="ico" aria-hidden="true"><i></i><i></i><i></i></span>'
 
-def marquee():
-    sep = '<i aria-hidden="true"></i>'
-    row = sep.join(f"<span>{w}</span>" for w in MARQUEE_WORDS)
-    return f"""<section class="marquee" aria-label="Processi che gestiamo" data-name="Processi">
-    <div class="row" data-drift="-1">{row}{sep}{row}{sep}</div>
-    <div class="row outline" data-drift="1">{row}{sep}{row}{sep}</div>
-  </section>"""
-
-
-def hphases():
-    cards = []
-    for i, (k, h, p, doing, get) in enumerate(PHASES, 1):
-        cards.append(f'<article class="panel"><span class="num">0{i}</span><span class="k">{k}</span><h3>{h}</h3><p>{p}</p></article>')
-    return "\n          ".join(cards)
+# ---------------------------------------------------------------- blocchi di sezione
 
 
 def page_hero(eyebrow, lines, lead, lit):
@@ -81,45 +74,127 @@ def page_hero(eyebrow, lines, lead, lit):
   </section>"""
 
 
-def legs(detailed):
+def statement(eyebrow, text, hl, small, name):
+    return f"""<section class="statement pinned" data-scrub data-name="{name}">
+    <div class="pin">
+      <div class="wrap">
+        <span class="eyebrow">{eyebrow}</span>
+        <p data-hl="{hl}">{text}</p>
+        <small>{small}</small>
+      </div>
+    </div>
+  </section>"""
+
+
+def hscroll(eyebrow, title, link, panels, name):
+    more = f'<a class="more-link" href="{link[0]}">{link[1]} <span aria-hidden="true">→</span></a>' if link else ""
+    return f"""<section class="hscroll" data-scrub data-name="{name}">
+    <div class="pin">
+      <div class="wrap head">
+        <div class="sec-head"><span class="eyebrow">{eyebrow}</span><h2>{title}</h2></div>
+        {more}
+      </div>
+      <div class="track">
+          {panels}
+      </div>
+      <div class="wrap"><div class="bar" aria-hidden="true"><i></i></div></div>
+    </div>
+  </section>"""
+
+
+def phase_panels():
+    return "\n          ".join(
+        f'<article class="panel"><span class="num">0{i}</span><span class="k">{k}</span><h3>{h}</h3><p>{p}</p></article>'
+        for i, (k, h, p, _, _) in enumerate(PHASES, 1))
+
+
+def service_panels():
+    out = []
+    for i, (k, h, p, tags) in enumerate(SERVICES, 1):
+        t = "".join(f"<li>{x}</li>" for x in tags)
+        out.append(f'<article class="panel"><span class="num">0{i}</span><span class="k">{k}</span><h3>{h}</h3><p>{p}</p><ul>{t}</ul></article>')
+    return "\n          ".join(out)
+
+
+def band(eyebrow, title, text, cta=("contattaci.html", "Prenota una chiacchierata"), name="Primo incontro"):
+    return f"""<section class="band-wrap" data-name="{name}">
+    <div class="wrap">
+      <div class="band" data-grow>
+        <span class="eyebrow">{eyebrow}</span>
+        <h2>{title}</h2>
+        <p>{text}</p>
+        <a class="btn light" href="{cta[0]}"><span>{cta[1]}</span></a>
+      </div>
+    </div>
+  </section>"""
+
+
+def principles(title="Come progettiamo le interfacce"):
+    items = "\n        ".join(f'<li style="--i:{i}"><div><strong>{a}</strong><span>{b}</span></div></li>' for i, (a, b) in enumerate(PRINCIPLES))
+    return f"""<section class="principles" data-name="Principi">
+    <div class="wrap">
+      <div class="sec-head" data-enter><span class="eyebrow">Principi di progettazione</span><h2>{title}</h2><p>La progettazione dell'esperienza d'uso viene prima dello sviluppo. Queste sono le regole che applichiamo a ogni progetto.</p></div>
+      <ol class="rules stack">
+        {items}
+      </ol>
+    </div>
+  </section>"""
+
+
+def cards(items, cols="", link=None):
+    out = []
+    for n, (k, h, p) in enumerate(items):
+        tag, href = ("a", f' href="{link}"') if link else ("article", "")
+        out.append(f'<{tag} class="card" data-enter style="--dir:{-1 if n % 2 == 0 else 1}"{href}>{ICO}<span class="kicker">{k}</span><h3>{h}</h3><p>{p}</p></{tag}>')
+    return f'<div class="cards{(" " + cols) if cols else ""}">\n        ' + "\n        ".join(out) + "\n      </div>"
+
+
+def section(name, eyebrow, title, intro, inner, cls=""):
+    intro_html = f"<p>{intro}</p>" if intro else ""
+    return f"""<section{f' class="{cls}"' if cls else ""} data-name="{name}">
+    <div class="wrap">
+      <div class="sec-head" data-enter><span class="eyebrow">{eyebrow}</span><h2>{title}</h2>{intro_html}</div>
+      {inner}
+    </div>
+  </section>"""
+
+
+def prose(name, eyebrow, title, paragraphs):
+    ps = "".join(f"<p>{p}</p>" for p in paragraphs)
+    return f"""<section data-name="{name}">
+    <div class="wrap prose" data-enter>
+      <div><span class="eyebrow">{eyebrow}</span><h2>{title}</h2></div>
+      <div class="txt">{ps}</div>
+    </div>
+  </section>"""
+
+
+def legs_detailed():
     out = []
     for i, (k, h, p, doing, get) in enumerate(PHASES, 1):
-        extra = ""
-        if detailed:
-            d = "".join(f"<li>{x}</li>" for x in doing)
-            g = "".join(f"<li>{x}</li>" for x in get)
-            extra = f'<div class="split"><div><b>Cosa facciamo</b><ul>{d}</ul></div><div><b>Cosa ricevete</b><ul>{g}</ul></div></div>'
-        out.append(f'<article class="leg" data-enter><span class="dot">{i}</span><div class="body"><span class="k">{k}</span><h3>{h}</h3><p>{p}</p>{extra}</div></article>')
-    return "\n        ".join(out)
+        d = "".join(f"<li>{x}</li>" for x in doing)
+        g = "".join(f"<li>{x}</li>" for x in get)
+        out.append(f'<article class="leg" data-enter><span class="dot">{i}</span><div class="body"><span class="k">{k}</span><h3>{h}</h3><p>{p}</p>'
+                   f'<div class="split"><div><b>Cosa facciamo</b><ul>{d}</ul></div><div><b>Cosa ricevete</b><ul>{g}</ul></div></div></div></article>')
+    return '<div class="legs" data-line>\n        ' + "\n        ".join(out) + "\n      </div>"
 
 
-def rules():
-    return "\n        ".join(f'<li style="--i:{i}"><div><strong>{a}</strong><span>{b}</span></div></li>' for i, (a, b) in enumerate(PRINCIPLES))
+# ---------------------------------------------------------------- pagine
 
-
-def service_cards(detailed, link=False):
-    out = []
-    for n, (k, h, p, tags) in enumerate(SERVICES):
-        t = ("<ul>" + "".join(f"<li>{x}</li>" for x in tags) + "</ul>") if detailed else ""
-        tag = "a" if link else "article"
-        href = ' href="servizi.html"' if link else ""
-        out.append(f'<{tag} class="card" data-enter style="--dir:{-1 if n % 2 == 0 else 1}"{href}><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">{k}</span><h3>{h}</h3><p>{p}</p>{t}</{tag}>')
-    return "\n        ".join(out)
-
-
-# ---------------------------------------------------------------- pages
+HOME_SERVICES = (cards([(k, h, p) for k, h, p, _ in SERVICES], link="servizi.html")
+                 + '\n      <a class="more-link" href="servizi.html">Tutti i servizi <span aria-hidden="true">→</span></a>')
 
 HOME = f"""  <section class="hero" data-exit data-name="Inizio">
     <div class="wrap">
       <div class="center">
-        <span class="eyebrow">Software house per le PMI italiane in Puglia</span>
+        <span class="eyebrow">Software house in Puglia</span>
         <h1>
-          <span class="ln" style="margin-top:28px"><span style="--i:0">Software gestionale</span></span>
+          <span class="ln"><span style="--i:0">Software gestionale</span></span>
           <span class="ln"><span style="--i:1"><em>su misura</em> per le PMI</span></span>
         </h1>
         <p class="lead">Progettiamo e sviluppiamo gestionali partendo da come lavora la vostra azienda. Prima analizziamo il processo, poi costruiamo il software che lo segue, dall'ordine alla fattura.</p>
         <div class="actions">
-          <a class="btn" href="contattaci.html"><span>Richiedi un'analisi</span></a>
+          <a class="btn" href="contattaci.html"><span>Prenota una chiacchierata</span></a>
           <a class="btn ghost" href="metodo.html"><span>Come lavoriamo</span></a>
         </div>
         <div class="scroll-cue"><i aria-hidden="true"></i>Scorri per continuare</div>
@@ -127,162 +202,95 @@ HOME = f"""  <section class="hero" data-exit data-name="Inizio">
     </div>
   </section>
 
-  <section class="statement pinned" data-scrub data-name="Approccio">
-    <div class="pin">
-      <div class="wrap">
-        <span class="eyebrow">Il nostro approccio</span>
-        <p data-hl="persone,lavoro">Molti gestionali chiedono alle persone di adattarsi al software. Noi partiamo dal lavoro che si svolge ogni giorno in ufficio, in magazzino e in produzione.</p>
-        <small>Un software costruito sul processo reale viene adottato più facilmente e riduce i passaggi manuali, come ricopiare gli stessi dati tra fogli di calcolo e programmi diversi.</small>
-      </div>
-    </div>
-  </section>
+  {statement("Il nostro approccio",
+             "Molti gestionali chiedono alle persone di adattarsi al software. Noi partiamo dal lavoro che si svolge ogni giorno in ufficio, in magazzino e in produzione.",
+             "persone,lavoro",
+             "Un software costruito sul processo reale viene adottato più facilmente e riduce i passaggi manuali, come ricopiare gli stessi dati tra fogli di calcolo e programmi diversi.",
+             "Approccio")}
 
-  <section class="hscroll" data-scrub data-name="Come lavoriamo">
-    <div class="pin">
-      <div class="wrap head">
-        <div class="sec-head"><span class="eyebrow">Come lavoriamo</span><h2>Quattro fasi, sempre nello stesso ordine</h2></div>
-        <a class="more-link" href="metodo.html">Il metodo nel dettaglio <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="track">
-          {hphases()}
-      </div>
-      <div class="wrap"><div class="bar" aria-hidden="true"><i></i></div></div>
-    </div>
-  </section>
+  {hscroll("Come lavoriamo", "Quattro fasi, sempre nello stesso ordine", ("metodo.html", "Il metodo nel dettaglio"), phase_panels(), "Come lavoriamo")}
 
-  {marquee()}
+  {section("Servizi", "Servizi", "Cosa facciamo",
+           "Lavoriamo con piccole e medie imprese che hanno processi specifici e hanno bisogno di un software che li gestisca in modo completo.",
+           HOME_SERVICES)}
 
-  <section data-name="Servizi">
-    <div class="wrap">
-      <div class="sec-head" data-enter><span class="eyebrow">Servizi</span><h2>Cosa facciamo</h2><p>Lavoriamo con piccole e medie imprese che hanno processi specifici e hanno bisogno di un software che li gestisca in modo completo.</p></div>
-      <div class="cards">
-        {service_cards(False, link=True)}
-      </div>
-      <a class="more-link" href="servizi.html">Tutti i servizi <span aria-hidden="true">→</span></a>
-    </div>
-  </section>
+  {band("Primo incontro", "Il primo incontro è una chiacchierata", CHAT_TEXT)}
 
-  <section class="band-wrap" data-name="Primo incontro">
-    <div class="wrap">
-      <div class="band" data-enter>
-        <span class="eyebrow">Primo incontro</span>
-        <h2>Il primo incontro è un'analisi del vostro processo</h2>
-        <p>Veniamo in azienda o ci colleghiamo online, osserviamo come lavorate e vi diciamo se e come un software su misura può esservi utile.</p>
-        <a class="btn light" href="contattaci.html"><span>Richiedi un'analisi</span></a>
-      </div>
-    </div>
-  </section>
-
-  <section class="principles" data-name="Principi">
-    <div class="wrap">
-      <div class="sec-head" data-enter><span class="eyebrow">Principi di progettazione</span><h2>Come progettiamo le interfacce</h2><p>La progettazione dell'esperienza d'uso viene prima dello sviluppo. Queste sono le regole che applichiamo a ogni progetto.</p></div>
-      <ol class="rules stack">
-        {rules()}
-      </ol>
-    </div>
-  </section>"""
+  {principles()}"""
 
 METODO = f"""  {page_hero("Come lavoriamo", ["Un metodo in <em>quattro fasi</em>"], "Ogni progetto parte dall'analisi del lavoro reale e arriva a un software che le persone usano senza difficoltà. Le fasi si susseguono sempre nello stesso ordine e ciascuna produce un risultato che potete verificare.", 2)}
 
+  {statement("Perché un metodo",
+             "Un gestionale funziona quando rispecchia il modo in cui l'azienda lavora davvero. Per questo ogni progetto segue le stesse fasi, dall'osservazione del lavoro alle schermate finali.",
+             "lavora,fasi",
+             "Seguire sempre lo stesso ordine permette di concordare tempi e costi fase per fase e di verificare i risultati prima di andare avanti.",
+             "Perché un metodo")}
+
   <section data-name="Le fasi">
     <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Le fasi</span><h2>Dall'analisi all'interfaccia</h2></div>
-      <div class="legs" data-line>
-        {legs(True)}
-      </div>
+      <div class="sec-head" data-enter><span class="eyebrow">Le fasi</span><h2>Dall'analisi all'interfaccia</h2><p>Per ogni fase trovate le attività che svolgiamo e i risultati che vi consegniamo.</p></div>
+      {legs_detailed()}
     </div>
   </section>
 
-  <section class="principles" data-name="Principi">
-    <div class="wrap">
-      <div class="sec-head" data-enter><span class="eyebrow">Principi di progettazione</span><h2>Come progettiamo le interfacce</h2><p>La progettazione dell'esperienza d'uso viene prima dello sviluppo. Queste sono le regole che applichiamo a ogni progetto.</p></div>
-      <ol class="rules stack">
-        {rules()}
-      </ol>
-    </div>
-  </section>
+  {band("Primo incontro", "Prima delle fasi c'è una chiacchierata", CHAT_TEXT)}
 
-  <section data-name="Coinvolgimento">
-    <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Coinvolgimento</span><h2>Chi partecipa al progetto</h2><p>Un gestionale funziona bene quando chi lo usa ha contribuito a definirlo. Per questo coinvolgiamo figure diverse in momenti diversi.</p></div>
-      <div class="cards three">
-        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Direzione</span><h3>Titolare e responsabili</h3><p>Definiscono obiettivi e priorità all'inizio del progetto e approvano ogni rilascio.</p></article>
-        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Ufficio</span><h3>Amministrazione e commerciale</h3><p>Ci mostrano documenti, procedure e passaggi con clienti e fornitori.</p></article>
-        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Reparto</span><h3>Magazzino, produzione e consegne</h3><p>Provano le schermate nel luogo in cui verranno usate e ci segnalano cosa migliorare.</p></article>
-      </div>
-    </div>
-  </section>"""
+  {principles()}
+
+  {section("Coinvolgimento", "Coinvolgimento", "Chi partecipa al progetto",
+           "Un gestionale funziona bene quando chi lo usa ha contribuito a definirlo. Per questo coinvolgiamo figure diverse in momenti diversi.",
+           cards([("Direzione", "Titolare e responsabili", "Definiscono obiettivi e priorità all'inizio del progetto e approvano ogni rilascio."),
+                  ("Ufficio", "Amministrazione e commerciale", "Ci mostrano documenti, procedure e passaggi con clienti e fornitori."),
+                  ("Reparto", "Magazzino, produzione e consegne", "Provano le schermate nel luogo in cui verranno usate e ci segnalano cosa migliorare.")], "three"))}"""
 
 SERVIZI = f"""  {page_hero("Servizi", ["Software su misura per il <em>vostro processo</em>"], "Sviluppiamo gestionali, applicazioni per il lavoro in reparto e strumenti di analisi per piccole e medie imprese. Ogni servizio parte dallo stesso principio: il software si adatta al modo in cui lavora l'azienda.", 3)}
 
-  {marquee()}
+  {hscroll("Cosa facciamo", "Quattro servizi collegati tra loro", None, service_panels(), "Cosa facciamo")}
 
-  <section data-name="Cosa facciamo">
-    <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Cosa facciamo</span><h2>Quattro servizi collegati tra loro</h2><p>Si possono richiedere separatamente, ma danno il risultato migliore quando fanno parte dello stesso progetto.</p></div>
-      <div class="cards">
-        {service_cards(True)}
-      </div>
-    </div>
-  </section>
+  {statement("Un unico progetto",
+             "I servizi si possono richiedere separatamente, ma danno il risultato migliore quando fanno parte dello stesso progetto, seguito dalle stesse persone dall'analisi all'assistenza.",
+             "progetto,persone",
+             "Chi analizza il processo è anche chi progetta le schermate e segue il software dopo il rilascio. In questo modo nessuna informazione si perde tra un passaggio e l'altro.",
+             "Un unico progetto")}
 
-  <section data-name="Per chi lavoriamo">
-    <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Per chi lavoriamo</span><h2>Aziende con processi specifici</h2><p>Lavoriamo soprattutto con imprese che hanno superato i fogli di calcolo ma non trovano un software pronto adatto al loro modo di lavorare.</p></div>
-      <div class="cards three">
-        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Produzione</span><h3>Aziende manifatturiere</h3><p>Commesse, distinte, avanzamento della produzione e controlli di qualità.</p></article>
-        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Distribuzione</span><h3>Commercio e logistica</h3><p>Ordini, magazzino su più depositi, documenti di trasporto e consegne.</p></article>
-        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Servizi</span><h3>Squadre sul territorio</h3><p>Interventi programmati, rapportini digitali e comunicazione con l'ufficio.</p></article>
-      </div>
-    </div>
-  </section>
+  {section("Per chi lavoriamo", "Per chi lavoriamo", "Aziende con processi specifici",
+           "Lavoriamo soprattutto con imprese che hanno superato i fogli di calcolo ma non trovano un software pronto adatto al loro modo di lavorare.",
+           cards([("Produzione", "Aziende manifatturiere", "Commesse, distinte, avanzamento della produzione e controlli di qualità."),
+                  ("Distribuzione", "Commercio e logistica", "Ordini, magazzino su più depositi, documenti di trasporto e consegne."),
+                  ("Servizi", "Squadre sul territorio", "Interventi programmati, rapportini digitali e comunicazione con l'ufficio.")], "three"))}
 
-  <section data-name="Integrazioni">
-    <div class="wrap prose" data-enter>
-      <div><span class="eyebrow">Integrazioni</span><h2 style="margin-top:22px">Collegato ai software che usate già</h2></div>
-      <div class="txt">
-        <p>Il gestionale non sostituisce per forza tutto quello che avete. Quando serve lo colleghiamo ai programmi già in uso in azienda, per esempio il software di contabilità o quello per la fatturazione elettronica, in modo che i dati vengano inseriti una sola volta.</p>
-        <p>Durante l'analisi verifichiamo quali collegamenti sono possibili con i programmi che utilizzate e quali dati conviene condividere tra un sistema e l'altro.</p>
-      </div>
-    </div>
-  </section>"""
+  {prose("Integrazioni", "Integrazioni", "Collegato ai software che usate già",
+         ["Il gestionale non sostituisce per forza tutto quello che avete. Quando serve lo colleghiamo ai programmi già in uso in azienda, per esempio il software di contabilità o quello per la fatturazione elettronica, in modo che i dati vengano inseriti una sola volta.",
+          "Durante l'analisi verifichiamo quali collegamenti sono possibili con i programmi che utilizzate e quali dati conviene condividere tra un sistema e l'altro."])}
+
+  {band("Primo incontro", "Parliamo del servizio che vi serve", CHAT_TEXT)}"""
 
 CHI = f"""  {page_hero("Chi siamo", ["Una software house che parte dalla <em>UX</em>"], "Merkorn sviluppa software gestionale su misura per le piccole e medie imprese italiane. Lavoriamo dalla Puglia con aziende del Mezzogiorno e del resto d'Italia.", 4)}
 
-  <section data-name="Missione">
-    <div class="wrap prose" data-enter>
-      <div><span class="eyebrow">Missione</span><h2 style="margin-top:22px">Portare il digitale nelle PMI partendo dalle persone</h2></div>
-      <div class="txt">
-        <p>La digitalizzazione di una piccola o media impresa riesce quando il software rispetta il modo in cui l'azienda lavora. Per questo ogni nostro progetto parte dall'osservazione del lavoro quotidiano e solo dopo passa allo sviluppo.</p>
-        <p>Costruiamo strumenti su misura sopra fondamenta riusabili. In questo modo ogni azienda ottiene un software adatto al proprio processo, con tempi e costi sostenibili.</p>
-      </div>
-    </div>
-  </section>
+  {statement("Missione",
+             "Vogliamo portare il digitale nelle piccole e medie imprese partendo dalle persone che ci lavorano e dal modo in cui lavorano ogni giorno.",
+             "persone,digitale",
+             "La digitalizzazione di un'azienda riesce quando il software rispetta il suo processo. Per questo ogni progetto parte dall'osservazione del lavoro quotidiano e solo dopo passa allo sviluppo.",
+             "Missione")}
 
-  <section data-name="UX design first">
-    <div class="wrap prose" data-enter>
-      <div><span class="eyebrow">UX design first</span><h2 style="margin-top:22px">Prima si progetta l'uso, poi si scrive il codice</h2></div>
-      <div class="txt">
-        <p>La progettazione dell'esperienza d'uso, in inglese UX design, stabilisce come una persona svolge un'attività con il software. Per noi è il primo passo di ogni progetto, prima della scelta delle tecnologie.</p>
-        <p>Disegniamo le schermate insieme a chi le userà, le proviamo nei luoghi di lavoro reali e le correggiamo prima di svilupparle. Il risultato è un software che richiede poca formazione e riduce gli errori.</p>
-      </div>
-    </div>
-  </section>
+  {prose("UX design first", "UX design first", "Prima si progetta l'uso, poi si scrive il codice",
+         ["La progettazione dell'esperienza d'uso, in inglese UX design, stabilisce come una persona svolge un'attività con il software. Per noi è il primo passo di ogni progetto, prima della scelta delle tecnologie.",
+          "Disegniamo le schermate insieme a chi le userà, le proviamo nei luoghi di lavoro reali e le correggiamo prima di svilupparle. Il risultato è un software che richiede poca formazione e riduce gli errori."])}
 
-  <section data-name="Valori">
-    <div class="wrap">
-      <div class="sec-head"><span class="eyebrow">Come lavoriamo con i clienti</span><h2>Tre impegni che manteniamo</h2></div>
-      <div class="cards three">
-        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Concretezza</span><h3>Esempi reali, non concetti</h3><p>Parliamo di ordini, documenti e reparti. Ogni proposta descrive cosa cambierà nel lavoro di tutti i giorni.</p></article>
-        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Chiarezza</span><h3>Tempi e costi definiti</h3><p>Ogni fase ha obiettivi, durata e costo concordati prima di iniziare.</p></article>
-        <article class="card" data-enter><span class="ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="kicker">Continuità</span><h3>Lo stesso team nel tempo</h3><p>Chi ha sviluppato il software lo segue anche dopo il rilascio.</p></article>
-      </div>
-    </div>
-  </section>"""
+  {prose("Come costruiamo", "Come costruiamo", "Fondamenta riusabili, superficie su misura",
+         ["Il nostro marchio è formato da cinque blocchi che compongono una piramide. Rappresenta il modo in cui costruiamo il software: una base di moduli collaudati, componenti che si montano sopra e, in cima, le schermate progettate per la singola azienda.",
+          "Questa struttura permette di offrire software su misura con tempi e costi sostenibili anche per le piccole imprese."])}
+
+  {section("Valori", "Come lavoriamo con i clienti", "Tre impegni che manteniamo", None,
+           cards([("Concretezza", "Esempi reali, non concetti", "Parliamo di ordini, documenti e reparti. Ogni proposta descrive cosa cambierà nel lavoro di tutti i giorni."),
+                  ("Chiarezza", "Tempi e costi definiti", "Ogni fase ha obiettivi, durata e costo concordati prima di iniziare."),
+                  ("Continuità", "Lo stesso team nel tempo", "Chi ha sviluppato il software lo segue anche dopo il rilascio.")], "three"))}
+
+  {band("Primo incontro", "Conosciamoci con una chiacchierata", CHAT_TEXT)}"""
 
 CONTATTI = contact_form(
     heading="Contattaci",
-    intro="Compilate il modulo per richiedere un primo incontro o per qualsiasi domanda sui nostri servizi. La richiesta arriva direttamente al nostro indirizzo email e vi rispondiamo personalmente.",
+    intro="Compilate il modulo per prenotare una prima chiacchierata o per qualsiasi domanda sui nostri servizi. La richiesta arriva direttamente al nostro indirizzo email e vi rispondiamo personalmente.",
     level="h1",
 ).replace('class="contact"', 'class="contact page-contact"', 1)
 
@@ -304,10 +312,11 @@ PAGES = [
     ("metodo.html", "Come lavoriamo", "Il metodo Merkorn in quattro fasi: analisi del processo, fondamenta riusabili, componenti su misura e interfaccia.", 1.3, METODO, True),
     ("servizi.html", "Servizi", "Gestionali su misura, analisi dei processi, app per reparto e consegne, assistenza ed evoluzione del software.", 2.6, SERVIZI, True),
     ("chi-siamo.html", "Chi siamo", "Merkorn è una software house pugliese che sviluppa gestionali su misura per le PMI partendo dalla progettazione dell'esperienza d'uso.", 3.9, CHI, True),
-    ("contattaci.html", "Contattaci", "Contattate Merkorn per richiedere un primo incontro o informazioni sui servizi di sviluppo software gestionale.", 5.2, CONTATTI, False),
+    ("contattaci.html", "Contattaci", "Contattate Merkorn per prenotare una prima chiacchierata o chiedere informazioni sui servizi di sviluppo software gestionale.", 5.2, CONTATTI, False),
     ("privacy.html", "Privacy", "Informativa sul trattamento dei dati personali raccolti tramite il modulo di contatto del sito Merkorn.", 6.5, PRIVACY, True),
 ]
 
-for path, title, desc, seed, body, form in PAGES:
-    (ROOT / path).write_text(page(path, title, desc, seed, body, form), encoding="utf-8")
-    print("scritto", path)
+if __name__ == "__main__":
+    for path, title, desc, seed, body, form in PAGES:
+        (ROOT / path).write_text(page(path, title, desc, seed, body, form), encoding="utf-8")
+        print("scritto", path)

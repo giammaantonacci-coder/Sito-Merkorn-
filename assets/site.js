@@ -4,176 +4,167 @@
   const INBOX = 'merkornsh@gmail.com';
   const ENDPOINT = 'https://formsubmit.co/ajax/' + INBOX;
 
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = v => Math.max(0, Math.min(1, v));
+  let dirty = true;
+
   /* ---------- mobile menu ---------- */
   const nav = document.querySelector('.nav');
   const menuBtn = document.querySelector('.menu-btn');
-  if (menuBtn) menuBtn.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
+  const setMenu = open => {
+    if (!menuBtn) return;
+    nav.classList.toggle('open', open);
     menuBtn.setAttribute('aria-expanded', String(open));
-  });
+    menuBtn.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
+  };
+  if (menuBtn) {
+    menuBtn.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('open')) { setMenu(false); menuBtn.focus(); } });
+    document.addEventListener('click', e => { if (nav.classList.contains('open') && !e.target.closest('.pill')) setMenu(false); });
+    matchMedia('(min-width: 821px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
+  }
 
   /* ---------- page change: fade out while the nebula speeds up ---------- */
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let leaving = false;
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href]');
-    if (!a || reduce || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
+    if (!a || reduce || leaving || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === '_blank' || a.hasAttribute('download')) return;
     const url = new URL(a.href, location.href);
-    if (url.origin !== location.origin || url.pathname === location.pathname || !/\.html$|\/$/.test(url.pathname)) return;
+    if (url.origin !== location.origin || !/(\.html|\/)$/.test(url.pathname)) return;
+    if (url.pathname === location.pathname) return; // same page: let the browser handle it
     e.preventDefault();
+    leaving = true;
+    setMenu(false);
     document.body.classList.add('leaving');
     if (window.merkornWarp) window.merkornWarp(1);
-    setTimeout(() => { location.href = a.href; }, 450);
+    setTimeout(() => { location.href = url.href; }, 420);
   });
-  addEventListener('pageshow', () => { document.body.classList.remove('leaving'); if (window.merkornWarp) window.merkornWarp(0); });
+  // coming back with the browser buttons restores the page from cache: undo the fade
+  addEventListener('pageshow', () => {
+    leaving = false;
+    document.body.classList.remove('leaving');
+    if (window.merkornWarp) window.merkornWarp(0);
+    dirty = true;
+  });
 
   /* ---------- statement: split into words ---------- */
-  document.querySelectorAll('.statement p[data-hl]').forEach(p => {
+  const statements = [...document.querySelectorAll('.statement.pinned')].map(sec => {
+    const p = sec.querySelector('p[data-hl]');
     const hl = p.dataset.hl.split(',');
     p.innerHTML = p.textContent.trim().split(/\s+/).map(w => `<span class="w${hl.includes(w.replace(/[.,]/g, '')) ? ' hl' : ''}">${w}</span>`).join(' ');
+    return { sec, words: [...p.querySelectorAll('.w')], small: sec.querySelector('small'), lit: -1 };
   });
 
   /* ---------- method phases light up in the middle of the screen ---------- */
   const legs = document.querySelectorAll('.leg');
   if (legs.length) {
-    const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('on', e.isIntersecting)), { rootMargin: '-40% 0px -40% 0px' });
+    const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('on', e.isIntersecting)), { rootMargin: '-45% 0px -45% 0px' });
     legs.forEach(l => io.observe(l));
+  }
+
+  /* ---------- HUD: current section ---------- */
+  const hud = document.querySelector('.hud');
+  const hudName = hud && hud.querySelector('.hud-name');
+  const pm = hud ? [...hud.querySelectorAll('.pm i')] : [];
+  const named = [...document.querySelectorAll('main > section[data-name]')];
+  if (hudName && named.length) {
+    const sio = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const i = named.indexOf(e.target);
+      hudName.textContent = e.target.dataset.name;
+      hud.classList.toggle('off', e.target.classList.contains('contact'));
+      const lit = Math.round((i / Math.max(1, named.length - 1)) * 5);
+      pm.forEach((b, k) => b.classList.toggle('on', k < lit));
+    }), { rootMargin: '-50% 0px -50% 0px' });
+    named.forEach(s => sio.observe(s));
   }
 
   /* ---------- scroll engine ----------
      data-scrub  pinned section, --p from 0 to 1 while it is pinned
      data-enter  --e from 0 to 1 while the element enters the screen
      data-exit   --x from 0 to 1 while the section leaves the top
-     data-line   --l fills the dashed line of the method phases
-     data-drift  marquee rows move sideways with the scroll            */
-  const clamp = v => Math.max(0, Math.min(1, v));
-  const scrubs = [...document.querySelectorAll('[data-scrub]')];
-  const enters = [...document.querySelectorAll('[data-enter]')];
-  const exits = [...document.querySelectorAll('[data-exit]')];
-  const lines = [...document.querySelectorAll('[data-line]')];
-  const drifts = [...document.querySelectorAll('[data-drift]')];
-  const stacks = [...document.querySelectorAll('.rules.stack')].map(ol => [...ol.children]);
-  const statements = [...document.querySelectorAll('.statement.pinned')].map(sec => ({ sec, words: [...sec.querySelectorAll('.w')] }));
-  const hs = [...document.querySelectorAll('.hscroll')].map(sec => ({ sec, track: sec.querySelector('.track') }));
-  const desktop = () => innerWidth > 760;
+     data-grow   --g from 0 to 1, the purple band grows into place
+     data-line   --l fills the line of the method phases
+     .rules      --k shrinks each stacked card as the next one covers it
+     Values are written once per frame, only when the scroll position or the
+     viewport changed, and never through CSS transitions. */
+  const all = sel => [...document.querySelectorAll(sel)];
+  const scrubs = all('[data-scrub]');
+  const enters = all('[data-enter]');
+  const exits = all('[data-exit]');
+  const grows = all('[data-grow]');
+  const lines = all('[data-line]');
+  const stacks = all('.rules').map(ol => [...ol.children]);
+  const tracks = all('.hscroll').map(sec => ({ sec, pin: sec.querySelector('.pin'), track: sec.querySelector('.track'), extra: 0 }));
+  const set = (el, name, v) => { const s = v.toFixed(3); if (el.style.getPropertyValue(name) !== s) el.style.setProperty(name, s); };
 
+  // the horizontal track is active only where the CSS keeps it pinned
+  const hMode = matchMedia('(min-width: 761px) and (min-height: 621px) and (prefers-reduced-motion: no-preference)');
+  let lastW = innerWidth, lastH = innerHeight;
   function sizeTracks() {
-    hs.forEach(({ sec, track }) => {
-      track.style.transform = '';
-      if (!desktop() || reduce) { sec.style.height = ''; return; }
-      const extra = Math.max(0, track.scrollWidth - innerWidth);
-      sec.dataset.extra = extra;
-      sec.style.height = (innerHeight + extra) + 'px';
+    tracks.forEach(t => {
+      t.track.style.translate = '';
+      if (!hMode.matches) { t.sec.style.height = ''; t.extra = 0; return; }
+      t.extra = Math.max(0, t.track.scrollWidth - t.sec.clientWidth);
+      t.sec.style.height = (t.pin.offsetHeight + t.extra) + 'px';
     });
+    dirty = true;
   }
-  sizeTracks(); addEventListener('resize', sizeTracks); addEventListener('load', sizeTracks);
+  addEventListener('resize', () => {
+    // ignore the small height changes of mobile browser toolbars
+    if (innerWidth !== lastW || Math.abs(innerHeight - lastH) > 120) { lastW = innerWidth; lastH = innerHeight; sizeTracks(); }
+    dirty = true;
+  });
+  hMode.addEventListener('change', sizeTracks);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeTracks);
+  addEventListener('load', sizeTracks);
+  addEventListener('scroll', () => { dirty = true; }, { passive: true });
 
-  let lastY = -1, lastH = -1;
-  function tick() {
-    const y = scrollY, vh = innerHeight;
-    if (y !== lastY || vh !== lastH) {
-      lastY = y; lastH = vh;
-      scrubs.forEach(el => {
-        const r = el.getBoundingClientRect();
-        el.style.setProperty('--p', clamp(-r.top / Math.max(1, r.height - vh)).toFixed(4));
-      });
-      statements.forEach(({ sec, words }) => {
-        const p = parseFloat(sec.style.getPropertyValue('--p')) || 0;
-        const lit = Math.round(clamp(p * 1.35) * words.length);
-        words.forEach((w, i) => w.classList.toggle('lit', i < lit));
-      });
-      hs.forEach(({ sec, track }) => {
-        if (!desktop() || reduce) return;
-        const p = parseFloat(sec.style.getPropertyValue('--p')) || 0;
-        track.style.transform = `translate3d(${-p * (parseFloat(sec.dataset.extra) || 0)}px, 0, 0)`;
-      });
-      enters.forEach(el => {
-        const r = el.getBoundingClientRect();
-        el.style.setProperty('--e', reduce ? 1 : clamp((vh - r.top) / (vh * .4)).toFixed(3));
-      });
-      exits.forEach(el => {
-        const r = el.getBoundingClientRect();
-        el.style.setProperty('--x', reduce ? 0 : clamp(-r.top / (r.height * .8)).toFixed(3));
-      });
-      lines.forEach(el => {
-        const r = el.getBoundingClientRect();
-        el.style.setProperty('--l', clamp((vh * .5 - r.top) / r.height).toFixed(3));
-      });
-      drifts.forEach(el => {
-        const r = el.parentElement.getBoundingClientRect();
-        const half = el.scrollWidth / 2, dir = parseFloat(el.dataset.drift);
-        const x = ((((vh - r.top) * .45) % half) + half) % half;
-        el.style.transform = `translate3d(${dir < 0 ? -x : x - half}px, 0, 0)`;
-      });
+  function update() {
+    const vh = innerHeight;
+    scrubs.forEach(el => {
+      const r = el.getBoundingClientRect();
+      el._p = clamp(-r.top / Math.max(1, r.height - vh));
+      set(el, '--p', el._p);
+    });
+    statements.forEach(st => {
+      const p = reduce ? 1 : (st.sec._p || 0);
+      const lit = Math.round(clamp(p * 1.4) * st.words.length);
+      if (lit !== st.lit) { st.words.forEach((w, i) => w.classList.toggle('lit', i < lit)); st.lit = lit; }
+      set(st.small, '--sm', clamp((p - .62) * 4));
+    });
+    tracks.forEach(t => {
+      if (t.extra) t.track.style.translate = `${(-(t.sec._p || 0) * t.extra).toFixed(1)}px 0`;
+    });
+    if (!reduce) {
+      enters.forEach(el => { const r = el.getBoundingClientRect(); set(el, '--e', clamp((vh - r.top) / (vh * .38))); });
+      exits.forEach(el => { const r = el.getBoundingClientRect(); set(el, '--x', clamp(-r.top / (r.height * .8))); });
+      grows.forEach(el => { const r = el.getBoundingClientRect(); set(el, '--g', clamp((vh - r.top) / (vh * .7))); });
       stacks.forEach(items => items.forEach((li, i) => {
         const next = items[i + 1];
-        if (!next) { li.style.setProperty('--k', 0); return; }
+        if (!next) return;
         const a = li.getBoundingClientRect(), b = next.getBoundingClientRect();
-        li.style.setProperty('--k', clamp((a.bottom - b.top) / a.height).toFixed(3));
+        set(li, '--k', clamp((a.bottom - b.top) / a.height));
       }));
     }
+    lines.forEach(el => { const r = el.getBoundingClientRect(); set(el, '--l', clamp((vh * .5 - r.top) / r.height)); });
+  }
+
+  sizeTracks();
+  update();
+  (function tick() {
+    if (dirty) { dirty = false; update(); }
     requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-
-  /* ---------- floating blocks in front of the nebula ---------- */
-  const drift = document.getElementById('drift');
-  if (drift && !reduce) {
-    const kinds = ['f', 'o', 'o', 'p', 'f', 'o', 'f', 'o', 'p', 'o', 'f', 'o'];
-    const blocks = kinds.map((k, i) => {
-      const el = document.createElement('i'); el.className = k;
-      const depth = .15 + (i % 4) * .22;
-      const size = 6 + depth * 26;
-      el.style.width = el.style.height = size + 'px';
-      el.style.opacity = (.25 + depth * .55).toFixed(2);
-      drift.appendChild(el);
-      return { el, depth, x: Math.random(), y: Math.random(), spin: (Math.random() - .5) * 40, phase: Math.random() * 6.28 };
-    });
-    const t0 = performance.now();
-    let push = 0;
-    (function float(now) {
-      const t = (now - t0) / 1000, vh = innerHeight, vw = innerWidth;
-      push += ((window.merkornSpeed || 0) - push) * .08;
-      blocks.forEach(b => {
-        const span = vh + 120;
-        let y = (b.y * span - scrollY * b.depth * .6 - t * 8 * b.depth) % span;
-        if (y < 0) y += span;
-        const x = b.x * vw + Math.sin(t * .3 + b.phase) * 30 * b.depth;
-        const rot = t * b.spin * .3 + push * b.depth * 2;
-        const stretch = 1 + Math.min(.45, Math.abs(push) * .01 * b.depth);
-        b.el.style.transform = `translate3d(${x.toFixed(1)}px, ${(y - 60).toFixed(1)}px, 0) rotate(${rot.toFixed(1)}deg) scaleY(${stretch.toFixed(2)})`;
-      });
-      requestAnimationFrame(float);
-    })(t0);
-  }
-
-  /* ---------- HUD: current section ---------- */
-  const hud = document.querySelector('.hud');
-  const hudName = document.querySelector('.hud .hud-name');
-  const pm = [...document.querySelectorAll('.hud .pm i')];
-  const sections = [...document.querySelectorAll('main > section[data-name]')];
-  if (hudName && sections.length) {
-    const sio = new IntersectionObserver(es => es.forEach(e => {
-      if (!e.isIntersecting) return;
-      const i = sections.indexOf(e.target);
-      hudName.textContent = e.target.dataset.name;
-      hud.classList.toggle('off', e.target.classList.contains('contact'));
-      const lit = Math.round((i / Math.max(1, sections.length - 1)) * 5);
-      pm.forEach((b, k) => b.classList.toggle('on', k < lit));
-    }), { rootMargin: '-50% 0px -50% 0px' });
-    sections.forEach(s => sio.observe(s));
-  }
+  })();
 
   /* ---------- copy email ---------- */
   document.querySelectorAll('[data-copy]').forEach(btn => {
     const out = document.getElementById(btn.dataset.copy);
+    let timer;
     btn.addEventListener('click', () => {
-      const select = () => { getSelection().selectAllChildren(out); btn.textContent = 'Selezionato, premi Ctrl+C'; };
-      try {
-        navigator.clipboard.writeText(out.textContent.trim()).then(() => {
-          btn.textContent = 'Copiato';
-          setTimeout(() => { btn.textContent = 'Copia indirizzo'; }, 1800);
-        }, select);
-      } catch (err) { select(); }
+      const done = text => { btn.textContent = text; clearTimeout(timer); timer = setTimeout(() => { btn.textContent = 'Copia indirizzo'; }, 2000); };
+      const select = () => { getSelection().selectAllChildren(out); done('Selezionato, premi Ctrl+C'); };
+      try { navigator.clipboard.writeText(out.textContent.trim()).then(() => done('Copiato'), select); } catch (err) { select(); }
     });
   });
 
@@ -181,33 +172,42 @@
   document.querySelectorAll('form.form').forEach(form => {
     const status = form.querySelector('.status');
     const submit = form.querySelector('button[type="submit"]');
+    const label = submit.querySelector('span');
+    const privacy = form.elements.privacy;
     const rules = {
       nome: v => v.trim().length >= 2 || 'Inserisci nome e cognome.',
       email: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || 'Inserisci un indirizzo email valido, per esempio nome@azienda.it.',
       messaggio: v => v.trim().length >= 10 || 'Descrivi brevemente la richiesta, bastano poche righe.'
     };
+    const touched = new Set();
     function check(name) {
       const el = form.elements[name];
       const field = el.closest('.field');
       const res = rules[name](el.value);
-      const err = field.querySelector('.err');
       field.classList.toggle('bad', res !== true);
       el.setAttribute('aria-invalid', String(res !== true));
-      err.textContent = res === true ? '' : res;
+      field.querySelector('.err').textContent = res === true ? '' : res;
       return res === true;
     }
-    Object.keys(rules).forEach(n => form.elements[n].addEventListener('blur', () => { if (form.elements[n].value) check(n); }));
+    Object.keys(rules).forEach(n => {
+      const el = form.elements[n];
+      el.addEventListener('blur', () => { if (el.value) { touched.add(n); check(n); } });
+      el.addEventListener('input', () => { if (touched.has(n)) check(n); });
+    });
+    privacy.addEventListener('change', () => { if (privacy.checked) privacy.closest('.check').classList.remove('bad'); });
 
+    let sending = false;
     form.addEventListener('submit', async e => {
       e.preventDefault();
+      if (sending) return;
       status.className = 'status'; status.textContent = '';
+      Object.keys(rules).forEach(n => touched.add(n));
       const valid = Object.keys(rules).map(check).every(Boolean);
-      const privacy = form.elements.privacy;
       privacy.closest('.check').classList.toggle('bad', !privacy.checked);
       if (!valid || !privacy.checked) {
         status.className = 'status ko';
-        status.textContent = !privacy.checked && valid ? 'Per inviare la richiesta serve il consenso al trattamento dei dati.' : 'Controlla i campi evidenziati.';
-        const first = form.querySelector('.bad input, .bad textarea, .check.bad input');
+        status.textContent = valid ? 'Per inviare la richiesta serve il consenso al trattamento dei dati.' : 'Controlla i campi evidenziati.';
+        const first = form.querySelector('.field.bad input, .field.bad textarea') || (!privacy.checked ? privacy : null);
         if (first) first.focus();
         return;
       }
@@ -226,19 +226,24 @@
         _template: 'table',
         _captcha: 'false'
       };
-      submit.disabled = true; submit.querySelector('span').textContent = 'Invio in corso';
+      sending = true;
+      submit.disabled = true; label.textContent = 'Invio in corso';
+      const ctrl = new AbortController();
+      const timeout = setTimeout(() => ctrl.abort(), 15000);
       try {
-        const res = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+        const res = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
         const body = await res.json().catch(() => ({}));
         if (!res.ok || String(body.success) === 'false') throw new Error(body.message || res.status);
-        form.reset();
+        form.reset(); touched.clear();
         status.className = 'status ok';
         status.textContent = 'Richiesta inviata. Vi ricontattiamo all\'indirizzo email che avete indicato.';
       } catch (err) {
         status.className = 'status ko';
         status.textContent = 'La richiesta non è stata inviata a causa di un problema di connessione. Riprovate tra qualche minuto oppure scriveteci direttamente a ' + INBOX + '.';
       } finally {
-        submit.disabled = false; submit.querySelector('span').textContent = 'Invia la richiesta';
+        clearTimeout(timeout);
+        sending = false;
+        submit.disabled = false; label.textContent = 'Invia la richiesta';
       }
     });
   });

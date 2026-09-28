@@ -71,7 +71,7 @@ TOPICS = [
 def contact_form(heading="Contattaci", intro=None, level="h2"):
     intro = intro or (
         "Raccontateci in poche righe di cosa si occupa l'azienda e quale attività volete gestire meglio. "
-        "Vi ricontattiamo per fissare un primo incontro."
+        "Vi ricontattiamo per fissare una prima chiacchierata, in azienda oppure online."
     )
     options = "".join(f"<option>{t}</option>" for t in TOPICS)
     return f"""<section class="contact" id="contattaci" data-name="Contattaci">
@@ -81,11 +81,6 @@ def contact_form(heading="Contattaci", intro=None, level="h2"):
           <span class="eyebrow">Contattaci</span>
           <{level}>{heading}</{level}>
           <p>{intro}</p>
-          <ol class="steps">
-            <li><div><strong>Inviate la richiesta</strong>Il modulo arriva direttamente al nostro indirizzo email.</div></li>
-            <li><div><strong>Vi ricontattiamo</strong>Fissiamo insieme data e modalità del primo incontro.</div></li>
-            <li><div><strong>Primo incontro</strong>In azienda oppure online, per capire come lavorate oggi.</div></li>
-          </ol>
           <div class="mailline">
             <div><small>Oppure scriveteci a</small><output id="mail-addr">{EMAIL}</output></div>
             <button class="copy" type="button" data-copy="mail-addr">Copia indirizzo</button>
@@ -134,7 +129,6 @@ def page(path, title, description, seed, body, form=True):
     return f"""{head(title, description, path)}
 <body data-seed="{seed}">
 <canvas id="sky" aria-hidden="true"></canvas>
-<div class="drift" id="drift" aria-hidden="true"></div>
 {nav(path)}
 <main id="contenuto">
 {body}
