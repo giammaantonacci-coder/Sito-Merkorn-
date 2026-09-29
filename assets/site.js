@@ -235,8 +235,14 @@
       };
       sending = true;
       submit.disabled = true; label.textContent = 'Invio in corso';
+      form.setAttribute('aria-busy', 'true');
+      // the service can be slow: say so instead of leaving the button looking frozen
+      const slow = setTimeout(() => {
+        status.className = 'status wait';
+        status.textContent = 'Invio in corso, il servizio può richiedere qualche secondo.';
+      }, 3500);
       const ctrl = new AbortController();
-      const timeout = setTimeout(() => ctrl.abort(), 15000);
+      const timeout = setTimeout(() => ctrl.abort(), 10000);
       try {
         const res = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
         const body = await res.json().catch(() => ({}));
@@ -245,11 +251,19 @@
         status.className = 'status ok';
         status.textContent = 'Richiesta inviata. Vi ricontattiamo all\'indirizzo email che avete indicato.';
       } catch (err) {
+        // never lose the request: the same text, ready to send from the visitor's own mail app
+        const text = Object.entries(data).filter(([k, v]) => k[0] !== '_' && k !== 'Pagina' && v).map(([k, v]) => k + ': ' + v).join('\n');
+        const mail = document.createElement('a');
+        mail.className = 'mail-fallback';
+        mail.href = 'mailto:' + INBOX + '?subject=' + encodeURIComponent(data._subject) + '&body=' + encodeURIComponent(text);
+        mail.textContent = 'Invia la richiesta via email';
         status.className = 'status ko';
-        status.textContent = 'La richiesta non è stata inviata a causa di un problema di connessione. Riprovate tra qualche minuto oppure scriveteci direttamente a ' + INBOX + '.';
+        status.textContent = 'Il servizio di invio non ha risposto, i dati che avete inserito sono ancora nel modulo. Potete inviare la stessa richiesta con il vostro programma di posta, a ' + INBOX + '. ';
+        status.appendChild(mail);
       } finally {
-        clearTimeout(timeout);
+        clearTimeout(timeout); clearTimeout(slow);
         sending = false;
+        form.removeAttribute('aria-busy');
         submit.disabled = false; label.textContent = 'Invia la richiesta';
       }
     });
