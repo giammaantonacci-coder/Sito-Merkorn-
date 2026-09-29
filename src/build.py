@@ -419,7 +419,7 @@ CHI = f"""  {page_hero("Chi siamo", ["Una software house che parte dalla <em>UX<
          ["I cinque blocchi del marchio raccontano il nostro metodo: una base di moduli collaudati, i componenti sopra e, in cima, le schermate su misura."])}
 
   {section("Valori", "Come lavoriamo con i clienti", "Tre impegni che manteniamo", None,
-           cards([("Concretezza", "Esempi reali, non concetti", "Ogni proposta dice cosa cambierà nel vostro lavoro."),
+           cards([("Concretezza", "Esempi basati su esperienze reali", "Ogni proposta parte da situazioni già incontrate in altre aziende e dice cosa cambierà nel vostro lavoro."),
                   ("Chiarezza", "Tempi e costi definiti", "Obiettivi, durata e costo di ogni fase concordati prima di iniziare."),
                   ("Continuità", "Lo stesso team nel tempo", "Chi sviluppa il software lo segue anche dopo il rilascio.")], "three"))}
 
