@@ -15,7 +15,7 @@ function merkornNebula() {
   const fs = `
   #define OCT ${mobile ? 5 : 6}
   precision highp float;
-  uniform vec2 R; uniform float T, Z, V, C, S, W; uniform vec2 M;
+  uniform vec2 R; uniform float T, Z, V, C, S, W, I; uniform vec2 M, P, D;
   float h31(vec3 p){ p = fract(p * .1031); p += dot(p, p.yzx + 33.33); return fract((p.x + p.y) * p.z); }
   float h21(vec2 p){ vec3 q = fract(vec3(p.xyx) * .1031); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y) * q.z); }
   float noise(vec3 x){
@@ -66,14 +66,19 @@ function merkornNebula() {
     vec2 uv = (gl_FragCoord.xy - .5 * R) / R.y;
     // forward travel: the field zooms slowly toward us, faster while scrolling
     float zoom = 1.25 - .12 * sin(Z * .35);
-    vec2 q2 = uv * zoom + M * .12;
+    // cursor tracking while the page is still: the gas swirls around the pointer and trails its movement
+    vec2 dc = uv - P;
+    float fall = exp(-dot(dc, dc) / .09) * I;
+    float ang = fall * 1.1;
+    vec2 uvw = P + mat2(cos(ang), -sin(ang), sin(ang), cos(ang)) * dc - D * fall;
+    vec2 q2 = uvw * zoom + M * .12;
     float t = T * .035;
     vec3 p = vec3(q2 * 1.5 + vec2(S * 3.7, S * 1.9), Z * .55 + t + S * 11.);
     vec3 w = vec3(fbm(p + vec3(0., 0., t)), fbm(p + vec3(5.2, 1.3, -t)), 0.);
     float n = fbm(p + 1.9 * w + vec3(M * .25, 0.));
     float lanes = fbm(p * 2.2 + 4.0 * w.yxz);
 
-    float dens = smoothstep(.38, .92, n + C * .22);
+    float dens = smoothstep(.38, .92, n + C * .22 + fall * .12);
     dens *= .55 + .45 * smoothstep(.25, .7, lanes);
 
     vec3 bg   = vec3(.031, .027, .043);   // #08070B
@@ -92,6 +97,9 @@ function merkornNebula() {
     col += dust * stars(uv, Z * .25 + T * .01 + V) * (.55 + .45 * (1. - dens));
     col += mix(dust, acc, .3) * comet(uv) * .9;
 
+    // soft light around the pointer, stronger where the gas is dense
+    col += acc * fall * (.04 + .2 * dens);
+
     // keep it quiet behind reading areas
     col *= .78;
 
@@ -107,7 +115,7 @@ function merkornNebula() {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
   const U = n => gl.getUniformLocation(prog, n);
-  const uR = U('R'), uT = U('T'), uZ = U('Z'), uV = U('V'), uC = U('C'), uM = U('M'), uS = U('S'), uW = U('W');
+  const uR = U('R'), uT = U('T'), uZ = U('Z'), uV = U('V'), uC = U('C'), uM = U('M'), uS = U('S'), uW = U('W'), uI = U('I'), uP = U('P'), uD = U('D');
 
   // Sharp but affordable: native resolution within a pixel budget (smaller on phones),
   // lowered quickly if the device struggles.
@@ -126,7 +134,18 @@ function merkornNebula() {
   size(true); addEventListener('resize', () => size());
 
   let z = 0, lastY = scrollY, vel = 0, mx = 0, my = 0, tmx = 0, tmy = 0, cloud = 0, warp = 0, warpTo = 0;
-  addEventListener('pointermove', e => { tmx = e.clientX / innerWidth - .5; tmy = .5 - e.clientY / innerHeight; }, { passive: true });
+  // pointer in shader space (y up, units of screen height), only for a real mouse or trackpad
+  const track = !reduce && matchMedia('(hover: hover) and (pointer: fine)').matches;
+  let px = 0, py = 0, tpx = 0, tpy = 0, dx = 0, dy = 0, hover = 0, inside = false, still = 0;
+  addEventListener('pointermove', e => {
+    tmx = e.clientX / innerWidth - .5; tmy = .5 - e.clientY / innerHeight;
+    if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
+    const h = canvas.clientHeight || innerHeight;
+    tpx = (e.clientX - innerWidth / 2) / h; tpy = (h / 2 - e.clientY) / h;
+    if (!inside) { px = tpx; py = tpy; inside = true; }
+  }, { passive: true });
+  document.documentElement.addEventListener('pointerleave', () => { inside = false; });
+  addEventListener('blur', () => { inside = false; });
   // the page script calls this when leaving, so the stars speed up during the page change
   window.merkornWarp = (v = 1) => { warpTo = v; };
 
@@ -148,6 +167,17 @@ function merkornNebula() {
     vel += ((y - lastY) - vel) * .1; lastY = y;
     z += (y / innerHeight * .9 - z) * .06;
     mx += (tmx - mx) * .04; my += (tmy - my) * .04;
+    if (track) {
+      const ox = px, oy = py;
+      px += (tpx - px) * .12; py += (tpy - py) * .12;
+      // trail: follows the pointer's movement, capped so fast flicks stay soft
+      let vx = (px - ox) * 9, vy = (py - oy) * 9; const vl = Math.hypot(vx, vy);
+      if (vl > .3) { vx *= .3 / vl; vy *= .3 / vl; }
+      dx += (vx - dx) * .08; dy += (vy - dy) * .08;
+      // only while the page is still: fades out as soon as it scrolls
+      still += ((Math.abs(vel) < .6 && warpTo === 0 ? 1 : 0) - still) * (Math.abs(vel) < .6 ? .03 : .15);
+      hover += ((inside ? 1 : 0) - hover) * .05;
+    }
     const mid = y + innerHeight * .5;
     let c = 0; banks.forEach(b => { const d = (mid - b) / (innerHeight * .32); c = Math.max(c, Math.exp(-d * d)); });
     warp += (warpTo - warp) * .08;
@@ -157,6 +187,7 @@ function merkornNebula() {
     gl.uniform2f(uR, canvas.width, canvas.height);
     gl.uniform1f(uT, T); gl.uniform1f(uZ, z + warp * 2); gl.uniform1f(uV, travel); gl.uniform1f(uC, cloud);
     gl.uniform1f(uS, seed); gl.uniform2f(uM, mx, my);
+    gl.uniform1f(uI, still * hover); gl.uniform2f(uP, px, py); gl.uniform2f(uD, dx, dy);
     gl.uniform1f(uW, Math.min(1, Math.abs(vel) / 60 + warp));
     window.merkornSpeed = vel;
     gl.drawArrays(gl.TRIANGLES, 0, 3);
