@@ -503,7 +503,7 @@ PRIVACY = f"""  {page_hero("Privacy policy", ["Informativa sul trattamento dei <
         <ul>
           <li>Vercel Inc., per l'hosting del sito e per la funzione che inoltra i messaggi del modulo alla nostra casella email;</li>
           <li>FormSubmit, solo come servizio di riserva per l'inoltro dei messaggi quando la funzione principale non è disponibile;</li>
-          <li>Google LLC, per il servizio di posta elettronica e, solo con il vostro consenso, per Google Analytics.</li>
+          <li>Google LLC, per il servizio di posta elettronica e, solo con il vostro consenso, per Google Tag Manager e Google Analytics.</li>
         </ul>
         <p>I dati non vengono venduti né diffusi.</p></div>
       <div><h2>Trasferimento fuori dall'Unione europea</h2><p>Alcuni fornitori hanno sede negli Stati Uniti. Il trasferimento avviene sulla base della decisione di adeguatezza della Commissione europea (EU-US Data Privacy Framework) oppure delle clausole contrattuali standard previste dall'art. 46 GDPR.</p></div>
@@ -532,7 +532,7 @@ COOKIE = f"""  {page_hero("Cookie policy", ["Come usiamo i <em>cookie</em>"], "Q
     <div class="wrap doc">
       <div><h2>Cosa sono i cookie</h2><p>I cookie sono piccoli file di testo che il sito salva nel browser. Alcuni sono necessari al funzionamento, altri servono a raccogliere statistiche e richiedono il vostro consenso.</p></div>
       <div><h2>Cookie tecnici</h2><p>Usiamo un solo cookie tecnico, che registra le scelte fatte nel banner così da non chiedervele a ogni visita. Non richiede consenso e non raccoglie dati per altre finalità.</p></div>
-      <div><h2>Cookie statistici</h2><p>Con il vostro consenso usiamo Google Analytics per sapere, in forma aggregata, quante persone visitano il sito e quali pagine consultano. Abbiamo disattivato le funzioni pubblicitarie e i segnali Google. Senza consenso Google Analytics non viene caricato.</p></div>
+      <div><h2>Cookie statistici</h2><p>Con il vostro consenso carichiamo Google Tag Manager e, tramite questo, Google Analytics, per sapere in forma aggregata quante persone visitano il sito e quali pagine consultano. Abbiamo disattivato le funzioni pubblicitarie e i segnali Google. Senza consenso nessuno dei due servizi viene caricato.</p></div>
       <div><h2>Cookie di profilazione e di terze parti</h2><p>Non usiamo cookie di profilazione né cookie pubblicitari. I caratteri tipografici sono ospitati direttamente sul sito, quindi aprendo le pagine non vengono contattati servizi esterni.</p></div>
       <div><h2>Elenco dei cookie</h2>
         <div class="table"><table>

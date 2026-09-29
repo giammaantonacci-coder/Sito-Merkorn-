@@ -1,10 +1,8 @@
 /* Merkorn, consenso ai cookie.
    Il sito usa un solo cookie tecnico (mk_consent) che ricorda la scelta per 6 mesi.
-   Google Analytics viene caricato solo dopo il consenso ai cookie statistici e solo
-   se nello script è indicato un ID di misurazione (data-ga). Nessun altro servizio. */
+   Google Tag Manager (e con esso Google Analytics) viene caricato solo dopo il consenso ai
+   cookie statistici, tramite window.merkornGtm definita nell'head di ogni pagina. */
 (() => {
-  const script = document.currentScript;
-  const GA = (script && script.dataset.ga) || '';
   const NAME = 'mk_consent';
   const MAX_AGE = 60 * 60 * 24 * 180;
 
@@ -26,18 +24,11 @@
     });
   };
 
-  let gaLoaded = false;
+  let gaLoaded = !!window.merkornGtmOn;
   const loadGa = () => {
-    if (!GA || gaLoaded) return;
+    if (gaLoaded || typeof window.merkornGtm !== 'function') return;
     gaLoaded = true;
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag('js', new Date());
-    window.gtag('config', GA, { cookie_expires: MAX_AGE, allow_google_signals: false, allow_ad_personalization_signals: false });
-    const s = document.createElement('script');
-    s.async = true;
-    s.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA)}`;
-    document.head.appendChild(s);
+    window.merkornGtm();
   };
 
   const box = document.createElement('div');
@@ -88,7 +79,11 @@
     write(value);
     close();
     if (value) loadGa();
-    else if (before && before.stats) { clearGa(); if (gaLoaded) location.reload(); }
+    else if (before && before.stats) {
+      if (typeof window.gtag === 'function') window.gtag('consent', 'update', { analytics_storage: 'denied' });
+      clearGa();
+      if (gaLoaded) location.reload();
+    }
   };
 
   box.addEventListener('click', e => {

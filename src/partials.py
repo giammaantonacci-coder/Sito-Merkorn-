@@ -13,8 +13,26 @@ def asset(path):
     digest = hashlib.sha1((ROOT / path).read_bytes()).hexdigest()[:10]
     return f"{path}?v={digest}"
 EMAIL = "merkornsh@gmail.com"
-# Google Analytics 4 measurement ID (G-XXXXXXXXXX). Empty: no analytics, only the technical consent cookie.
-GA_ID = ""
+# Google Tag Manager container. It loads only after consent to statistics cookies (see assets/consent.js).
+GTM_ID = "GTM-M62G6RPX"
+
+# Consent Mode defaults (everything denied), then Tag Manager for visitors who already accepted.
+# Visitors who accept later get it from consent.js through window.merkornGtm().
+GTM_HEAD = """<!-- Google Tag Manager, solo con il consenso ai cookie statistici -->
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',functionality_storage:'granted',security_storage:'granted'});
+gtag('set',{cookie_expires:15552000,allow_google_signals:false,allow_ad_personalization_signals:false});
+window.merkornGtm=function(){if(window.merkornGtmOn)return;window.merkornGtmOn=true;
+gtag('consent','update',{analytics_storage:'granted'});
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','%s');};
+if(/(?:^|;\\s*)mk_consent=[^;]*%%22stats%%22%%3Atrue/.test(document.cookie))window.merkornGtm();
+</script>
+<!-- End Google Tag Manager -->""" % GTM_ID
 LEGAL = "Merkorn S.r.l.s. · P.IVA 03494760733 · Via Carlo Alberto della Chiesa 12, 74017 Mottola (TA)"
 
 NAV = [
@@ -85,6 +103,7 @@ def head(title, description, path, extra_ld=()):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+{GTM_HEAD}
 <title>{full}</title>
 <meta name="description" content="{description}">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -206,7 +225,7 @@ def page(path, title, description, seed, body, form=True, scripts=(), extra_ld=(
 </main>
 {footer()}
 {HUD}
-<script src="{asset('assets/consent.js')}" data-ga="{GA_ID}" defer></script>
+<script src="{asset('assets/consent.js')}" defer></script>
 <script src="{asset('assets/nebula.js')}" defer></script>
 <script src="{asset('assets/site.js')}" defer></script>
 {"".join(f'<script src="{asset(x)}" defer></script>' for x in scripts)}
