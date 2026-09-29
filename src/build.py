@@ -411,9 +411,9 @@ CHI = f"""  {page_hero("Chi siamo", ["Una software house che parte dalla <em>UX<
 
   {section("Il team", "Il team", "Le persone che seguono il vostro progetto",
            "Un gruppo piccolo, in cui ognuno ha un ruolo preciso. Sono le stesse persone dal primo appuntamento all'assistenza.",
-           cards([("Design", "Product designer", "Progetta l'esperienza d'uso e le schermate. Osserva come lavorate, disegna i flussi e prova le interfacce con chi le userà."),
-                  ("Commerciale", "Sales manager", "È il vostro primo contatto. Organizza l'appuntamento iniziale, raccoglie le esigenze e definisce con voi proposta, tempi e costi."),
+           cards([("Commerciale", "Sales manager", "È il vostro primo contatto. Organizza l'appuntamento iniziale, raccoglie le esigenze e definisce con voi proposta, tempi e costi."),
                   ("Requisiti", "Project manager e data analyst", "Trasforma le esigenze in requisiti chiari. Analizza dati e processi attuali, pianifica le fasi e segue l'avanzamento del progetto."),
+                  ("Design", "Product designer", "Progetta l'esperienza d'uso e le schermate. Osserva come lavorate, disegna i flussi e prova le interfacce con chi le userà."),
                   ("Codice", "Developer", "Sviluppa il software, lo collega ai programmi che usate già e lo segue dopo il rilascio con aggiornamenti e assistenza.")]))}
 
   {prose("Come costruiamo", "Come costruiamo", "Fondamenta riusabili, superficie su misura",
