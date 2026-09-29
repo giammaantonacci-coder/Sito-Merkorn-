@@ -52,7 +52,24 @@ SERVICES = [
 
 CHAT_TEXT = "Ci raccontate come lavorate, noi vi spieghiamo come possiamo aiutarvi. Senza impegno, in azienda o online."
 
-ICO = '<span class="ico" aria-hidden="true"><i></i><i></i><i></i></span>'
+# line icons for the cards, one per content (64x64, stroke; the "v" part is violet)
+CARD_ICONS = {
+    "Sviluppo": '<rect x="6" y="10" width="52" height="40" rx="6"/><path d="M6 20h52"/><path class="v" d="M16 30h18M16 38h26"/><path d="M22 56h20M32 50v6"/>',
+    "Consulenza": '<circle cx="27" cy="27" r="16"/><path class="v" d="M19 30l6-6 5 5 6-8"/><path d="M39 39l15 15"/>',
+    "Mobile": '<rect x="18" y="4" width="28" height="56" rx="7"/><path d="M28 10h8"/><path class="v" d="M25 42h14v8H25z"/><path d="M25 20h14M25 28h14"/>',
+    "Dopo il rilascio": '<path d="M50 24a20 20 0 1 0 2 14"/><path d="M52 12v12H40"/><path class="v" d="M24 33l6 6 11-12"/>',
+    "Produzione": '<path d="M6 54V30l14 8V30l14 8V22l24 12v20Z"/><path class="v" d="M44 54V44h8v10"/><path d="M4 54h56"/>',
+    "Distribuzione": '<path d="M8 26 32 12l24 14v28H8Z"/><path class="v" d="M18 54V36h28v18"/><path d="M18 44h28"/>',
+    "Servizi": '<path d="M4 44V20h34v24"/><path d="M38 28h12l8 10v6H38"/><circle class="v" cx="16" cy="46" r="5"/><circle class="v" cx="48" cy="46" r="5"/>',
+    "Concretezza": '<rect x="8" y="22" width="48" height="20" rx="4"/><path d="M16 22v8M24 22v12M32 22v8M40 22v12M48 22v8"/><path class="v" d="M8 52h48"/>',
+    "Chiarezza": '<rect x="8" y="12" width="48" height="42" rx="6"/><path d="M8 24h48M20 6v12M44 6v12"/><path class="v" d="M20 38l7 7 16-15"/>',
+    "Continuità": '<circle cx="22" cy="22" r="8"/><circle cx="42" cy="22" r="8"/><path d="M8 52c0-9 6-15 14-15s14 6 14 15"/><path class="v" d="M30 52c0-9 5-15 12-15s14 6 14 15"/>',
+}
+
+
+def card_icon(key):
+    return f'<svg class="cico" viewBox="0 0 64 64" aria-hidden="true">{CARD_ICONS[key]}</svg>'
+
 
 # ---------------------------------------------------------------- blocchi di sezione
 
@@ -141,7 +158,7 @@ def cards(items, cols="", link=None):
     out = []
     for n, (k, h, p) in enumerate(items):
         tag, href = ("a", f' href="{link}"') if link else ("article", "")
-        out.append(f'<{tag} class="card" data-enter style="--dir:{-1 if n % 2 == 0 else 1}"{href}>{ICO}<span class="kicker">{k}</span><h3>{h}</h3><p>{p}</p></{tag}>')
+        out.append(f'<{tag} class="card" data-enter style="--dir:{-1 if n % 2 == 0 else 1}"{href}>{card_icon(k)}<div class="ctx"><span class="kicker">{k}</span><h3>{h}</h3><p>{p}</p></div></{tag}>')
     return f'<div class="cards{(" " + cols) if cols else ""}">\n        ' + "\n        ".join(out) + "\n      </div>"
 
 

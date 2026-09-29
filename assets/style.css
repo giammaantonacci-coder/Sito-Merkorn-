@@ -46,8 +46,8 @@ main, .site-foot { transition: opacity .4s var(--ease), filter .4s var(--ease); 
 body.leaving main, body.leaving .site-foot { opacity: 0; filter: blur(6px); }
 
 /* ---------- shared bits ---------- */
-.eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 600 11px/1 var(--body); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
-.eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 2px; background: var(--accent); flex: none; }
+/* section labels: text only, in violet, no marker */
+.eyebrow { display: inline-block; font: 600 11px/1.4 var(--body); letter-spacing: .24em; text-transform: uppercase; color: var(--accent); }
 .mark { display: inline-block; width: 26px; height: 16px; position: relative; flex: none; }
 .mark i { position: absolute; width: 18%; height: 30%; border-radius: var(--r-block); background: var(--accent); }
 .mark i:nth-child(1) { left: 41%; top: 0; } .mark i:nth-child(2) { left: 20.5%; top: 35%; } .mark i:nth-child(3) { left: 61.5%; top: 35%; } .mark i:nth-child(4) { left: 0; top: 70%; } .mark i:nth-child(5) { left: 82%; top: 70%; }
@@ -186,8 +186,7 @@ section { padding-block: clamp(110px, 22vh, 220px); }
 /* purple field band: the one strong colour moment of each page */
 .band-wrap { padding-block: clamp(60px, 12vh, 140px); }
 .band { display: grid; justify-items: center; text-align: center; gap: 22px; padding: clamp(48px, 9vw, 120px) clamp(24px, 6vw, 80px); border-radius: calc(32px + (1 - var(--g, 1)) * 48px); background: var(--field); scale: calc(.88 + var(--g, 1) * .12); }
-.band .eyebrow { color: rgba(242,239,234,.85); }
-.band .eyebrow::before { background: var(--text); }
+.band .eyebrow { color: rgba(242,239,234,.9); }
 .band h2 { font-size: clamp(32px, 4.6vw, 64px); line-height: 1.02; max-width: 18ch; }
 .band p { margin: 0; max-width: 54ch; font-size: 17px; color: rgba(242,239,234,.88); }
 
@@ -211,20 +210,24 @@ section { padding-block: clamp(110px, 22vh, 220px); }
 /* cards */
 .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 48px; }
 .cards.three { grid-template-columns: repeat(3, 1fr); }
-.card { position: relative; display: grid; gap: 14px; align-content: start; padding: clamp(24px, 3vw, 36px); border-radius: var(--r-card); background: var(--card); box-shadow: inset 0 0 0 1px var(--rule); transition: transform .5s var(--spring), box-shadow .3s, border-radius .5s var(--ease); }
+.card { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 24px; align-items: start; padding: clamp(24px, 3vw, 36px); border-radius: var(--r-card); background: var(--card); box-shadow: inset 0 0 0 1px var(--rule); transition: transform .5s var(--spring), box-shadow .3s, border-radius .5s var(--ease); }
 a.card { text-decoration: none; }
 .card .kicker { font: 600 11px/1 var(--body); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
 .card h3 { font-size: clamp(22px, 2.4vw, 32px); line-height: 1.05; }
 .card p { margin: 0; color: var(--muted); max-width: 46ch; }
-.card .ico { display: flex; gap: 5px; margin-bottom: 18px; }
-.card .ico i { width: 14px; height: 14px; border-radius: 4px; background: var(--accent); transition: transform .5s var(--spring); }
-.card .ico i:nth-child(2) { opacity: .6; } .card .ico i:nth-child(3) { opacity: .3; }
+.card .ctx { display: grid; gap: 12px; }
+.card .kicker { margin-top: 6px; }
+.cico { width: 64px; height: 64px; }
+.cico * { fill: none; stroke: var(--text); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: stroke .3s; }
+.cico .v { stroke: var(--accent); }
 @media (hover: hover) {
   .card:hover { transform: translateY(-6px); border-radius: 32px; box-shadow: inset 0 0 0 1px rgba(151,71,255,.6); }
-  .card:hover .ico i:nth-child(2) { transform: translateY(-8px); } .card:hover .ico i:nth-child(3) { transform: translateY(-16px); }
+  .card:hover .cico .v { stroke: var(--text); }
+  .card:hover .cico :not(.v) { stroke: var(--accent); }
 }
 @media (max-width: 900px) { .cards.three { grid-template-columns: 1fr; } }
 @media (max-width: 760px) { .cards { grid-template-columns: 1fr; } }
+@media (max-width: 420px) { .card { grid-template-columns: 1fr; gap: 16px; } .cico { width: 52px; height: 52px; } }
 
 /* UX principles on black, stacking as you scroll */
 .principles .sec-head { margin-inline: auto; text-align: center; display: grid; justify-items: center; }
