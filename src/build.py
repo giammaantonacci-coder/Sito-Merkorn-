@@ -501,8 +501,8 @@ PRIVACY = f"""  {page_hero("Privacy policy", ["Informativa sul trattamento dei <
       <div><h2>Conferimento dei dati</h2><p>Il conferimento dei dati nel modulo è facoltativo, ma senza nome, email e messaggio non possiamo rispondere alla richiesta.</p></div>
       <div><h2>Chi riceve i dati</h2><p>I dati sono trattati dal personale di Merkorn e da fornitori che agiscono come responsabili del trattamento:</p>
         <ul>
-          <li>Vercel Inc., per l'hosting del sito;</li>
-          <li>FormSubmit, per l'inoltro dei messaggi del modulo alla nostra email;</li>
+          <li>Vercel Inc., per l'hosting del sito e per la funzione che inoltra i messaggi del modulo alla nostra casella email;</li>
+          <li>FormSubmit, solo come servizio di riserva per l'inoltro dei messaggi quando la funzione principale non è disponibile;</li>
           <li>Google LLC, per il servizio di posta elettronica e, solo con il vostro consenso, per Google Analytics.</li>
         </ul>
         <p>I dati non vengono venduti né diffusi.</p></div>

@@ -1,8 +1,10 @@
 /* Merkorn, comportamenti comuni a tutte le pagine. */
 (() => {
-  // Every request from the contact form is delivered to this address through FormSubmit.
+  // Every request from the contact form reaches this inbox: through the site's own mail function
+  // (api/contact.js, sent from Gmail) and, until that is configured, through FormSubmit.
   const INBOX = 'merkornsh@gmail.com';
-  const ENDPOINT = 'https://formsubmit.co/ajax/' + INBOX;
+  const ENDPOINT = '/api/contact';
+  const BACKUP = 'https://formsubmit.co/ajax/' + INBOX;
 
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const clamp = v => Math.max(0, Math.min(1, v));
@@ -242,9 +244,12 @@
         status.textContent = 'Invio in corso, il servizio può richiedere qualche secondo.';
       }, 3500);
       const ctrl = new AbortController();
-      const timeout = setTimeout(() => ctrl.abort(), 10000);
+      const timeout = setTimeout(() => ctrl.abort(), 12000);
       try {
-        const res = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
+        const post = url => fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
+        let res = await post(ENDPOINT);
+        // 404 or 503: the mail function is not deployed or not configured yet
+        if (res.status === 404 || res.status === 503) res = await post(BACKUP);
         const body = await res.json().catch(() => ({}));
         if (!res.ok || String(body.success) === 'false') throw new Error(body.message || res.status);
         form.reset(); touched.clear();

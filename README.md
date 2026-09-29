@@ -33,19 +33,22 @@ Dopo aver modificato testi, header, footer o form, rieseguire il comando e pubbl
 
 ## Form di contatto
 
-Le richieste vengono inviate a **merkornsh@gmail.com** tramite il servizio gratuito [FormSubmit](https://formsubmit.co), senza bisogno di un backend.
+Il form invia le richieste alla funzione `api/contact.js`, che Vercel pubblica come `/api/contact`. La funzione spedisce ogni richiesta dalla casella **merkornsh@gmail.com** alla stessa casella, tramite il server SMTP di Gmail. Rispondendo all'email si risponde direttamente a chi ha scritto.
 
-Attivazione, da fare una sola volta dopo la pubblicazione:
+Configurazione, da fare una sola volta:
 
-1. Aprire il sito pubblicato e inviare una richiesta di prova dal form.
-2. FormSubmit invia a merkornsh@gmail.com un'email di conferma. Aprirla e cliccare il link di attivazione.
-3. Da quel momento tutte le richieste arrivano nella casella, con oggetto "Nuova richiesta dal sito Merkorn" e l'argomento scelto. Rispondendo all'email si risponde direttamente a chi ha scritto.
+1. Nell'account Google di merkornsh@gmail.com attivare la verifica in due passaggi, poi creare una password per le app su https://myaccount.google.com/apppasswords.
+2. Su Vercel, nel progetto sito-merkorn, aprire Settings, poi Environment Variables, e aggiungere per l'ambiente Production:
+   - `GMAIL_USER` = `merkornsh@gmail.com`
+   - `GMAIL_APP_PASSWORD` = la password di 16 caratteri appena creata
+3. Rifare il deploy dell'ultima versione (Deployments, poi Redeploy) e inviare una richiesta di prova dal sito.
 
-Facoltativo: dopo l'attivazione FormSubmit fornisce un indirizzo alternativo (una stringa casuale) che nasconde l'email nel codice della pagina. Per usarlo basta sostituire il valore di `ENDPOINT` in `assets/site.js`.
+Finché le due variabili non sono impostate, la funzione risponde 503 e il form usa FormSubmit come riserva. Se anche l'invio non riesce, il form offre un link che apre la stessa richiesta già compilata nel programma di posta di chi scrive.
 
 ## Da completare
 
-- `privacy.html`: ragione sociale, partita IVA, sede legale e periodo di conservazione dei dati (evidenziati nella pagina).
+- Configurare le variabili `GMAIL_USER` e `GMAIL_APP_PASSWORD` su Vercel (vedi sopra).
+- Inserire l'ID di Google Analytics in `GA_ID` (`src/partials.py`) per attivare le statistiche.
 
 ## Proposte di design
 
