@@ -64,7 +64,8 @@ CARD_ICONS = {
     "Concretezza": '<rect x="8" y="22" width="48" height="20" rx="4"/><path d="M16 22v8M24 22v12M32 22v8M40 22v12M48 22v8"/><path class="v" d="M8 52h48"/>',
     "Chiarezza": '<rect x="8" y="12" width="48" height="42" rx="6"/><path d="M8 24h48M20 6v12M44 6v12"/><path class="v" d="M20 38l7 7 16-15"/>',
     "Design": '<rect x="6" y="8" width="52" height="38" rx="6"/><path class="v" d="M16 36l8-10 6 6 10-12"/><circle cx="46" cy="18" r="3"/><path d="M22 56h20M32 46v10"/>',
-    "Commerciale": '<path d="M6 30l12-12 10 6 8-4 22 12"/><path d="M58 32 44 46c-2 2-5 2-7 0l-3-3"/><path class="v" d="M18 18v0M6 30l14 14c2 2 5 2 7 0l3-3"/><path d="M26 38l6 6"/>',
+    # handshake: sleeves at the sides, the violet hand's fingers wrap the other hand (drawn on a 24 grid)
+    "Commerciale": '<g transform="scale(2.6667)"><path class="v" vector-effect="non-scaling-stroke" d="m11 17 2 2a1 1 0 1 0 3-3"/><path class="v" vector-effect="non-scaling-stroke" d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path vector-effect="non-scaling-stroke" d="m21 3 1 11h-2"/><path vector-effect="non-scaling-stroke" d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path vector-effect="non-scaling-stroke" d="M3 4h8"/></g>',
     "Requisiti": '<rect x="12" y="8" width="40" height="50" rx="6"/><path d="M24 8v6h16V8"/><path class="v" d="M20 28l4 4 8-8M20 44l4 4 8-8"/><path d="M38 30h6M38 46h6"/>',
     "Codice": '<rect x="6" y="10" width="52" height="44" rx="6"/><path d="M6 20h52"/><path class="v" d="M24 30l-7 7 7 7M40 30l7 7-7 7"/><path d="M35 28l-6 18"/>',
     "Continuità": '<circle cx="22" cy="22" r="8"/><circle cx="42" cy="22" r="8"/><path d="M8 52c0-9 6-15 14-15s14 6 14 15"/><path class="v" d="M30 52c0-9 5-15 12-15s14 6 14 15"/>',
