@@ -310,6 +310,7 @@ a.card { text-decoration: none; }
 .powered .mark { width: 34px; height: 21px; }
 .powered strong { font: 700 16px/1 var(--display); letter-spacing: .32em; }
 .site-foot p { margin: 0; font-size: 13px; color: var(--muted); }
+.site-foot .legal { font-size: 12px; opacity: .75; }
 
 /* ---------- example screens (Come lavoriamo) ----------
    Palette validata per daltonismo sul fondo #17141B: viola, blu, ocra.

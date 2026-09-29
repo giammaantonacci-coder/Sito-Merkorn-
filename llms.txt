@@ -1,6 +1,6 @@
 # Merkorn
 
-> Merkorn è una software house in Puglia che progetta e sviluppa software gestionali su misura per piccole e medie imprese italiane. Parte dall'analisi dei processi aziendali e dalla progettazione dell'esperienza d'uso (UX design first), poi sviluppa il software.
+> Merkorn (MERKORN S.R.L.S.) è una software house di Mottola, in provincia di Taranto (Puglia), che progetta e sviluppa software gestionali su misura per piccole e medie imprese italiane. Parte dall'analisi dei processi aziendali e dalla progettazione dell'esperienza d'uso (UX design first), poi sviluppa il software.
 
 ## Cosa fa
 - Gestionale su misura (ERP personalizzato) per ordini, magazzino, produzione e commesse
@@ -21,7 +21,9 @@ Sales manager, project manager e data analyst, product designer, developer.
 ## Contatti
 - Sito: https://merkorn.com
 - Email: merkornsh@gmail.com
-- Zona: Puglia, clienti in tutta Italia; primo appuntamento in azienda o online
+- Sede: Via Carlo Alberto della Chiesa 12, 74017 Mottola (TA)
+- P.IVA: 03494760733
+- Zona: Taranto, Bari, Brindisi, Lecce, Matera e tutta la Puglia, clienti in tutta Italia; primo appuntamento in azienda o online
 
 ## Pagine
 - [Home](https://merkorn.com/)

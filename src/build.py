@@ -346,7 +346,7 @@ FAQ_HOME = [
     ("Il gestionale si collega alla fatturazione elettronica e alla contabilità?",
      "Sì. Colleghiamo il gestionale ai programmi che usate già, come contabilità e fatturazione elettronica, così i dati si inseriscono una sola volta."),
     ("Lavorate solo in Puglia?",
-     "Siamo una software house pugliese e lavoriamo con aziende di tutta Italia. Il primo appuntamento può essere in azienda oppure online."),
+     "La nostra sede è a Mottola, in provincia di Taranto. Lavoriamo con aziende di Taranto, Bari, Brindisi, Lecce e Matera e con clienti in tutta Italia. Il primo appuntamento può essere in azienda oppure online."),
 ]
 
 FAQ_SERVIZI = [
@@ -372,7 +372,7 @@ def faq_ld(items):
 
 
 SERVICES_LD = [{"@type": "Service", "name": h, "serviceType": h, "description": p, "provider": {"@id": "https://merkorn.com/#org"},
-                "areaServed": ["Puglia", "Italia"]} for _, h, p, _ in SERVICES]
+                "areaServed": ["Taranto", "Bari", "Brindisi", "Lecce", "Matera", "Puglia", "Italia"]} for _, h, p, _ in SERVICES]
 
 HOME = f"""  <section class="hero" data-exit data-name="Inizio">
     <div class="wrap">
@@ -444,7 +444,7 @@ SERVIZI = f"""  {page_hero("Servizi", ["Software gestionale <em>personalizzato</
 
   {band("Primo incontro", "Parliamo del servizio che vi serve", CHAT_TEXT)}"""
 
-CHI = f"""  {page_hero("Chi siamo", ["Una software house in Puglia che parte dalla <em>UX</em>"], "Sviluppiamo software gestionale su misura per le PMI italiane, progettando prima l'esperienza d'uso e poi il codice.", 4)}
+CHI = f"""  {page_hero("Chi siamo", ["Una software house in Puglia che parte dalla <em>UX</em>"], "Siamo a Mottola, in provincia di Taranto. Sviluppiamo software gestionale su misura per le PMI italiane, progettando prima l'esperienza d'uso e poi il codice.", 4)}
 
   {statement("Missione",
              "Portiamo il digitale nelle piccole e medie imprese partendo dalle persone e dal loro lavoro quotidiano.",
@@ -482,11 +482,11 @@ PRIVACY = f"""  {page_hero("Privacy", ["Informativa sul trattamento dei dati"], 
 
   <section data-name="Informativa">
     <div class="wrap doc">
-      <div><h2>Titolare del trattamento</h2><p>Merkorn, <span class="todo">ragione sociale, partita IVA e sede legale da completare</span>. Per qualsiasi richiesta potete scrivere a {EMAIL}.</p></div>
+      <div><h2>Titolare del trattamento</h2><p>MERKORN S.R.L.S., partita IVA e codice fiscale 03494760733, con sede in Via Carlo Alberto della Chiesa 12, 74017 Mottola (TA). Per qualsiasi richiesta potete scrivere a {EMAIL}.</p></div>
       <div><h2>Dati raccolti</h2><p>Nome e cognome, indirizzo email e, se li indicate, azienda, telefono e testo del messaggio.</p></div>
       <div><h2>Finalità e base giuridica</h2><p>Usiamo i dati solo per rispondere alla richiesta e organizzare un eventuale appuntamento. La base giuridica è il consenso espresso con l'invio del modulo.</p></div>
       <div><h2>Modalità del trattamento</h2><p>Il modulo invia i dati alla nostra email tramite il servizio FormSubmit, che agisce come fornitore tecnico.</p></div>
-      <div><h2>Conservazione</h2><p>Conserviamo i dati per il tempo necessario a gestire la richiesta e comunque non oltre <span class="todo">periodo da definire</span>, salvo un successivo rapporto contrattuale.</p></div>
+      <div><h2>Conservazione</h2><p>Conserviamo i dati per il tempo necessario a gestire la richiesta e comunque non oltre 12 mesi dall'ultimo contatto, salvo un successivo rapporto contrattuale.</p></div>
       <div><h2>Diritti dell'interessato</h2><p>Potete chiedere accesso, rettifica, cancellazione o limitazione dei dati e revocare il consenso scrivendo a {EMAIL}. Potete anche presentare reclamo al Garante per la protezione dei dati personali.</p></div>
     </div>
   </section>"""
@@ -502,8 +502,8 @@ PAGES = [
     ("servizi.html", "Gestionale personalizzato, magazzino e produzione | Merkorn",
      "Gestionale su misura per aziende, gestionale di magazzino e produzione, app per le consegne e analisi dei processi, integrati con la fatturazione elettronica.",
      2.6, SERVIZI, True, (), SERVICES_LD + [faq_ld(FAQ_SERVIZI)]),
-    ("chi-siamo.html", "Software house in Puglia per le PMI | Merkorn",
-     "Merkorn è una software house pugliese: product designer, sales manager, project manager e developer che sviluppano gestionali su misura per le PMI.",
+    ("chi-siamo.html", "Software house a Taranto e in Puglia per PMI | Merkorn",
+     "Merkorn è una software house di Mottola (Taranto): sales manager, project manager, product designer e developer che sviluppano gestionali su misura per PMI.",
      3.9, CHI, True, (), []),
     ("contattaci.html", "Preventivo gestionale su misura | Merkorn",
      "Contattate Merkorn per un appuntamento o un preventivo per un software gestionale su misura. Primo incontro in azienda o online, senza impegno.",

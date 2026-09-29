@@ -13,6 +13,7 @@ def asset(path):
     digest = hashlib.sha1((ROOT / path).read_bytes()).hexdigest()[:10]
     return f"{path}?v={digest}"
 EMAIL = "merkornsh@gmail.com"
+LEGAL = "Merkorn S.r.l.s. · P.IVA 03494760733 · Via Carlo Alberto della Chiesa 12, 74017 Mottola (TA)"
 
 NAV = [
     ("metodo.html", "Come lavoriamo"),
@@ -38,14 +39,21 @@ ORG = {
     "@type": ["Organization", "ProfessionalService"],
     "@id": BASE + "/#org",
     "name": "Merkorn",
+    "legalName": "MERKORN S.R.L.S.",
+    "vatID": "IT03494760733",
+    "taxID": "03494760733",
+    "foundingDate": "2026-07-28",
     "url": BASE + "/",
     "logo": BASE + "/assets/logo.png",
     "image": BASE + "/assets/og-image.png",
     "email": EMAIL,
     "slogan": "Software gestionale su misura per le PMI",
-    "description": "Software house in Puglia che progetta e sviluppa software gestionali su misura per piccole e medie imprese: ordini, magazzino, produzione, commesse e integrazione con la fatturazione elettronica.",
-    "address": {"@type": "PostalAddress", "addressRegion": "Puglia", "addressCountry": "IT"},
-    "areaServed": [{"@type": "AdministrativeArea", "name": "Puglia"}, {"@type": "Country", "name": "Italia"}],
+    "description": "Software house di Mottola (Taranto), in Puglia, che progetta e sviluppa software gestionali su misura per piccole e medie imprese: ordini, magazzino, produzione, commesse e integrazione con la fatturazione elettronica.",
+    "address": {"@type": "PostalAddress", "streetAddress": "Via Carlo Alberto della Chiesa 12", "postalCode": "74017",
+                "addressLocality": "Mottola", "addressRegion": "TA", "addressCountry": "IT"},
+    "areaServed": [{"@type": "City", "name": "Taranto"}, {"@type": "City", "name": "Bari"}, {"@type": "City", "name": "Brindisi"},
+                   {"@type": "City", "name": "Lecce"}, {"@type": "City", "name": "Matera"},
+                   {"@type": "AdministrativeArea", "name": "Puglia"}, {"@type": "Country", "name": "Italia"}],
     "knowsAbout": ["software gestionale su misura", "gestionale personalizzato", "ERP personalizzato", "gestionale magazzino",
                    "gestionale produzione", "gestionale commesse", "app per consegne", "UX design", "analisi dei processi aziendali"],
 }
@@ -177,6 +185,7 @@ def footer():
     <div class="bottom">
       <a class="powered" href="index.html" aria-label="Powered by Merkorn, pagina iniziale"><small>Powered by</small>{MARK}<strong>MERKORN</strong></a>
       <p>Software gestionale su misura per le PMI italiane, dalla Puglia</p>
+      <p class="legal">{LEGAL}</p>
     </div>
   </div>
 </footer>"""
