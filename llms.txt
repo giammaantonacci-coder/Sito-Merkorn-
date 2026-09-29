@@ -1,0 +1,31 @@
+# Merkorn
+
+> Merkorn è una software house in Puglia che progetta e sviluppa software gestionali su misura per piccole e medie imprese italiane. Parte dall'analisi dei processi aziendali e dalla progettazione dell'esperienza d'uso (UX design first), poi sviluppa il software.
+
+## Cosa fa
+- Gestionale su misura (ERP personalizzato) per ordini, magazzino, produzione e commesse
+- Analisi dei processi aziendali, con una mappa del processo e le priorità di intervento
+- App per magazzino, consegne e interventi sul territorio, anche con connessione lenta
+- Integrazione con contabilità e fatturazione elettronica
+- Assistenza ed evoluzione del software, dallo stesso team che lo ha sviluppato
+
+## Metodo in quattro fasi
+1. Analisi del processo: si studia come lavora l'azienda
+2. Fondamenta riusabili: moduli collaudati per anagrafiche, permessi, stampe e contabilità
+3. Componenti su misura: commesse, documenti di trasporto, consegne
+4. Interfaccia: una schermata per ogni attività
+
+## Team
+Sales manager, project manager e data analyst, product designer, developer.
+
+## Contatti
+- Sito: https://merkorn.com
+- Email: merkornsh@gmail.com
+- Zona: Puglia, clienti in tutta Italia; primo appuntamento in azienda o online
+
+## Pagine
+- [Home](https://merkorn.com/)
+- [Come lavoriamo](https://merkorn.com/metodo.html)
+- [Servizi](https://merkorn.com/servizi.html)
+- [Chi siamo](https://merkorn.com/chi-siamo.html)
+- [Contattaci](https://merkorn.com/contattaci.html)

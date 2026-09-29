@@ -1,6 +1,7 @@
 """Parti comuni a tutte le pagine: head, navigazione, form di contatto, footer."""
 
 import hashlib
+import json
 from pathlib import Path
 
 SITE = "Merkorn"
@@ -30,8 +31,45 @@ FAVICON = (
 )
 
 
-def head(title, description, path):
-    full = title if title == SITE else f"{title} | {SITE}"
+BASE = "https://merkorn.com"
+
+# The business, described once and referenced from every page (structured data for Google and AI search)
+ORG = {
+    "@type": ["Organization", "ProfessionalService"],
+    "@id": BASE + "/#org",
+    "name": "Merkorn",
+    "url": BASE + "/",
+    "logo": BASE + "/assets/logo.png",
+    "image": BASE + "/assets/og-image.png",
+    "email": EMAIL,
+    "slogan": "Software gestionale su misura per le PMI",
+    "description": "Software house in Puglia che progetta e sviluppa software gestionali su misura per piccole e medie imprese: ordini, magazzino, produzione, commesse e integrazione con la fatturazione elettronica.",
+    "address": {"@type": "PostalAddress", "addressRegion": "Puglia", "addressCountry": "IT"},
+    "areaServed": [{"@type": "AdministrativeArea", "name": "Puglia"}, {"@type": "Country", "name": "Italia"}],
+    "knowsAbout": ["software gestionale su misura", "gestionale personalizzato", "ERP personalizzato", "gestionale magazzino",
+                   "gestionale produzione", "gestionale commesse", "app per consegne", "UX design", "analisi dei processi aziendali"],
+}
+
+
+def jsonld(path, title, description, extra=()):
+    url = BASE + "/" + ("" if path == "index.html" else path)
+    graph = [
+        ORG,
+        {"@type": "WebSite", "@id": BASE + "/#site", "url": BASE + "/", "name": "Merkorn", "inLanguage": "it-IT", "publisher": {"@id": BASE + "/#org"}},
+        {"@type": "WebPage", "@id": url + "#page", "url": url, "name": title, "description": description, "inLanguage": "it-IT",
+         "isPartOf": {"@id": BASE + "/#site"}, "about": {"@id": BASE + "/#org"}},
+    ]
+    if path != "index.html":
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": BASE + "/"},
+            {"@type": "ListItem", "position": 2, "name": title.split(" | ")[0], "item": url}]})
+    graph.extend(extra)
+    return json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False)
+
+
+def head(title, description, path, extra_ld=()):
+    full = title if SITE in title else f"{title} | {SITE}"
+    url = BASE + "/" + ("" if path == "index.html" else path)
     return f"""<!doctype html>
 <html lang="it">
 <head>
@@ -39,16 +77,28 @@ def head(title, description, path):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{full}</title>
 <meta name="description" content="{description}">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="{url}">
+<link rel="alternate" hreflang="it" href="{url}">
+<meta property="og:site_name" content="Merkorn">
 <meta property="og:title" content="{full}">
 <meta property="og:description" content="{description}">
 <meta property="og:type" content="website">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="{BASE}/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="it_IT">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#08070B">
-<link rel="icon" href="{FAVICON}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;9..40,700&amp;family=Inter:wght@400;600&amp;display=swap">
 <link rel="stylesheet" href="{asset('assets/style.css')}">
+<script type="application/ld+json">{jsonld(path, full, description, extra_ld)}</script>
 </head>"""
 
 
@@ -135,8 +185,8 @@ def footer():
 HUD = """<div class="hud" aria-hidden="true"><span class="pm"><i></i><i></i><i></i><i></i><i></i></span><div><b>Sezione</b><span class="hud-name">Inizio</span><small class="hud-by">powered by <strong>Merkorn</strong></small></div></div>"""
 
 
-def page(path, title, description, seed, body, form=True, scripts=()):
-    return f"""{head(title, description, path)}
+def page(path, title, description, seed, body, form=True, scripts=(), extra_ld=()):
+    return f"""{head(title, description, path, extra_ld)}
 <body data-seed="{seed}">
 <canvas id="sky" aria-hidden="true"></canvas>
 {nav(path)}

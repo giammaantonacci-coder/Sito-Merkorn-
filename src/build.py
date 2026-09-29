@@ -36,16 +36,16 @@ PRINCIPLES = [
 ]
 
 SERVICES = [
-    ("Sviluppo", "Gestionali su misura",
-     "Ordini, magazzino, produzione e commesse in un unico sistema, costruito sul vostro modo di lavorare.",
+    ("Sviluppo", "Gestionale su misura",
+     "Un ERP personalizzato per ordini, magazzino, produzione e commesse, in un unico sistema costruito sul vostro modo di lavorare.",
      ["Ordini e offerte", "Magazzino", "Produzione", "Commesse", "Documenti di trasporto"]),
-    ("Consulenza", "Analisi dei processi",
+    ("Consulenza", "Analisi dei processi aziendali",
      "Un documento che descrive come lavorate oggi e dove il software può ridurre tempi ed errori.",
      ["Mappa del processo", "Punti critici", "Priorità di intervento"]),
-    ("Mobile", "App per reparto e consegne",
-     "App per tablet e smartphone, utilizzabili anche con una connessione lenta.",
+    ("Mobile", "App per magazzino e consegne",
+     "App per tablet e smartphone collegate al gestionale, utilizzabili anche con una connessione lenta.",
      ["Carico e scarico merce", "Consegne", "Firma del cliente"]),
-    ("Dopo il rilascio", "Assistenza ed evoluzione",
+    ("Dopo il rilascio", "Assistenza ed evoluzione del software",
      "Lo stesso team che ha sviluppato il software lo segue e lo fa crescere nel tempo.",
      ["Assistenza agli utenti", "Aggiornamenti", "Nuove funzioni"]),
 ]
@@ -332,6 +332,48 @@ def dashboard():
 HOME_SERVICES = (cards([(k, h, p) for k, h, p, _ in SERVICES], link="servizi.html")
                  + '\n      <a class="more-link" href="servizi.html">Tutti i servizi <span aria-hidden="true">→</span></a>')
 
+# Frequently asked questions: visible on the page and published as FAQPage structured data,
+# written as short, quotable answers (what Google and AI assistants pick up)
+FAQ_HOME = [
+    ("Cos'è un software gestionale su misura?",
+     "È un gestionale progettato sui processi di una specifica azienda. Invece di adattare il lavoro a un programma già pronto, il software segue il percorso reale di ordini, magazzino, produzione e fatturazione."),
+    ("Quando conviene un gestionale personalizzato rispetto a uno pronto?",
+     "Quando l'azienda ha processi specifici che un gestionale standard non copre e si finisce per usare fogli di calcolo accanto al programma. Nel primo appuntamento valutiamo insieme se il su misura conviene davvero."),
+    ("Quanto costa un gestionale su misura?",
+     "Dipende da quante aree e processi deve gestire. Dopo l'analisi vi diamo un preventivo diviso per fasi, con tempi e costi concordati prima di iniziare. Partiamo da moduli già collaudati per contenere i costi."),
+    ("Quanto tempo serve per sviluppare un gestionale personalizzato?",
+     "Lavoriamo per rilasci successivi, quindi i primi componenti sono in uso già durante il progetto. La durata complessiva viene definita fase per fase dopo l'analisi dei processi."),
+    ("Il gestionale si collega alla fatturazione elettronica e alla contabilità?",
+     "Sì. Colleghiamo il gestionale ai programmi che usate già, come contabilità e fatturazione elettronica, così i dati si inseriscono una sola volta."),
+    ("Lavorate solo in Puglia?",
+     "Siamo una software house pugliese e lavoriamo con aziende di tutta Italia. Il primo appuntamento può essere in azienda oppure online."),
+]
+
+FAQ_SERVIZI = [
+    ("Si può partire da un solo reparto?",
+     "Sì. Si può iniziare, per esempio, dal gestionale di magazzino o dalle commesse e aggiungere le altre aree nel tempo, sulla stessa base."),
+    ("Potete importare i dati dai fogli Excel o dal vecchio gestionale?",
+     "Sì. Nella fase delle fondamenta importiamo e verifichiamo anagrafiche, articoli e dati esistenti, così il nuovo gestionale parte già completo."),
+    ("Sviluppate anche app per smartphone e tablet?",
+     "Sì. Realizziamo app per magazzino, consegne e interventi sul territorio, utilizzabili anche con una connessione lenta e collegate al gestionale."),
+    ("Cosa succede dopo il rilascio?",
+     "Il software viene seguito dallo stesso team che lo ha sviluppato, con assistenza agli utenti, aggiornamenti e nuove funzioni quando emergono esigenze concrete."),
+]
+
+
+def faq(items, title="Domande frequenti", intro=None, name="Domande frequenti"):
+    qs = "\n        ".join(f'<details class="qa"><summary><h3>{q}</h3><span class="qa-i" aria-hidden="true"></span></summary><p>{a}</p></details>' for q, a in items)
+    return section(name, "Domande frequenti", title, intro, f'<div class="faq" data-enter>\n        {qs}\n      </div>')
+
+
+def faq_ld(items):
+    return {"@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in items]}
+
+
+SERVICES_LD = [{"@type": "Service", "name": h, "serviceType": h, "description": p, "provider": {"@id": "https://merkorn.com/#org"},
+                "areaServed": ["Puglia", "Italia"]} for _, h, p, _ in SERVICES]
+
 HOME = f"""  <section class="hero" data-exit data-name="Inizio">
     <div class="wrap">
       <div class="center">
@@ -340,7 +382,7 @@ HOME = f"""  <section class="hero" data-exit data-name="Inizio">
           <span class="ln"><span style="--i:0">Software gestionale</span></span>
           <span class="ln"><span style="--i:1"><em>su misura</em> per le PMI</span></span>
         </h1>
-        <p class="lead">Progettiamo gestionali partendo da come lavora la vostra azienda, dall'ordine alla fattura.</p>
+        <p class="lead">Sviluppiamo gestionali personalizzati per piccole e medie imprese. Ordini, magazzino, produzione e fatturazione in un unico sistema, costruito su come lavora la vostra azienda.</p>
         <div class="actions">
           <a class="btn" href="contattaci.html"><span>Prenota un appuntamento</span></a>
           <a class="btn ghost" href="metodo.html"><span>Come lavoriamo</span></a>
@@ -353,18 +395,20 @@ HOME = f"""  <section class="hero" data-exit data-name="Inizio">
   {statement("Il nostro approccio",
              "Molti gestionali chiedono alle persone di adattarsi al software. Noi partiamo dal lavoro di ogni giorno.",
              "persone,lavoro",
-             "Così il software viene adottato più facilmente e spariscono i passaggi manuali tra fogli di calcolo e programmi diversi.",
+             "Così il gestionale viene adottato più facilmente e spariscono i passaggi manuali tra fogli Excel e programmi diversi.",
              "Approccio")}
 
   {hscroll("Come lavoriamo", "Quattro fasi, sempre nello stesso ordine", ("metodo.html", "Il metodo nel dettaglio"), phase_panels(), "Come lavoriamo")}
 
-  {section("Servizi", "Servizi", "Cosa facciamo", "Per piccole e medie imprese con processi specifici.", HOME_SERVICES)}
+  {section("Servizi", "Servizi", "Gestionali personalizzati per ogni reparto", "Per piccole e medie imprese con processi specifici, in Puglia e in tutta Italia.", HOME_SERVICES)}
 
   {band("Primo incontro", "Il primo incontro è una chiacchierata", CHAT_TEXT)}
 
-  {principles()}"""
+  {principles()}
 
-METODO = f"""  {page_hero("Come lavoriamo", ["Un metodo in <em>quattro fasi</em>"], "Dall'analisi del lavoro reale a un software semplice da usare. Ogni fase produce un risultato che potete verificare.", 2)}
+  {faq(FAQ_HOME, "Software gestionale su misura: le domande più comuni")}"""
+
+METODO = f"""  {page_hero("Come lavoriamo", ["Come sviluppiamo un <em>gestionale personalizzato</em>"], "Quattro fasi, dall'analisi dei processi aziendali a un software semplice da usare. Ogni fase produce un risultato che potete verificare.", 2)}
 
   <section data-name="Le fasi">
     <div class="wrap">
@@ -377,7 +421,7 @@ METODO = f"""  {page_hero("Come lavoriamo", ["Un metodo in <em>quattro fasi</em>
 
   {principles()}"""
 
-SERVIZI = f"""  {page_hero("Servizi", ["Software su misura per il <em>vostro processo</em>"], "Gestionali, app per il reparto e analisi dei processi per le PMI. Il software si adatta a come lavorate.", 3)}
+SERVIZI = f"""  {page_hero("Servizi", ["Software gestionale <em>personalizzato</em> per la vostra azienda"], "Gestionale su misura, gestionale di magazzino e produzione, app per le consegne e analisi dei processi per le PMI. Il software si adatta a come lavorate.", 3)}
 
   {hscroll("Cosa facciamo", "Quattro servizi collegati tra loro", None, service_panels(), "Cosa facciamo")}
 
@@ -388,17 +432,19 @@ SERVIZI = f"""  {page_hero("Servizi", ["Software su misura per il <em>vostro pro
              "Un unico progetto")}
 
   {section("Per chi lavoriamo", "Per chi lavoriamo", "Aziende con processi specifici",
-           "Imprese che hanno superato i fogli di calcolo ma non trovano un software pronto adatto a loro.",
-           cards([("Produzione", "Aziende manifatturiere", "Commesse, avanzamento della produzione e controlli di qualità."),
-                  ("Distribuzione", "Commercio e logistica", "Ordini, magazzino su più depositi e consegne."),
-                  ("Servizi", "Squadre sul territorio", "Interventi programmati e rapportini digitali.")], "three"))}
+           "Imprese che hanno superato i fogli Excel ma non trovano un gestionale pronto adatto a loro.",
+           cards([("Produzione", "Aziende manifatturiere", "Gestionale di produzione e commesse, avanzamento dei lavori e controlli di qualità."),
+                  ("Distribuzione", "Commercio e logistica", "Gestionale di magazzino su più depositi, ordini, documenti di trasporto e consegne."),
+                  ("Servizi", "Squadre sul territorio", "Interventi programmati, rapportini digitali e app per i tecnici collegata all'ufficio.")], "three"))}
 
   {prose("Integrazioni", "Integrazioni", "Collegato ai software che usate già",
          ["Colleghiamo il gestionale ai programmi già in uso, come contabilità e fatturazione elettronica, così i dati si inseriscono una sola volta."])}
 
+  {faq(FAQ_SERVIZI, "Domande sui nostri servizi")}
+
   {band("Primo incontro", "Parliamo del servizio che vi serve", CHAT_TEXT)}"""
 
-CHI = f"""  {page_hero("Chi siamo", ["Una software house che parte dalla <em>UX</em>"], "Software gestionale su misura per le PMI italiane, dalla Puglia.", 4)}
+CHI = f"""  {page_hero("Chi siamo", ["Una software house in Puglia che parte dalla <em>UX</em>"], "Sviluppiamo software gestionale su misura per le PMI italiane, progettando prima l'esperienza d'uso e poi il codice.", 4)}
 
   {statement("Missione",
              "Portiamo il digitale nelle piccole e medie imprese partendo dalle persone e dal loro lavoro quotidiano.",
@@ -428,7 +474,7 @@ CHI = f"""  {page_hero("Chi siamo", ["Una software house che parte dalla <em>UX<
 
 CONTATTI = contact_form(
     heading="Contattaci",
-    intro="Scriveteci per prenotare un appuntamento o per qualsiasi domanda. Vi rispondiamo personalmente.",
+    intro="Scriveteci per prenotare un appuntamento o chiedere un preventivo per un gestionale su misura. Vi rispondiamo personalmente.",
     level="h1",
 ).replace('class="contact"', 'class="contact page-contact"', 1)
 
@@ -445,16 +491,38 @@ PRIVACY = f"""  {page_hero("Privacy", ["Informativa sul trattamento dei dati"], 
     </div>
   </section>"""
 
+# path, <title>, meta description, nebula seed, body, contact form, scripts, structured data
 PAGES = [
-    ("index.html", "Merkorn", "Merkorn sviluppa software gestionale su misura per le piccole e medie imprese italiane, partendo dal processo aziendale.", 0.0, HOME, True),
-    ("metodo.html", "Come lavoriamo", "Il metodo Merkorn in quattro fasi e quattro schermate di esempio che mostrano come la UX rende leggibili i dati.", 1.3, METODO, True, ("assets/schermate.js",)),
-    ("servizi.html", "Servizi", "Gestionali su misura, analisi dei processi, app per reparto e consegne, assistenza ed evoluzione del software.", 2.6, SERVIZI, True),
-    ("chi-siamo.html", "Chi siamo", "Merkorn è una software house pugliese che sviluppa gestionali su misura per le PMI partendo dalla UX.", 3.9, CHI, True),
-    ("contattaci.html", "Contattaci", "Contattate Merkorn per prenotare un appuntamento o chiedere informazioni sui servizi.", 5.2, CONTATTI, False),
-    ("privacy.html", "Privacy", "Informativa sul trattamento dei dati personali raccolti tramite il modulo di contatto del sito Merkorn.", 6.5, PRIVACY, True),
+    ("index.html", "Software gestionale su misura per PMI | Merkorn",
+     "Merkorn è una software house in Puglia che sviluppa software gestionali su misura per PMI: ordini, magazzino, produzione e fatturazione in un unico sistema.",
+     0.0, HOME, True, (), [faq_ld(FAQ_HOME)]),
+    ("metodo.html", "Come sviluppiamo un gestionale personalizzato | Merkorn",
+     "Il metodo Merkorn per sviluppare un gestionale personalizzato: analisi dei processi, moduli collaudati, componenti su misura e interfacce semplici da usare.",
+     1.3, METODO, True, ("assets/schermate.js",), []),
+    ("servizi.html", "Gestionale personalizzato, magazzino e produzione | Merkorn",
+     "Gestionale su misura per aziende, gestionale di magazzino e produzione, app per le consegne e analisi dei processi, integrati con la fatturazione elettronica.",
+     2.6, SERVIZI, True, (), SERVICES_LD + [faq_ld(FAQ_SERVIZI)]),
+    ("chi-siamo.html", "Software house in Puglia per le PMI | Merkorn",
+     "Merkorn è una software house pugliese: product designer, sales manager, project manager e developer che sviluppano gestionali su misura per le PMI.",
+     3.9, CHI, True, (), []),
+    ("contattaci.html", "Preventivo gestionale su misura | Merkorn",
+     "Contattate Merkorn per un appuntamento o un preventivo per un software gestionale su misura. Primo incontro in azienda o online, senza impegno.",
+     5.2, CONTATTI, False, (), []),
+    ("privacy.html", "Privacy | Merkorn",
+     "Informativa sul trattamento dei dati personali raccolti tramite il modulo di contatto del sito Merkorn.",
+     6.5, PRIVACY, True, (), []),
 ]
 
 if __name__ == "__main__":
-    for path, title, desc, seed, body, form, *extra in PAGES:
-        (ROOT / path).write_text(page(path, title, desc, seed, body, form, *extra), encoding="utf-8")
+    from datetime import date
+    for path, title, desc, seed, body, form, scripts, ld in PAGES:
+        (ROOT / path).write_text(page(path, title, desc, seed, body, form, scripts, ld), encoding="utf-8")
         print("scritto", path)
+    # sitemap for search engines
+    today = date.today().isoformat()
+    urls = "".join(
+        f"<url><loc>https://merkorn.com/{'' if p == 'index.html' else p}</loc><lastmod>{today}</lastmod>"
+        f"<priority>{'1.0' if p == 'index.html' else '0.3' if p == 'privacy.html' else '0.8'}</priority></url>"
+        for p, *_ in PAGES)
+    (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n', encoding="utf-8")
+    print("scritto sitemap.xml")
