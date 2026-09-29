@@ -247,9 +247,9 @@
       const timeout = setTimeout(() => ctrl.abort(), 12000);
       try {
         const post = url => fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
-        let res = await post(ENDPOINT);
-        // 404 or 503: the mail function is not deployed or not configured yet
-        if (res.status === 404 || res.status === 503) res = await post(BACKUP);
+        // any failure of the mail function (not configured yet, Gmail refusing, network) goes to the backup service
+        let res = await post(ENDPOINT).catch(err => { if (ctrl.signal.aborted) throw err; return null; });
+        if (!res || (!res.ok && res.status !== 422)) res = await post(BACKUP);
         const body = await res.json().catch(() => ({}));
         if (!res.ok || String(body.success) === 'false') throw new Error(body.message || res.status);
         form.reset(); touched.clear();
