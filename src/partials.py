@@ -13,6 +13,8 @@ def asset(path):
     digest = hashlib.sha1((ROOT / path).read_bytes()).hexdigest()[:10]
     return f"{path}?v={digest}"
 EMAIL = "merkornsh@gmail.com"
+# Google Analytics 4 measurement ID (G-XXXXXXXXXX). Empty: no analytics, only the technical consent cookie.
+GA_ID = ""
 LEGAL = "Merkorn S.r.l.s. · P.IVA 03494760733 · Via Carlo Alberto della Chiesa 12, 74017 Mottola (TA)"
 
 NAV = [
@@ -102,9 +104,8 @@ def head(title, description, path, extra_ld=()):
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/favicon-48.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;9..40,700&amp;family=Inter:wght@400;600&amp;display=swap">
+<link rel="preload" href="/assets/fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{asset('assets/style.css')}">
 <script type="application/ld+json">{jsonld(path, full, description, extra_ld)}</script>
 </head>"""
@@ -179,7 +180,7 @@ def footer():
     return f"""<footer class="site-foot">
   <div class="wrap">
     <div class="top">
-      <nav aria-label="Pagine del sito"><a href="index.html">Home</a>{links}<a href="contattaci.html">Contattaci</a><a href="privacy.html">Privacy</a></nav>
+      <nav aria-label="Pagine del sito"><a href="index.html">Home</a>{links}<a href="contattaci.html">Contattaci</a><a href="privacy.html">Privacy policy</a><a href="cookie.html">Cookie policy</a><button class="linkbtn" type="button" data-cookie-prefs>Preferenze cookie</button></nav>
       <p>{EMAIL}</p>
     </div>
     <div class="bottom">
@@ -205,6 +206,7 @@ def page(path, title, description, seed, body, form=True, scripts=(), extra_ld=(
 </main>
 {footer()}
 {HUD}
+<script src="{asset('assets/consent.js')}" data-ga="{GA_ID}" defer></script>
 <script src="{asset('assets/nebula.js')}" defer></script>
 <script src="{asset('assets/site.js')}" defer></script>
 {"".join(f'<script src="{asset(x)}" defer></script>' for x in scripts)}

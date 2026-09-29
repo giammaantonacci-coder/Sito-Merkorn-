@@ -478,16 +478,70 @@ CONTATTI = contact_form(
     level="h1",
 ).replace('class="contact"', 'class="contact page-contact"', 1)
 
-PRIVACY = f"""  {page_hero("Privacy", ["Informativa sul trattamento dei dati"], "Come trattiamo i dati inviati con il modulo di contatto, ai sensi del Regolamento UE 2016/679.", 5)}
+TITOLARE = "MERKORN S.R.L.S., partita IVA e codice fiscale 03494760733, con sede in Via Carlo Alberto della Chiesa 12, 74017 Mottola (TA)"
+UPDATED = "29 settembre 2026"
+
+PRIVACY = f"""  {page_hero("Privacy policy", ["Informativa sul trattamento dei <em>dati personali</em>"], "Come trattiamo i dati di chi visita il sito e di chi ci scrive, ai sensi degli articoli 13 e 14 del Regolamento UE 2016/679 (GDPR).", 5)}
 
   <section data-name="Informativa">
     <div class="wrap doc">
-      <div><h2>Titolare del trattamento</h2><p>MERKORN S.R.L.S., partita IVA e codice fiscale 03494760733, con sede in Via Carlo Alberto della Chiesa 12, 74017 Mottola (TA). Per qualsiasi richiesta potete scrivere a {EMAIL}.</p></div>
-      <div><h2>Dati raccolti</h2><p>Nome e cognome, indirizzo email e, se li indicate, azienda, telefono e testo del messaggio.</p></div>
-      <div><h2>Finalità e base giuridica</h2><p>Usiamo i dati solo per rispondere alla richiesta e organizzare un eventuale appuntamento. La base giuridica è il consenso espresso con l'invio del modulo.</p></div>
-      <div><h2>Modalità del trattamento</h2><p>Il modulo invia i dati alla nostra email tramite il servizio FormSubmit, che agisce come fornitore tecnico.</p></div>
-      <div><h2>Conservazione</h2><p>Conserviamo i dati per il tempo necessario a gestire la richiesta e comunque non oltre 12 mesi dall'ultimo contatto, salvo un successivo rapporto contrattuale.</p></div>
-      <div><h2>Diritti dell'interessato</h2><p>Potete chiedere accesso, rettifica, cancellazione o limitazione dei dati e revocare il consenso scrivendo a {EMAIL}. Potete anche presentare reclamo al Garante per la protezione dei dati personali.</p></div>
+      <div><h2>Titolare del trattamento</h2><p>{TITOLARE}. Per qualsiasi richiesta sui vostri dati potete scrivere a <a href="mailto:{EMAIL}">{EMAIL}</a>.</p></div>
+      <div><h2>Dati che trattiamo</h2>
+        <ul>
+          <li><b>Dati di navigazione.</b> Per mostrare il sito il server registra dati tecnici come indirizzo IP, tipo di browser, pagina richiesta, data e ora. Servono al funzionamento e alla sicurezza del sito e non vengono usati per identificarvi.</li>
+          <li><b>Dati inviati con il modulo di contatto o per email.</b> Nome e cognome, email e, se li indicate, azienda, telefono e testo del messaggio.</li>
+          <li><b>Cookie.</b> Un cookie tecnico che ricorda le vostre scelte e, solo con il vostro consenso, cookie statistici. I dettagli sono nella <a href="cookie.html">cookie policy</a>.</li>
+        </ul></div>
+      <div><h2>Finalità e basi giuridiche</h2>
+        <ul>
+          <li>Rispondere alle richieste, fissare un appuntamento e preparare un preventivo: misure precontrattuali adottate su vostra richiesta (art. 6.1.b GDPR).</li>
+          <li>Garantire il funzionamento e la sicurezza del sito: legittimo interesse del titolare (art. 6.1.f GDPR).</li>
+          <li>Statistiche aggregate sulle visite: consenso, che potete revocare in qualsiasi momento (art. 6.1.a GDPR).</li>
+        </ul></div>
+      <div><h2>Conferimento dei dati</h2><p>Il conferimento dei dati nel modulo è facoltativo, ma senza nome, email e messaggio non possiamo rispondere alla richiesta.</p></div>
+      <div><h2>Chi riceve i dati</h2><p>I dati sono trattati dal personale di Merkorn e da fornitori che agiscono come responsabili del trattamento:</p>
+        <ul>
+          <li>Vercel Inc., per l'hosting del sito;</li>
+          <li>FormSubmit, per l'inoltro dei messaggi del modulo alla nostra email;</li>
+          <li>Google LLC, per il servizio di posta elettronica e, solo con il vostro consenso, per Google Analytics.</li>
+        </ul>
+        <p>I dati non vengono venduti né diffusi.</p></div>
+      <div><h2>Trasferimento fuori dall'Unione europea</h2><p>Alcuni fornitori hanno sede negli Stati Uniti. Il trasferimento avviene sulla base della decisione di adeguatezza della Commissione europea (EU-US Data Privacy Framework) oppure delle clausole contrattuali standard previste dall'art. 46 GDPR.</p></div>
+      <div><h2>Conservazione</h2>
+        <ul>
+          <li>Richieste di contatto: per il tempo necessario a gestirle e comunque non oltre 12 mesi dall'ultimo contatto, salvo un successivo rapporto contrattuale.</li>
+          <li>Dati di navigazione: per il tempo previsto dal fornitore di hosting per la sicurezza del servizio.</li>
+          <li>Dati statistici: non oltre 14 mesi.</li>
+        </ul></div>
+      <div><h2>I vostri diritti</h2><p>Potete chiedere l'accesso ai dati, la rettifica, la cancellazione, la limitazione del trattamento e la portabilità, opporvi al trattamento basato sul legittimo interesse e revocare il consenso in qualsiasi momento, senza conseguenze sui trattamenti già effettuati. Basta scrivere a <a href="mailto:{EMAIL}">{EMAIL}</a>. Avete anche il diritto di presentare reclamo al <a href="https://www.garanteprivacy.it" rel="noopener">Garante per la protezione dei dati personali</a>.</p></div>
+      <div><h2>Decisioni automatizzate</h2><p>Non prendiamo decisioni basate unicamente su trattamenti automatizzati, compresa la profilazione.</p></div>
+      <div><p class="updated">Ultimo aggiornamento: {UPDATED}.</p></div>
+    </div>
+  </section>"""
+
+COOKIE_HEAD = ["Nome", "Tipo", "Fornitore", "Finalità", "Durata"]
+COOKIE_ROWS = [
+    ("mk_consent", "Tecnico", "Merkorn", "Ricorda le scelte sui cookie", "6 mesi"),
+    ("_ga", "Statistico", "Google Analytics", "Distingue le visite in forma aggregata", "6 mesi"),
+    ("_ga_&lt;ID&gt;", "Statistico", "Google Analytics", "Mantiene lo stato della sessione di visita", "6 mesi"),
+]
+
+COOKIE = f"""  {page_hero("Cookie policy", ["Come usiamo i <em>cookie</em>"], "Quali cookie usa il sito merkorn.com, a cosa servono e come potete cambiare le vostre scelte.", 5)}
+
+  <section data-name="Cookie policy">
+    <div class="wrap doc">
+      <div><h2>Cosa sono i cookie</h2><p>I cookie sono piccoli file di testo che il sito salva nel browser. Alcuni sono necessari al funzionamento, altri servono a raccogliere statistiche e richiedono il vostro consenso.</p></div>
+      <div><h2>Cookie tecnici</h2><p>Usiamo un solo cookie tecnico, che registra le scelte fatte nel banner così da non chiedervele a ogni visita. Non richiede consenso e non raccoglie dati per altre finalità.</p></div>
+      <div><h2>Cookie statistici</h2><p>Con il vostro consenso usiamo Google Analytics per sapere, in forma aggregata, quante persone visitano il sito e quali pagine consultano. Abbiamo disattivato le funzioni pubblicitarie e i segnali Google. Senza consenso Google Analytics non viene caricato.</p></div>
+      <div><h2>Cookie di profilazione e di terze parti</h2><p>Non usiamo cookie di profilazione né cookie pubblicitari. I caratteri tipografici sono ospitati direttamente sul sito, quindi aprendo le pagine non vengono contattati servizi esterni.</p></div>
+      <div><h2>Elenco dei cookie</h2>
+        <div class="table"><table>
+          <thead><tr>{"".join(f"<th>{h}</th>" for h in COOKIE_HEAD)}</tr></thead>
+          <tbody>{"".join("<tr>" + "".join(f'<td data-label="{l}">{c}</td>' for l, c in zip(COOKIE_HEAD, r)) + "</tr>" for r in COOKIE_ROWS)}</tbody>
+        </table></div></div>
+      <div><h2>Come cambiare le scelte</h2><p>Potete modificare o revocare il consenso in qualsiasi momento da <button class="linkbtn" type="button" data-cookie-prefs>Preferenze cookie</button>, un link presente anche in fondo a ogni pagina. Potete inoltre cancellare o bloccare i cookie dalle impostazioni del browser. Chiudendo il banner con la X vengono mantenuti solo i cookie tecnici.</p></div>
+      <div><h2>Titolare</h2><p>{TITOLARE}. Per domande: <a href="mailto:{EMAIL}">{EMAIL}</a>. Maggiori informazioni sul trattamento dei dati sono nella <a href="privacy.html">privacy policy</a>.</p></div>
+      <div><p class="updated">Ultimo aggiornamento: {UPDATED}.</p></div>
     </div>
   </section>"""
 
@@ -508,9 +562,12 @@ PAGES = [
     ("contattaci.html", "Preventivo gestionale su misura | Merkorn",
      "Contattate Merkorn per un appuntamento o un preventivo per un software gestionale su misura. Primo incontro in azienda o online, senza impegno.",
      5.2, CONTATTI, False, (), []),
-    ("privacy.html", "Privacy | Merkorn",
-     "Informativa sul trattamento dei dati personali raccolti tramite il modulo di contatto del sito Merkorn.",
+    ("privacy.html", "Privacy policy | Merkorn",
+     "Privacy policy di Merkorn: come trattiamo i dati di chi visita il sito e di chi ci contatta, ai sensi del GDPR.",
      6.5, PRIVACY, True, (), []),
+    ("cookie.html", "Cookie policy | Merkorn",
+     "Quali cookie usa il sito di Merkorn, a cosa servono e come modificare le scelte sul consenso.",
+     7.8, COOKIE, False, (), []),
 ]
 
 if __name__ == "__main__":
@@ -522,7 +579,7 @@ if __name__ == "__main__":
     today = date.today().isoformat()
     urls = "".join(
         f"<url><loc>https://merkorn.com/{'' if p == 'index.html' else p}</loc><lastmod>{today}</lastmod>"
-        f"<priority>{'1.0' if p == 'index.html' else '0.3' if p == 'privacy.html' else '0.8'}</priority></url>"
+        f"<priority>{'1.0' if p == 'index.html' else '0.3' if p in ('privacy.html', 'cookie.html') else '0.8'}</priority></url>"
         for p, *_ in PAGES)
     (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n', encoding="utf-8")
     print("scritto sitemap.xml")
