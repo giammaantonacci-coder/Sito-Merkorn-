@@ -63,6 +63,10 @@ CARD_ICONS = {
     "Servizi": '<path d="M4 44V20h34v24"/><path d="M38 28h12l8 10v6H38"/><circle class="v" cx="16" cy="46" r="5"/><circle class="v" cx="48" cy="46" r="5"/>',
     "Concretezza": '<rect x="8" y="22" width="48" height="20" rx="4"/><path d="M16 22v8M24 22v12M32 22v8M40 22v12M48 22v8"/><path class="v" d="M8 52h48"/>',
     "Chiarezza": '<rect x="8" y="12" width="48" height="42" rx="6"/><path d="M8 24h48M20 6v12M44 6v12"/><path class="v" d="M20 38l7 7 16-15"/>',
+    "Design": '<rect x="6" y="8" width="52" height="38" rx="6"/><path class="v" d="M16 36l8-10 6 6 10-12"/><circle cx="46" cy="18" r="3"/><path d="M22 56h20M32 46v10"/>',
+    "Commerciale": '<path d="M6 30l12-12 10 6 8-4 22 12"/><path d="M58 32 44 46c-2 2-5 2-7 0l-3-3"/><path class="v" d="M18 18v0M6 30l14 14c2 2 5 2 7 0l3-3"/><path d="M26 38l6 6"/>',
+    "Requisiti": '<rect x="12" y="8" width="40" height="50" rx="6"/><path d="M24 8v6h16V8"/><path class="v" d="M20 28l4 4 8-8M20 44l4 4 8-8"/><path d="M38 30h6M38 46h6"/>',
+    "Codice": '<rect x="6" y="10" width="52" height="44" rx="6"/><path d="M6 20h52"/><path class="v" d="M24 30l-7 7 7 7M40 30l7 7-7 7"/><path d="M35 28l-6 18"/>',
     "Continuità": '<circle cx="22" cy="22" r="8"/><circle cx="42" cy="22" r="8"/><path d="M8 52c0-9 6-15 14-15s14 6 14 15"/><path class="v" d="M30 52c0-9 5-15 12-15s14 6 14 15"/>',
 }
 
@@ -403,6 +407,13 @@ CHI = f"""  {page_hero("Chi siamo", ["Una software house che parte dalla <em>UX<
 
   {prose("UX design first", "UX design first", "Prima si progetta l'uso, poi si scrive il codice",
          ["Disegniamo le schermate insieme a chi le userà e le proviamo nei luoghi di lavoro prima di svilupparle. Il risultato è un software che richiede poca formazione."])}
+
+  {section("Il team", "Il team", "Le persone che seguono il vostro progetto",
+           "Un gruppo piccolo, in cui ognuno ha un ruolo preciso. Sono le stesse persone dal primo appuntamento all'assistenza.",
+           cards([("Design", "Product designer", "Progetta l'esperienza d'uso e le schermate. Osserva come lavorate, disegna i flussi e prova le interfacce con chi le userà."),
+                  ("Commerciale", "Sales manager", "È il vostro primo contatto. Organizza l'appuntamento iniziale, raccoglie le esigenze e definisce con voi proposta, tempi e costi."),
+                  ("Requisiti", "Project manager e data analyst", "Trasforma le esigenze in requisiti chiari. Analizza dati e processi attuali, pianifica le fasi e segue l'avanzamento del progetto."),
+                  ("Codice", "Developer", "Sviluppa il software, lo collega ai programmi che usate già e lo segue dopo il rilascio con aggiornamenti e assistenza.")]))}
 
   {prose("Come costruiamo", "Come costruiamo", "Fondamenta riusabili, superficie su misura",
          ["I cinque blocchi del marchio raccontano il nostro metodo: una base di moduli collaudati, i componenti sopra e, in cima, le schermate su misura."])}
