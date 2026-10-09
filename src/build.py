@@ -409,7 +409,7 @@ def glossary():
     return f'<dl class="gloss" data-enter>\n        ' + "\n        ".join(rows) + "\n      </dl>"
 
 
-SPIEGATO = f"""  {page_hero("Il digitale spiegato", ["Il digitale <em>spiegato</em>", "con calma"], "Gestionali, dati e processi in poche righe, con parole di tutti i giorni.", 3)}
+SPIEGATO = f"""  {page_hero("Il digitale spiegato", ["Prima di scegliere", "un <em>gestionale</em>"], "Le domande da farsi prima di comprare o far sviluppare un software, con risposte brevi.", 3)}
 
   {section("Articoli", "Articoli", "Da leggere in pochi minuti", "Le domande che ci fanno più spesso.", article_cards(sp.ARTICLES))}
 
@@ -642,8 +642,8 @@ PAGES = [
     ("contattaci.html", "Preventivo gestionale su misura | Merkorn",
      "Contatta Merkorn per un appuntamento o un preventivo per un software gestionale su misura. Primo incontro in azienda o online, senza impegno.",
      5.2, CONTATTI, False, (), []),
-    (sp.HUB, "Il digitale spiegato, gestionali in parole semplici | Merkorn",
-     "Articoli brevi e un glossario per capire gestionali, ERP, fatturazione elettronica e digitalizzazione delle PMI, con esempi concreti.",
+    (sp.HUB, "Prima di scegliere un gestionale, il digitale spiegato | Merkorn",
+     "Le domande da farsi prima di comprare o far sviluppare un gestionale, con risposte brevi su ERP, Excel, fatturazione elettronica e UX.",
      3.3, SPIEGATO, True, (), SPIEGATO_LD),
 ] + [article_page(a) for a in sp.ARTICLES] + [
     ("privacy.html", "Privacy policy | Merkorn",
