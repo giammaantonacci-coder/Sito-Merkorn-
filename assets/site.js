@@ -254,7 +254,7 @@
         if (!res.ok || String(body.success) === 'false') throw new Error(body.message || res.status);
         form.reset(); touched.clear();
         status.className = 'status ok';
-        status.textContent = 'Richiesta inviata. Vi ricontattiamo all\'indirizzo email che avete indicato.';
+        status.textContent = 'Richiesta inviata. Ti ricontattiamo all\'indirizzo email che hai indicato.';
       } catch (err) {
         // never lose the request: the same text, ready to send from the visitor's own mail app
         const text = Object.entries(data).filter(([k, v]) => k[0] !== '_' && k !== 'Pagina' && v).map(([k, v]) => k + ': ' + v).join('\n');
@@ -263,7 +263,7 @@
         mail.href = 'mailto:' + INBOX + '?subject=' + encodeURIComponent(data._subject) + '&body=' + encodeURIComponent(text);
         mail.textContent = 'Invia la richiesta via email';
         status.className = 'status ko';
-        status.textContent = 'Il servizio di invio non ha risposto, i dati che avete inserito sono ancora nel modulo. Potete inviare la stessa richiesta con il vostro programma di posta, a ' + INBOX + '. ';
+        status.textContent = 'Il servizio di invio non ha risposto, i dati che hai inserito sono ancora nel modulo. Puoi inviare la stessa richiesta con il tuo programma di posta, a ' + INBOX + '. ';
         status.appendChild(mail);
       } finally {
         clearTimeout(timeout); clearTimeout(slow);

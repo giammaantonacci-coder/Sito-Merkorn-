@@ -159,8 +159,8 @@ TOPICS = [
 
 def contact_form(heading="Contattaci", intro=None, level="h2"):
     intro = intro or (
-        "Raccontateci in poche righe di cosa si occupa l'azienda. "
-        "Vi ricontattiamo per fissare un appuntamento, in azienda o online."
+        "Raccontaci in poche righe di cosa si occupa la tua azienda. "
+        "Ti ricontattiamo per fissare un appuntamento, in azienda o online."
     )
     options = "".join(f"<option>{t}</option>" for t in TOPICS)
     return f"""<section class="contact" id="contattaci" data-name="Contattaci">
@@ -171,7 +171,7 @@ def contact_form(heading="Contattaci", intro=None, level="h2"):
           <{level}>{heading}</{level}>
           <p>{intro}</p>
           <div class="mailline">
-            <div><small>Oppure scriveteci a</small><output id="mail-addr">{EMAIL}</output></div>
+            <div><small>Oppure scrivici a</small><output id="mail-addr">{EMAIL}</output></div>
             <button class="copy" type="button" data-copy="mail-addr">Copia indirizzo</button>
           </div>
         </div>
@@ -181,7 +181,7 @@ def contact_form(heading="Contattaci", intro=None, level="h2"):
           <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required><span class="err" aria-live="polite"></span></div>
           <div class="field"><label for="f-telefono">Telefono <span>facoltativo</span></label><input id="f-telefono" name="telefono" type="tel" autocomplete="tel"></div>
           <div class="field full"><label for="f-argomento">Argomento</label><select id="f-argomento" name="argomento">{options}</select></div>
-          <div class="field full"><label for="f-messaggio">Messaggio</label><textarea id="f-messaggio" name="messaggio" required placeholder="Per esempio: siamo un'azienda di produzione con dodici persone e gestiamo ordini e magazzino su fogli di calcolo separati."></textarea><span class="err" aria-live="polite"></span></div>
+          <div class="field full"><label for="f-messaggio">Messaggio</label><textarea id="f-messaggio" name="messaggio" required placeholder="Per esempio, siamo un'azienda di produzione con dodici persone e gestiamo ordini e magazzino su fogli Excel separati."></textarea><span class="err" aria-live="polite"></span></div>
           <label class="hp" aria-hidden="true">Non compilare questo campo<input name="_honey" tabindex="-1" autocomplete="off"></label>
           <label class="check"><input type="checkbox" name="privacy" id="f-privacy"><span>Ho letto l'<a href="privacy.html">informativa sulla privacy</a> e acconsento al trattamento dei dati per ricevere una risposta.</span></label>
           <div class="status" role="status" aria-live="polite"></div>

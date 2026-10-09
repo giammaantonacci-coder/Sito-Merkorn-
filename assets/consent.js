@@ -39,7 +39,7 @@
   box.innerHTML = `
     <button class="cookie-x" type="button" data-act="reject" aria-label="Chiudi e rifiuta i cookie facoltativi"><i></i><i></i></button>
     <h2 id="cookie-title">Cookie</h2>
-    <p>Usiamo un cookie tecnico per ricordare la vostra scelta. Con il vostro consenso usiamo anche cookie statistici, per capire in forma aggregata come viene visitato il sito. Nessun cookie di profilazione o pubblicità. Trovate i dettagli nella <a href="cookie.html">cookie policy</a>.</p>
+    <p>Usiamo un cookie tecnico per ricordare la tua scelta. Con il tuo consenso usiamo anche cookie statistici, per capire in forma aggregata come viene visitato il sito. Nessun cookie di profilazione o pubblicità. Trovi i dettagli nella <a href="cookie.html">cookie policy</a>.</p>
     <div class="cookie-prefs" hidden>
       <label class="cookie-opt"><span><b>Tecnici</b><small>Necessari al funzionamento del sito. Sempre attivi.</small></span><input type="checkbox" checked disabled><i aria-hidden="true"></i></label>
       <label class="cookie-opt"><span><b>Statistici</b><small>Google Analytics, con dati aggregati sulle visite.</small></span><input type="checkbox" id="cookie-stats"><i aria-hidden="true"></i></label>
