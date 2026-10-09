@@ -39,6 +39,7 @@ NAV = [
     ("metodo.html", "Come lavoriamo"),
     ("servizi.html", "Servizi"),
     ("chi-siamo.html", "Chi siamo"),
+    ("digitale-spiegato.html", "Il digitale spiegato"),
 ]
 
 MARK = '<span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>'

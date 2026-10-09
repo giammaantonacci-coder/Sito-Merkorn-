@@ -6,7 +6,8 @@ I blocchi di sezione qui sotto (frase fissata, scorrimento orizzontale, campo vi
 card impilate, dashboard) sono riutilizzati tra le pagine, ognuna con i propri contenuti.
 """
 from pathlib import Path
-from partials import page, contact_form, EMAIL
+from partials import page, contact_form, EMAIL, BASE
+import spiegato as sp
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -371,6 +372,85 @@ def faq_ld(items):
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in items]}
 
 
+# ---------------------------------------------------------------- il digitale spiegato
+
+MONTHS = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"]
+
+
+def it_date(iso):
+    y, m, d = iso.split("-")
+    return f"{int(d)} {MONTHS[int(m) - 1]} {y}"
+
+
+def link_cards(items):
+    """Cards that each open their own page: (icon key, kicker, title, text, href)."""
+    out = []
+    for n, (ico, k, h, t, href) in enumerate(items):
+        out.append(f'<a class="card" data-enter style="--dir:{-1 if n % 2 == 0 else 1}" href="{href}">{card_icon(ico)}<div class="ctx"><span class="kicker">{k}</span><h3>{h}</h3><p>{t}</p></div></a>')
+    return '<div class="cards">\n        ' + "\n        ".join(out) + "\n      </div>"
+
+
+def scene_cards(items):
+    out = [f'<article class="card" data-enter style="--dir:{-1 if n % 2 == 0 else 1}">{card_icon(ico)}<div class="ctx"><h3>{h}</h3><p>{t}</p></div></article>'
+           for n, (ico, h, t) in enumerate(items)]
+    return '<div class="cards">\n        ' + "\n        ".join(out) + "\n      </div>"
+
+
+def article_cards(articles):
+    return link_cards([(ico, f"{k} · {sp.reading_minutes(intro, secs)} min", title, desc, sp.article_path(slug))
+                       for slug, k, ico, title, _, desc, intro, secs in articles])
+
+
+def glossary():
+    rows = []
+    for term, definition, rel in sp.GLOSSARY:
+        more = f' <a href="{sp.article_path(rel)}">Leggi l\'articolo</a>' if rel else ""
+        rows.append(f'<div class="gl" id="{sp.term_id(term)}"><dt>{term}</dt><dd>{definition}{more}</dd></div>')
+    return f'<dl class="gloss" data-enter>\n        ' + "\n        ".join(rows) + "\n      </dl>"
+
+
+SPIEGATO = f"""  {page_hero("Il digitale spiegato", ["Il digitale <em>spiegato</em>", "con calma"], "Articoli brevi su gestionali, dati e processi, scritti per chi lavora in azienda e non per gli addetti ai lavori. Esempi concreti e parole di tutti i giorni.", 3)}
+
+  {section("Articoli", "Articoli", "Da leggere in pochi minuti", "Ogni articolo risponde a una domanda che ci fanno spesso nei primi incontri.", article_cards(sp.ARTICLES))}
+
+  {section("Situazioni tipiche", "Situazioni tipiche", "Scene di lavoro che un software può semplificare", "Momenti che si ripetono in molte piccole imprese, e cosa cambia quando il gestionale li segue.",
+           scene_cards(sp.SITUATIONS))}
+
+  {section("Glossario", "Glossario", "Le parole del gestionale, in breve", "I termini che si incontrano più spesso quando si parla di software gestionale.", glossary())}
+
+  {band("Primo incontro", "Avete una domanda che qui non trovate?", "Scriveteci, la risposta potrebbe diventare il prossimo articolo. Oppure fissiamo un appuntamento e ne parliamo guardando come lavorate.")}"""
+
+SPIEGATO_LD = [
+    {"@type": "ItemList", "name": "Il digitale spiegato, articoli", "itemListElement": [
+        {"@type": "ListItem", "position": i, "url": f"{BASE}/{sp.article_path(a[0])}", "name": a[3]} for i, a in enumerate(sp.ARTICLES, 1)]},
+    {"@type": "DefinedTermSet", "@id": f"{BASE}/{sp.HUB}#glossario", "name": "Glossario del software gestionale", "inLanguage": "it-IT",
+     "hasDefinedTerm": [{"@type": "DefinedTerm", "name": t, "description": d, "url": f"{BASE}/{sp.HUB}#{sp.term_id(t)}"} for t, d, _ in sp.GLOSSARY]},
+]
+
+
+def article_page(a):
+    slug, k, ico, title, hero_title, desc, intro, secs = a
+    mins = sp.reading_minutes(intro, secs)
+    body = "".join(f'<div><h2>{h}</h2>{"".join(f"<p>{x}</p>" for x in ps)}</div>' for h, ps in secs)
+    others = [o for o in sp.ARTICLES if o[0] != slug][:2]
+    html = f"""  {page_hero("Il digitale spiegato", [hero_title], intro, 3)}
+
+  <section data-name="Articolo">
+    <div class="wrap doc article">
+      <p class="meta">{k} · {mins} minuti di lettura · {it_date(sp.PUBLISHED)}</p>
+      {body}
+      <div><a class="more-link" href="{sp.HUB}"><span aria-hidden="true">←</span> Tutti gli articoli</a></div>
+    </div>
+  </section>
+
+  {section("Altri articoli", "Il digitale spiegato", "Altri articoli", None, article_cards(others))}"""
+    ld = [{"@type": "Article", "headline": title, "description": desc, "inLanguage": "it-IT",
+           "datePublished": sp.PUBLISHED, "dateModified": sp.PUBLISHED, "image": f"{BASE}/assets/og-image.png",
+           "author": {"@id": f"{BASE}/#org"}, "publisher": {"@id": f"{BASE}/#org"},
+           "mainEntityOfPage": f"{BASE}/{sp.article_path(slug)}", "isPartOf": {"@id": f"{BASE}/{sp.HUB}#page"}}]
+    return (sp.article_path(slug), f"{title} | Merkorn", desc, 3.3, html, True, (), ld)
+
+
 SERVICES_LD = [{"@type": "Service", "name": h, "serviceType": h, "description": p, "provider": {"@id": "https://merkorn.com/#org"},
                 "areaServed": ["Taranto", "Bari", "Brindisi", "Lecce", "Matera", "Puglia", "Italia"]} for _, h, p, _ in SERVICES]
 
@@ -562,6 +642,10 @@ PAGES = [
     ("contattaci.html", "Preventivo gestionale su misura | Merkorn",
      "Contattate Merkorn per un appuntamento o un preventivo per un software gestionale su misura. Primo incontro in azienda o online, senza impegno.",
      5.2, CONTATTI, False, (), []),
+    (sp.HUB, "Il digitale spiegato, gestionali in parole semplici | Merkorn",
+     "Articoli brevi e un glossario per capire gestionali, ERP, fatturazione elettronica e digitalizzazione delle PMI, con esempi concreti.",
+     3.3, SPIEGATO, True, (), SPIEGATO_LD),
+] + [article_page(a) for a in sp.ARTICLES] + [
     ("privacy.html", "Privacy policy | Merkorn",
      "Privacy policy di Merkorn: come trattiamo i dati di chi visita il sito e di chi ci contatta, ai sensi del GDPR.",
      6.5, PRIVACY, True, (), []),
