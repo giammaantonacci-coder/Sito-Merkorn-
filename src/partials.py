@@ -159,8 +159,8 @@ TOPICS = [
 
 def contact_form(heading="Contattaci", intro=None, level="h2"):
     intro = intro or (
-        "Raccontaci in poche righe di cosa si occupa la tua azienda. "
-        "Ti ricontattiamo per fissare un appuntamento, in azienda o online."
+        "Raccontaci in due righe di cosa ti occupi. "
+        "Ti ricontattiamo per fissare un appuntamento."
     )
     options = "".join(f"<option>{t}</option>" for t in TOPICS)
     return f"""<section class="contact" id="contattaci" data-name="Contattaci">

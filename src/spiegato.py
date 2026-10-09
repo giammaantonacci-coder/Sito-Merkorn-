@@ -84,13 +84,13 @@ ARTICLES = [
 # icon key, title, text: everyday scenes, not client cases
 SITUATIONS = [
     ("Requisiti", "Gli ordini arrivano su WhatsApp",
-     "Ogni venerdì qualcuno ricopia nel gestionale gli ordini arrivati per messaggio. Un modulo ordini li raccoglie in un unico posto e li passa al magazzino."),
+     "Un modulo ordini li raccoglie in un posto solo e li passa al magazzino."),
     ("Distribuzione", "Le giacenze non tornano mai",
-     "Il magazzino vive su un foglio aggiornato a fine giornata. Registrando carichi e scarichi al momento, il dato in schermata è quello vero."),
+     "Con carichi e scarichi registrati al momento, il dato è sempre quello vero."),
     ("Produzione", "Lo stato della commessa si chiede al telefono",
-     "Per sapere a che punto è un lavoro bisogna chiamare il reparto. Una schermata con lo stato delle commesse risponde senza disturbare nessuno."),
+     "Una schermata con lo stato delle commesse risponde al posto del reparto."),
     ("Servizi", "La bolla torna in ufficio a fine giro",
-     "Il documento di trasporto si compila a mano e rientra la sera. Con un'app sul telefono l'autista registra la consegna e la firma del cliente."),
+     "Con un'app l'autista chiude la consegna con la firma del cliente."),
 ]
 
 # term, definition, related article slug or None
