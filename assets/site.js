@@ -177,8 +177,60 @@
     });
   });
 
+  /* ---------- anonymous statistics ----------
+     No cookies and no personal data: which page, where the visit comes from, and how the contact
+     form is used (field names only, never what is typed). An id kept for this tab only groups the
+     events of one visit. Everything goes to api/evento.js and from there to the Merkorn gestionale. */
+  const track = (() => {
+    let visita = null;
+    try {
+      visita = sessionStorage.getItem('mk_visita') || (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2));
+      sessionStorage.setItem('mk_visita', visita);
+    } catch { /* private mode: events stay anonymous without a visit id */ }
+    const pagina = location.pathname.replace(/\.html$/, '').replace(/\/index$/, '/') || '/';
+    const sorgente = (() => {
+      const utm = new URLSearchParams(location.search).get('utm_source');
+      if (utm) return utm;
+      try {
+        const host = new URL(document.referrer).hostname.replace(/^www\./, '');
+        return host && host !== location.hostname.replace(/^www\./, '') ? host : null;
+      } catch { return null; }
+    })();
+    const queue = [];
+    const flush = () => {
+      if (!queue.length) return;
+      const body = JSON.stringify(queue.splice(0));
+      const sent = navigator.sendBeacon && navigator.sendBeacon('/api/evento', new Blob([body], { type: 'text/plain' }));
+      if (!sent) fetch('/api/evento', { method: 'POST', body, keepalive: true }).catch(() => {});
+    };
+    addEventListener('pagehide', flush);
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flush(); });
+    return (evento, campo, now) => {
+      queue.push({ evento, pagina, campo: campo || null, sorgente: evento === 'pagina' ? sorgente : null, visita });
+      if (now || queue.length >= 10) flush();
+    };
+  })();
+  track('pagina', null, true);
+
   /* ---------- contact form ---------- */
   document.querySelectorAll('form.form').forEach(form => {
+    // how far visitors get in the form, and where they stop
+    let started = false, sent = false, last = null;
+    const filled = new Set();
+    if ('IntersectionObserver' in window) {
+      const seen = new IntersectionObserver(entries => {
+        if (entries.some(en => en.isIntersecting)) { track('form_visto'); seen.disconnect(); }
+      }, { threshold: 0.4 });
+      seen.observe(form);
+    }
+    form.addEventListener('input', () => { if (!started) { started = true; track('form_iniziato', last); } });
+    form.addEventListener('focusin', e => { if (e.target.name && e.target.name[0] !== '_') last = e.target.name; });
+    form.addEventListener('change', e => {
+      const n = e.target.name;
+      if (n && n[0] !== '_' && !filled.has(n) && (e.target.type === 'checkbox' ? e.target.checked : e.target.value)) { filled.add(n); track('campo', n); }
+    });
+    addEventListener('pagehide', () => { if (started && !sent) { started = false; track('abbandono', last, true); } });
+
     const status = form.querySelector('.status');
     const submit = form.querySelector('button[type="submit"]');
     const label = submit.querySelector('span');
@@ -217,6 +269,8 @@
         status.className = 'status ko';
         status.textContent = valid ? 'Per inviare la richiesta serve il consenso al trattamento dei dati.' : 'Controlla i campi evidenziati.';
         const first = form.querySelector('.field.bad input, .field.bad textarea') || (!privacy.checked ? privacy : null);
+        Object.keys(rules).filter(n => form.elements[n].closest('.field').classList.contains('bad')).forEach(n => track('errore', n));
+        if (!privacy.checked) track('errore', 'privacy');
         if (first) first.focus();
         return;
       }
@@ -253,9 +307,11 @@
         const body = await res.json().catch(() => ({}));
         if (!res.ok || String(body.success) === 'false') throw new Error(body.message || res.status);
         form.reset(); touched.clear();
+        sent = true; track('invio', null, true);
         status.className = 'status ok';
         status.textContent = 'Richiesta inviata. Ti ricontattiamo all\'indirizzo email che hai indicato.';
       } catch (err) {
+        track('invio_fallito', null, true);
         // never lose the request: the same text, ready to send from the visitor's own mail app
         const text = Object.entries(data).filter(([k, v]) => k[0] !== '_' && k !== 'Pagina' && v).map(([k, v]) => k + ': ' + v).join('\n');
         const mail = document.createElement('a');
