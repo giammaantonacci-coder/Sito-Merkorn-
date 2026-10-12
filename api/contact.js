@@ -14,6 +14,13 @@ const FIELDS = ['Nome e cognome', 'Azienda', 'Email', 'Telefono', 'Argomento', '
 const LIMITS = { 'Messaggio': 5000 };
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+// Only the site itself may post here: other origins are refused
+const ORIGINS = /^https:\/\/(www\.)?merkorn\.com$|^https:\/\/sito-merkorn[\w-]*\.vercel\.app$/;
+function fromSite(req) {
+  const o = String(req.headers.origin || req.headers.referer || '');
+  try { return ORIGINS.test(new URL(o).origin); } catch { return false; }
+}
+
 // A light per-instance brake against floods: at most 5 requests per IP every 10 minutes
 const hits = new Map();
 function tooMany(ip) {
@@ -61,6 +68,7 @@ async function inGestionale(data) {
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).json({ success: false, message: 'Metodo non consentito' }); }
+  if (!fromSite(req)) return res.status(403).json({ success: false, message: 'Origine non consentita' });
 
   let body = req.body;
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = null; } }

@@ -6,6 +6,23 @@ const EVENTI = new Set(['pagina', 'form_visto', 'form_iniziato', 'campo', 'error
 const CAMPI = new Set(['nome', 'azienda', 'email', 'telefono', 'argomento', 'messaggio', 'privacy']);
 const BOT = /bot|crawl|spider|slurp|preview|lighthouse|headless|facebookexternalhit|whatsapp/i;
 
+// Solo dal sito: le chiamate da altri domini (o senza origine) vengono ignorate
+const ORIGINI = /^https:\/\/(www\.)?merkorn\.com$|^https:\/\/sito-merkorn[\w-]*\.vercel\.app$/;
+const daSito = req => {
+  const o = String(req.headers.origin || req.headers.referer || '');
+  try { return ORIGINI.test(new URL(o).origin); } catch { return false; }
+};
+
+// Freno leggero per istanza: al massimo 60 invii per IP ogni 10 minuti
+const colpi = new Map();
+function troppi(ip) {
+  const ora = Date.now(), finestra = 10 * 60 * 1000;
+  const lista = (colpi.get(ip) || []).filter(t => ora - t < finestra);
+  lista.push(ora); colpi.set(ip, lista);
+  if (colpi.size > 5000) colpi.clear();
+  return lista.length > 60;
+}
+
 const testo = (v, max) => (typeof v === 'string' && v ? v.slice(0, max) : null);
 
 function dispositivo(ua) {
@@ -19,10 +36,12 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).end(); }
   const ua = String(req.headers['user-agent'] || '');
   const url = process.env.GESTIONALE_URL, key = process.env.GESTIONALE_KEY, token = process.env.GESTIONALE_TOKEN;
-  if (!url || !key || !token || BOT.test(ua)) return res.status(204).end();
+  if (!url || !key || !token || BOT.test(ua) || !daSito(req)) return res.status(204).end();
+  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'n/d';
+  if (troppi(ip)) return res.status(429).end();
 
   let body = req.body;
-  if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = null; } }
+  if (typeof body === 'string') { body = body.length > 20000 ? null : (() => { try { return JSON.parse(body); } catch { return null; } })(); }
   if (!Array.isArray(body)) return res.status(400).end();
 
   const disp = dispositivo(ua);
