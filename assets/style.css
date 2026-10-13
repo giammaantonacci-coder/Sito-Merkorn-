@@ -682,5 +682,12 @@ html.dragging,html.dragging *{cursor:grabbing!important;user-select:none}
 @media (max-width:900px){.dash{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:600px){.dash{grid-template-columns:1fr}.mod.wide{grid-column:auto}}
 body:has(.e404) .hud{display:none}
+.e404-simple{display:none}
+@media (max-width:760px){
+  .e404{min-height:calc(var(--screen) - 40px);display:grid;align-items:center;padding:120px 0 70px}
+  .e404-full{display:none}
+  .e404-simple{display:grid;justify-items:center;gap:18px;text-align:center}
+  .e404-simple .actions{margin-top:10px}
+}
 [data-dash-reset][hidden]{display:none}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}

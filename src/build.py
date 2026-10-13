@@ -405,7 +405,12 @@ ACTIONS = ('<div class="actions"><button class="btn ghost" type="button" data-da
            '<a class="btn" href="index.html"><span>Torna alla home</span></a></div>'
            '<p class="note">Dati di esempio. Ogni modulo del gestionale si aggiunge o si toglie così.</p><p class="sr dash-status" role="status" aria-live="polite"></p>')
 
-E404 = f"""  <section class="e404" data-name="Pagina non trovata"><div class="wrap">{HEAD}<div class="dash">{E404_MODS}</div>{ACTIONS}</div></section>"""
+# on phones the dashboard is replaced by a plain page
+E404_SIMPLE = ('<div class="e404-simple"><span class="eyebrow">Errore 404</span><h1>Questa pagina <em>si è spostata</em></h1>'
+               '<p class="lead">Ripartiamo dalla home o da quello che ti serve.</p>'
+               '<div class="actions"><a class="btn" href="index.html"><span>Torna alla home</span></a><a class="btn ghost" href="contattaci.html"><span>Contattaci</span></a></div></div>')
+
+E404 = f"""  <section class="e404" data-name="Pagina non trovata"><div class="wrap"><div class="e404-full">{HEAD}<div class="dash">{E404_MODS}</div>{ACTIONS}</div>{E404_SIMPLE}</div></section>"""
 
 SERVICES_LD = [{"@type": "Service", "name": h, "serviceType": h, "description": p, "provider": {"@id": "https://merkorn.com/#org"},
                 "areaServed": ["Taranto", "Bari", "Brindisi", "Lecce", "Matera", "Puglia", "Italia"]} for _, h, p, _ in SERVICES]
