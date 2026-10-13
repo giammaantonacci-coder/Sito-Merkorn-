@@ -15,43 +15,43 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # fase, titolo, descrizione, risultato
 PHASES = [
-    ("Analisi del processo", "Prima veniamo a vedere",
-     "Seguiamo un ordine dall'arrivo alla consegna e segniamo dove si ricopiano i dati a mano.",
-     "Una mappa di come lavori oggi"),
-    ("Fondamenta riusabili", "Non ripartiamo da zero",
-     "Anagrafiche, permessi e stampe sono già pronti. Il budget va nelle parti che ti distinguono.",
+    ("Analisi del processo", "Capiamo come lavori",
+     "Studiamo i tuoi processi e troviamo dove si può guadagnare tempo.",
+     "Priorità chiare fin da subito"),
+    ("Fondamenta riusabili", "Partiamo da basi solide",
+     "Moduli già collaudati per partire veloci e investire dove serve davvero.",
      "La base del gestionale con i tuoi dati"),
-    ("Componenti su misura", "Poi scriviamo il codice",
-     "Commesse, lotti e consegne costruiti sul tuo lavoro, una parte alla volta.",
-     "Un pezzo nuovo a ogni rilascio"),
-    ("Interfaccia", "Una schermata per ogni lavoro",
-     "Pulsanti grandi in magazzino, tabelle complete in ufficio.",
-     "Un software che si impara usandolo"),
+    ("Componenti su misura", "Costruiamo le parti su misura",
+     "Le funzioni specifiche della tua azienda, rilasciate una alla volta.",
+     "Un passo avanti a ogni rilascio"),
+    ("Interfaccia", "Rendiamo i dati leggibili",
+     "Schermate chiare che mostrano subito quello che conta.",
+     "Decisioni più rapide, ogni giorno"),
 ]
 
 PRINCIPLES = [
-    ("Una schermata, un lavoro", "Vedi solo quello che ti serve in quel momento."),
-    ("Le cose di ogni giorno a un tocco", "Quello che fai più spesso è sempre a portata di mano."),
+    ("I numeri che contano, in primo piano", "Apri la schermata e sai subito come sta andando."),
+    ("Tutto in un unico posto", "Ordini, magazzino e fatture parlano tra loro."),
     ("Chiaro al primo sguardo", "Quello che richiede attenzione si nota subito."),
-    ("Niente funzioni che non usi", "Se qualcosa non ti serve, non te lo mettiamo."),
+    ("Solo quello che ti serve", "Ogni funzione ha un motivo per esserci."),
 ]
 
 SERVICES = [
     ("Sviluppo", "Gestionale su misura",
-     "Un ERP personalizzato per ordini, magazzino, produzione e commesse, costruito su come lavori.",
+     "Un ERP personalizzato che riunisce ordini, magazzino, produzione e commesse e ti dà la visione completa dell'azienda.",
      ["Ordini e offerte", "Magazzino", "Produzione", "Commesse", "Documenti di trasporto"]),
     ("Consulenza", "Analisi dei processi aziendali",
-     "Ti diciamo dove si perde tempo e da dove conviene partire.",
+     "Una fotografia chiara di come lavori oggi e delle priorità per crescere.",
      ["Mappa del processo", "Punti critici", "Priorità di intervento"]),
     ("Mobile", "App per magazzino e consegne",
-     "Carichi, scarichi e consegne con firma del cliente, dal telefono.",
+     "I dati del magazzino e delle consegne, subito visibili in ufficio.",
      ["Carico e scarico merce", "Consegne", "Firma del cliente"]),
     ("Dopo il rilascio", "Assistenza ed evoluzione del software",
-     "Lo segue chi l'ha costruito, senza subappalti.",
+     "Il gestionale cresce con la tua azienda, seguito dallo stesso team.",
      ["Assistenza agli utenti", "Aggiornamenti", "Nuove funzioni"]),
 ]
 
-CHAT_TEXT = "Ci vediamo in azienda, guardiamo come lavorate e ti diciamo con franchezza se possiamo esserti utili."
+CHAT_TEXT = "Ci vediamo in azienda, guardiamo insieme come lavorate e ti mostriamo cosa può cambiare."
 
 # line icons for the cards, one per content (64x64, stroke; the "v" part is violet)
 CARD_ICONS = {
@@ -152,7 +152,7 @@ def principles(title="Come progettiamo le schermate"):
     items = "\n        ".join(f'<li style="--i:{i}"><div><strong>{a}</strong><span>{b}</span></div></li>' for i, (a, b) in enumerate(PRINCIPLES))
     return f"""<section class="principles" data-name="Principi">
     <div class="wrap">
-      <div class="sec-head" data-enter><span class="eyebrow">Principi di progettazione</span><h2>{title}</h2><p>Quattro regole, prima di scrivere codice.</p></div>
+      <div class="sec-head" data-enter><span class="eyebrow">Principi di progettazione</span><h2>{title}</h2><p>Quattro regole per dati chiari e decisioni rapide.</p></div>
       <ol class="rules stack">
         {items}
       </ol>
@@ -307,7 +307,7 @@ SCREENS = "\n\n  ".join([
     screen(3, "Magazzino", "Magazzino", "Le scorte sotto controllo.", SCREEN_STOCK, [
         ("Prima il riepilogo", "Quanti articoli richiedono un intervento, prima dell'elenco."),
         ("Giacenza e soglia nella stessa barra", "Chi è sotto soglia si vede senza leggere i numeri."),
-        ("Stato con colore, simbolo e parola", "Il colore aiuta, ma non è l'unica informazione."),
+        ("Stato con colore, simbolo e parola", "Colore, simbolo ed etichetta, sempre insieme."),
         ("Numeri solo dove serve un'azione", "La quantità da riordinare compare solo dove serve."),
     ]),
     screen(4, "Produzione", "Produzione", "Reparti e commesse, a che punto sono.", SCREEN_PROD, [
@@ -321,7 +321,7 @@ SCREENS = "\n\n  ".join([
 def dashboard():
     return f"""<section class="screens-intro" data-name="Come si vedono i dati">
     <div class="wrap">
-      <div class="sec-head centered" data-enter><span class="eyebrow">Fase 4 in pratica</span><h2>Come si vedono i dati</h2><p>Quattro schermate di esempio e il perché di ogni scelta.</p></div>
+      <div class="sec-head centered" data-enter><span class="eyebrow">Fase 4 in pratica</span><h2>Come si vedono i dati</h2><p>Così i dati diventano decisioni. Quattro schermate di esempio e il perché di ogni scelta.</p></div>
     </div>
   </section>
 
@@ -337,7 +337,9 @@ HOME_SERVICES = (cards([(k, h, p) for k, h, p, _ in SERVICES], link="servizi.htm
 # written as short, quotable answers (what Google and AI assistants pick up)
 FAQ_HOME = [
     ("Cos'è un software gestionale su misura?",
-     "È un gestionale progettato sui processi di una sola azienda. Segue il tuo modo di lavorare, invece di cambiarlo."),
+     "È un gestionale progettato sui processi di una sola azienda. Segue il tuo modo di lavorare e riunisce tutti i dati in un unico posto."),
+    ("Cosa cambia con un gestionale su misura?",
+     "Vedi i dati di tutta l'azienda in un colpo d'occhio, risparmi tempo sulle operazioni ripetitive e prendi decisioni basate su numeri aggiornati."),
     ("Quando conviene un gestionale personalizzato rispetto a uno pronto?",
      "Quando accanto al gestionale torna fuori il foglio Excel. Se ti basta un programma pronto, te lo diciamo."),
     ("Quanto costa un gestionale su misura?",
@@ -418,7 +420,7 @@ SPIEGATO = f"""  {page_hero("Il digitale spiegato", ["Prima di scegliere", "un <
 
   {section("Glossario", "Glossario", "Le parole del gestionale, in breve", None, glossary())}
 
-  {band("Primo incontro", "Hai una domanda che qui non trovi?", "Scrivici, potrebbe diventare il prossimo articolo.")}"""
+  {band("Primo incontro", "Hai un'altra domanda?", "Scrivici, potrebbe diventare il prossimo articolo.")}"""
 
 SPIEGATO_LD = [
     {"@type": "ItemList", "name": "Il digitale spiegato, articoli", "itemListElement": [
@@ -462,7 +464,7 @@ HOME = f"""  <section class="hero" data-exit data-name="Inizio">
           <span class="ln"><span style="--i:0">Software gestionale</span></span>
           <span class="ln"><span style="--i:1"><em>su misura</em> per le PMI</span></span>
         </h1>
-        <p class="lead">Ordini, magazzino, produzione e fatture in un unico gestionale, costruito attorno a come lavori.</p>
+        <p class="lead">Mettiamo in ordine i dati della tua azienda. Vedi tutto in un colpo d'occhio e decidi prima, con più sicurezza.</p>
         <div class="actions">
           <a class="btn" href="contattaci.html"><span>Prenota un appuntamento</span></a>
           <a class="btn ghost" href="metodo.html"><span>Come lavoriamo</span></a>
@@ -473,26 +475,26 @@ HOME = f"""  <section class="hero" data-exit data-name="Inizio">
   </section>
 
   {statement("Il nostro approccio",
-             "Lo strumento si piega al processo, non il contrario.",
-             "strumento,processo",
-             "Niente più dati ricopiati a mano tra Excel e programmi diversi.",
+             "Dati chiari, decisioni migliori.",
+             "Dati,decisioni",
+             "Ordini, magazzino e produzione in un unico posto, sempre aggiornati. Più tempo per pensare alla strategia.",
              "Approccio")}
 
-  {hscroll("Come lavoriamo", "Prima veniamo a vedere, poi scriviamo il codice", ("metodo.html", "Il metodo nel dettaglio"), phase_panels(), "Come lavoriamo")}
+  {hscroll("Come lavoriamo", "Quattro fasi per un gestionale che usi ogni giorno", ("metodo.html", "Il metodo nel dettaglio"), phase_panels(), "Come lavoriamo")}
 
-  {section("Servizi", "Servizi", "Gestionali personalizzati per ogni reparto", "Per le PMI pugliesi, dall'agroalimentare alla logistica.", HOME_SERVICES)}
+  {section("Servizi", "Servizi", "Gestionali personalizzati per ogni reparto", "Più controllo su ogni area dell'azienda, dagli ordini alla produzione.", HOME_SERVICES)}
 
-  {band("Primo incontro", "Il primo incontro è in azienda", CHAT_TEXT)}
+  {band("Primo incontro", "Scopri cosa può cambiare nella tua azienda", CHAT_TEXT)}
 
   {principles()}
 
   {faq(FAQ_HOME, "Software gestionale su misura, le domande più comuni")}"""
 
-METODO = f"""  {page_hero("Come lavoriamo", ["Come sviluppiamo un <em>gestionale personalizzato</em>"], "Quattro fasi, e alla fine di ognuna hai qualcosa che puoi controllare.", 2)}
+METODO = f"""  {page_hero("Come lavoriamo", ["Come sviluppiamo un <em>gestionale personalizzato</em>"], "Quattro fasi, ognuna con un risultato concreto da verificare.", 2)}
 
   <section data-name="Le fasi">
     <div class="wrap">
-      <div class="sec-head" data-enter><span class="eyebrow">Le fasi</span><h2>Dal primo sopralluogo alle schermate</h2></div>
+      <div class="sec-head" data-enter><span class="eyebrow">Le fasi</span><h2>Dall'analisi alle schermate</h2></div>
       {legs()}
     </div>
   </section>
@@ -501,7 +503,7 @@ METODO = f"""  {page_hero("Come lavoriamo", ["Come sviluppiamo un <em>gestionale
 
   {principles()}"""
 
-SERVIZI = f"""  {page_hero("Servizi", ["Software gestionale <em>personalizzato</em> per la tua azienda"], "Per le PMI che hanno superato Excel ma non si ritrovano in un programma pronto.", 3)}
+SERVIZI = f"""  {page_hero("Servizi", ["Software gestionale <em>personalizzato</em> per la tua azienda"], "Tutto quello che serve per avere i dati sotto controllo e decidere con più sicurezza.", 3)}
 
   {hscroll("Cosa facciamo", "Quattro servizi, un solo progetto", None, service_panels(), "Cosa facciamo")}
 
@@ -511,29 +513,29 @@ SERVIZI = f"""  {page_hero("Servizi", ["Software gestionale <em>personalizzato</
              "Team interno, senza subappalti.",
              "Un unico progetto")}
 
-  {section("Per chi lavoriamo", "Per chi lavoriamo", "Imprese con processi tutti loro",
+  {section("Per chi lavoriamo", "Per chi lavoriamo", "Imprese che vogliono crescere con i propri dati",
            "Soprattutto PMI pugliesi, molte nella filiera agroalimentare.",
-           cards([("Produzione", "Agroalimentare e produzione", "Lotti, scadenze, tracciabilità e commesse."),
-                  ("Distribuzione", "Commercio e logistica", "Magazzino, ordini, documenti di trasporto e consegne."),
-                  ("Servizi", "Squadre sul territorio", "Interventi, rapportini e app per i tecnici.")], "three"))}
+           cards([("Produzione", "Agroalimentare e produzione", "Lotti, scadenze e commesse sempre tracciati."),
+                  ("Distribuzione", "Commercio e logistica", "Giacenze, ordini e consegne sempre aggiornati."),
+                  ("Servizi", "Squadre sul territorio", "Interventi e rapportini visibili subito in ufficio.")], "three"))}
 
   {prose("Integrazioni", "Integrazioni", "Collegato ai programmi che usi già",
-         ["Contabilità e fatturazione elettronica restano quelle di oggi. Ogni dato si scrive una volta sola."])}
+         ["Contabilità e fatturazione elettronica collegate al gestionale. Ogni dato si scrive una volta sola."])}
 
   {faq(FAQ_SERVIZI, "Domande sui nostri servizi")}
 
-  {band("Primo incontro", "Raccontaci cosa ti serve", CHAT_TEXT)}"""
+  {band("Primo incontro", "Scopri cosa può fare per te", CHAT_TEXT)}"""
 
-CHI = f"""  {page_hero("Chi siamo", ["Una software house in Puglia che <em>prima viene a vedere</em>"], "Siamo a Mottola, in provincia di Taranto. Sviluppiamo gestionali su misura e spieghiamo il digitale con calma.", 4)}
+CHI = f"""  {page_hero("Chi siamo", ["Una software house in Puglia che <em>prima viene a vedere</em>"], "Siamo a Mottola, in provincia di Taranto. Aiutiamo le PMI a lavorare meglio con i propri dati.", 4)}
 
   {statement("Missione",
              "Rendere il digitale comprensibile e utile per chi lavora nelle PMI pugliesi.",
              "comprensibile,utile",
-             "Con strumenti su misura e contenuti che spiegano invece di vendere.",
+             "Con strumenti su misura e contenuti chiari.",
              "Missione")}
 
   {prose("Esperienza d'uso", "Esperienza d'uso", "Prima si progetta l'uso, poi si scrive il codice",
-         ["Disegniamo le schermate con chi le userà e le proviamo sul posto. Se qualcuno deve chiedere come si fa, la rifacciamo."])}
+         ["Disegniamo le schermate con chi le userà e le proviamo sul posto, finché ogni passaggio è chiaro."])}
 
   {section("Il team", "Il team", "Le persone che seguono il tuo progetto",
            "Un team interno, dal primo incontro all'assistenza.",

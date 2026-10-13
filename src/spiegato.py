@@ -85,7 +85,7 @@ ARTICLES = [
 SITUATIONS = [
     ("Requisiti", "Gli ordini arrivano su WhatsApp",
      "Un modulo ordini li raccoglie in un posto solo e li passa al magazzino."),
-    ("Distribuzione", "Le giacenze non tornano mai",
+    ("Distribuzione", "Le giacenze da ricontrollare",
      "Con carichi e scarichi registrati al momento, il dato è sempre quello vero."),
     ("Produzione", "Lo stato della commessa si chiede al telefono",
      "Una schermata con lo stato delle commesse risponde al posto del reparto."),
@@ -103,7 +103,7 @@ GLOSSARY = [
     ("DDT", "Il documento di trasporto che accompagna la merce e indica cosa viene consegnato, a chi e quando.", None),
     ("ERP", "Un gestionale che tiene insieme più aree dell'azienda in un unico sistema, dalle vendite alla contabilità.", "cos-e-un-erp"),
     ("Gestionale", "Il software che un'azienda usa per gestire ordini, magazzino, fatture e le altre attività di ogni giorno.", None),
-    ("Gestionale su misura", "Un gestionale progettato sui processi di una specifica azienda, invece di adattare il lavoro a un programma pronto.", "gestionale-su-misura-o-pronto"),
+    ("Gestionale su misura", "Un gestionale progettato sui processi di una specifica azienda, costruito attorno al suo modo di lavorare.", "gestionale-su-misura-o-pronto"),
     ("Giacenza", "La quantità di un articolo presente in magazzino in un certo momento.", None),
     ("Integrazione", "Il collegamento tra il gestionale e altri programmi, per esempio la contabilità, così i dati si inseriscono una volta sola.", "gestionale-e-fatturazione-elettronica"),
     ("Modulo", "Una parte del gestionale dedicata a un'area, come il magazzino o la fatturazione, che si aggiunge quando serve.", None),
