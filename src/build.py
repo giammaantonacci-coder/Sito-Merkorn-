@@ -5,6 +5,7 @@ Header, footer e form di contatto stanno in partials.py e sono uguali su ogni pa
 I blocchi di sezione qui sotto (frase fissata, scorrimento orizzontale, campo viola,
 card impilate, dashboard) sono riutilizzati tra le pagine, ognuna con i propri contenuti.
 """
+import re
 from pathlib import Path
 from partials import page, contact_form, EMAIL, BASE
 
@@ -373,6 +374,39 @@ def faq_ld(items):
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in items]}
 
 
+
+# ---------------------------------------------------------------- pagina 404: mini dashboard modulare
+
+GRIP = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="5" cy="3" r="1.4"/><circle cx="11" cy="3" r="1.4"/><circle cx="5" cy="8" r="1.4"/><circle cx="11" cy="8" r="1.4"/><circle cx="5" cy="13" r="1.4"/><circle cx="11" cy="13" r="1.4"/></svg>'
+X = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8"/></svg>'
+
+def mod(mid, title, body, wide=False):
+    return (f'<article class="mod{" wide" if wide else ""}" data-id="{mid}"><div class="mod-top">'
+            f'<button class="mod-move" type="button" aria-label="Sposta il modulo {title}, usa le frecce">{GRIP}</button>'
+            f'<span class="mod-title">{title}</span>'
+            f'<button class="mod-del" type="button" aria-label="Elimina il modulo {title}">{X}</button></div>{body}</article>')
+
+bars = "".join(f'<i style="height:{h}%"></i>' for h in [46, 62, 54, 71, 66, 38, 84])
+days = "".join(f"<span>{d}</span>" for d in ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Oggi"])
+E404_MODS = "".join([
+    mod("ordini", "Ordini di oggi", '<div class="kpi">128</div><div class="delta"><b>+12%</b> rispetto a ieri</div>'),
+    mod("fatturato", "Fatturato del mese", '<div class="kpi">€ 84.300</div><svg class="spark" viewBox="0 0 200 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 38 L25 34 L50 36 L75 26 L100 28 L125 18 L150 21 L175 10 L200 6" fill="none" stroke="#9747FF" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>'),
+    mod("consegne", "Consegne in corso", '<div class="kpi">14</div><div class="delta"><b>3</b> in arrivo entro un\'ora</div>'),
+    mod("settimana", "Ordini della settimana", f'<div class="bars" aria-hidden="true">{bars}</div><div class="days" aria-hidden="true">{days}</div>', wide=True),
+    mod("todo", "Da fare oggi", '<ul class="rows"><li><span class="dot"></span>Confermare ordine Rossi<small>9:30</small></li><li><span class="dot mid"></span>Riordinare olio 5 L<small>11:00</small></li><li><span class="dot low"></span>Fattura Bianchi<small>16:00</small></li></ul>'),
+    mod("scorte", "Scorte sotto soglia", '<div class="mstack"><div class="dmeter"><div class="mt">Farina tipo 00<small>12 sacchi</small></div><div class="mb"><i class="lowv" style="width:22%"></i></div></div><div class="dmeter"><div class="mt">Bottiglie 75 cl<small>340 pz</small></div><div class="mb"><i style="width:48%"></i></div></div><div class="dmeter"><div class="mt">Etichette<small>1.200 pz</small></div><div class="mb"><i style="width:63%"></i></div></div></div>'),
+    mod("commesse", "Commesse", '<div class="mstack"><div class="dmeter"><div class="mt">Linea confezionamento<small>80%, in tempo</small></div><div class="mb"><i style="width:80%"></i></div></div><div class="dmeter"><div class="mt">Ordine fiera Bari<small>45%, consegna venerdì</small></div><div class="mb"><i style="width:45%"></i></div></div><div class="dmeter"><div class="mt">Nuovo magazzino<small>20%, avvio lunedì</small></div><div class="mb"><i style="width:20%"></i></div></div></div>', wide=True),
+])
+
+HEAD = ('<div class="head"><span class="eyebrow">Errore 404</span>'
+        '<h1>Cogli l\'attimo e prova la potenza della <em>modularità</em></h1>'
+        '<p class="lead">Questa pagina si è spostata. Intanto trascina i moduli, togli quelli superflui e costruisci la tua dashboard.</p></div>')
+ACTIONS = ('<div class="actions"><button class="btn ghost" type="button" data-dash-reset hidden><span>Ripristina la dashboard</span></button>'
+           '<a class="btn" href="index.html"><span>Torna alla home</span></a></div>'
+           '<p class="note">Dati di esempio. Ogni modulo del gestionale si aggiunge o si toglie così.</p><p class="sr dash-status" role="status" aria-live="polite"></p>')
+
+E404 = f"""  <section class="e404" data-name="Pagina non trovata"><div class="wrap">{HEAD}<div class="dash">{E404_MODS}</div>{ACTIONS}</div></section>"""
+
 SERVICES_LD = [{"@type": "Service", "name": h, "serviceType": h, "description": p, "provider": {"@id": "https://merkorn.com/#org"},
                 "areaServed": ["Taranto", "Bari", "Brindisi", "Lecce", "Matera", "Puglia", "Italia"]} for _, h, p, _ in SERVICES]
 
@@ -567,6 +601,9 @@ PAGES = [
     ("contattaci.html", "Preventivo gestionale su misura | Merkorn",
      "Contatta Merkorn per un appuntamento o un preventivo per un software gestionale su misura. Primo incontro in azienda o online, senza impegno.",
      5.2, CONTATTI, False, (), []),
+    ("404.html", "Pagina non trovata | Merkorn",
+     "La pagina cercata si è spostata. Torna alla home di Merkorn.",
+     9.1, E404, False, ("assets/dash404.js",), []),
     ("privacy.html", "Privacy policy | Merkorn",
      "Privacy policy di Merkorn: come trattiamo i dati di chi visita il sito e di chi ci contatta, ai sensi del GDPR.",
      6.5, PRIVACY, True, (), []),
@@ -578,13 +615,20 @@ PAGES = [
 if __name__ == "__main__":
     from datetime import date
     for path, title, desc, seed, body, form, scripts, ld in PAGES:
-        (ROOT / path).write_text(page(path, title, desc, seed, body, form, scripts, ld), encoding="utf-8")
+        html = page(path, title, desc, seed, body, form, scripts, ld)
+        if path == "404.html":
+            # served at any missing address: absolute base for links and assets, kept out of search results
+            html = html.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<base href="/">', 1)
+            html = html.replace('content="index, follow, max-image-preview:large, max-snippet:-1"', 'content="noindex, follow"')
+            html = re.sub(r'<link rel="(canonical|alternate)"[^>]*>\n', "", html)
+            html = re.sub(r'<script type="application/ld\+json">.*?</script>\n?', "", html, flags=re.S)
+        (ROOT / path).write_text(html, encoding="utf-8")
         print("scritto", path)
     # sitemap for search engines
     today = date.today().isoformat()
     urls = "".join(
         f"<url><loc>https://merkorn.com/{'' if p == 'index.html' else p}</loc><lastmod>{today}</lastmod>"
         f"<priority>{'1.0' if p == 'index.html' else '0.3' if p in ('privacy.html', 'cookie.html') else '0.8'}</priority></url>"
-        for p, *_ in PAGES)
+        for p, *_ in PAGES if p != "404.html")
     (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n', encoding="utf-8")
     print("scritto sitemap.xml")
