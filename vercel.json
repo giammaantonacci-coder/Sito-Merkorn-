@@ -38,5 +38,12 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/(digitale-spiegato.*)",
+      "destination": "/",
+      "permanent": true
+    }
   ]
 }

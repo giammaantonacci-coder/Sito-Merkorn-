@@ -634,15 +634,3 @@ body.cookie-open .hud { opacity: 0; }
 @media (max-width: 560px) { .cookie { padding: 18px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); } }
 @media (prefers-reduced-motion: reduce) { .cookie { transition: opacity .2s; translate: none; } }
 
-/* Il digitale spiegato: articoli e glossario */
-.doc.article { gap: 34px; }
-.doc.article .meta { margin: 0; font: 600 11px/1.4 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
-.doc.article p { font-size: 17px; line-height: 1.7; }
-.doc.article .more-link { margin-top: 8px; color: var(--text); text-decoration: none; }
-.gloss { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 4vw, 56px); margin: 48px 0 0; }
-.gloss .gl { display: grid; gap: 6px; padding: 18px 0; border-top: 1px solid var(--rule); scroll-margin-top: 110px; }
-.gloss dt { font: 700 18px/1.2 var(--display); letter-spacing: -.01em; }
-.gloss dd { margin: 0; color: var(--muted); }
-.gloss dd a { color: var(--text); white-space: nowrap; text-underline-offset: 3px; }
-.gloss .gl:target dt { color: var(--accent); }
-@media (max-width: 760px) { .gloss { grid-template-columns: 1fr; } }
