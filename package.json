@@ -2,8 +2,10 @@
   "name": "sito-merkorn",
   "private": true,
   "description": "Sito di Merkorn. Pagine statiche generate da src/build.py e una funzione per il modulo di contatto.",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
-    "nodemailer": "^6.9.16"
+    "nodemailer": "10.1.0"
   }
 }

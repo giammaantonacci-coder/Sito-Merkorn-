@@ -3,12 +3,23 @@
    Variabili d'ambiente su Vercel:
      GMAIL_USER          indirizzo Gmail che invia e riceve (merkornsh@gmail.com)
      GMAIL_APP_PASSWORD  password per le app creata nell'account Google
-   Senza queste variabili risponde 503 e il sito usa il servizio di riserva. */
+   Senza queste variabili risponde 503 e il sito usa il servizio di riserva.
+   Ogni richiesta valida entra anche nel gestionale Merkorn (cliente, trattativa e attività):
+     GESTIONALE_URL    indirizzo del progetto Supabase del gestionale
+     GESTIONALE_KEY    chiave pubblica (anon) del progetto
+     GESTIONALE_TOKEN  chiave segreta del sito, salvata nel gestionale (impostazioni.sito_token) */
 const nodemailer = require('nodemailer');
 
 const FIELDS = ['Nome e cognome', 'Azienda', 'Email', 'Telefono', 'Argomento', 'Messaggio', 'Pagina'];
 const LIMITS = { 'Messaggio': 5000 };
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+// Only the site itself may post here: other origins are refused
+const ORIGINS = /^https:\/\/(www\.)?merkorn\.com$|^https:\/\/sito-merkorn[\w-]*\.vercel\.app$/;
+function fromSite(req) {
+  const o = String(req.headers.origin || req.headers.referer || '');
+  try { return ORIGINS.test(new URL(o).origin); } catch { return false; }
+}
 
 // A light per-instance brake against floods: at most 5 requests per IP every 10 minutes
 const hits = new Map();
@@ -34,12 +45,30 @@ function mailer() {
   return transport;
 }
 
+// Porta la richiesta nel gestionale. Se non riesce l'email parte comunque: nessuna richiesta va persa.
+async function inGestionale(data) {
+  const url = process.env.GESTIONALE_URL, key = process.env.GESTIONALE_KEY, token = process.env.GESTIONALE_TOKEN;
+  if (!url || !key || !token) return;
+  try {
+    const r = await fetch(`${url.replace(/\/+$/, '')}/rest/v1/rpc/sito_richiesta`, {
+      method: 'POST',
+      headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chiave: token, dati: {
+        nome: data['Nome e cognome'], azienda: data['Azienda'], email: data['Email'], telefono: data['Telefono'],
+        argomento: data['Argomento'], messaggio: data['Messaggio'], pagina: data['Pagina'],
+      } }),
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!r.ok) console.error('contact: gestionale', r.status, (await r.text()).slice(0, 200));
+  } catch (err) {
+    console.error('contact: gestionale non raggiungibile', err && err.message);
+  }
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).json({ success: false, message: 'Metodo non consentito' }); }
-
-  const user = process.env.GMAIL_USER, pass = process.env.GMAIL_APP_PASSWORD;
-  if (!user || !pass) return res.status(503).json({ success: false, message: 'Invio non configurato' });
+  if (!fromSite(req)) return res.status(403).json({ success: false, message: 'Origine non consentita' });
 
   let body = req.body;
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = null; } }
@@ -56,6 +85,11 @@ module.exports = async function handler(req, res) {
   if (data['Nome e cognome'].length < 2 || !EMAIL_RE.test(data['Email']) || data['Messaggio'].length < 10) {
     return res.status(422).json({ success: false, message: 'Campi mancanti o non validi' });
   }
+
+  await inGestionale(data);
+
+  const user = process.env.GMAIL_USER, pass = process.env.GMAIL_APP_PASSWORD;
+  if (!user || !pass) return res.status(503).json({ success: false, message: 'Invio non configurato' });
 
   const rows = FIELDS.filter(k => data[k]).map(k =>
     `<tr><td style="padding:8px 14px 8px 0;color:#6b6475;vertical-align:top;white-space:nowrap">${esc(k)}</td>` +
