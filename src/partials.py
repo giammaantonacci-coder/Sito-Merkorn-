@@ -68,6 +68,9 @@ ORG = {
     "logo": BASE + "/assets/logo.png",
     "image": BASE + "/assets/og-image.png",
     "email": EMAIL,
+    # Google Business Profile: tells Google the site and the Maps listing are the same business
+    "hasMap": "https://maps.app.goo.gl/npZnGgNFNNix1mri9",
+    "sameAs": ["https://maps.app.goo.gl/npZnGgNFNNix1mri9"],
     "slogan": "Software gestionale su misura per le PMI",
     "description": "Software house di Mottola (Taranto), in Puglia, che progetta e sviluppa software gestionali su misura per piccole e medie imprese: ordini, magazzino, produzione, commesse e integrazione con la fatturazione elettronica.",
     "address": {"@type": "PostalAddress", "streetAddress": "Via Carlo Alberto della Chiesa 12", "postalCode": "74017",
