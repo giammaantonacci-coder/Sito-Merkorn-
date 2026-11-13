@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merkorn, proposta monocromatica</title>
+<style>
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; font-display: swap; src: url(../assets/fonts/dm-sans.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 100 900; font-display: swap; src: url(../assets/fonts/inter.woff2) format("woff2"); }
+:root {
+  --bg: #050505; --card: #0d0d0e; --card2: #141415; --line: rgba(255,255,255,.08); --line2: rgba(255,255,255,.14);
+  --text: #f4f4f5; --muted: #8e8e93; --dim: #5c5c61; --accent: #9747FF;
+  --display: "DM Sans", system-ui, sans-serif; --body: "Inter", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); font: 400 15px/1.6 var(--body); -webkit-font-smoothing: antialiased; overflow-x: clip; }
+a { color: inherit; text-decoration: none; }
+.wrap { width: min(1080px, 100% - 32px); margin-inline: auto; }
+.silver { background: linear-gradient(180deg, #ffffff 20%, #a9a9ae 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* nav */
+.nav { position: fixed; inset: 18px 0 auto; z-index: 20; display: flex; justify-content: center; pointer-events: none; }
+.nav .pill { pointer-events: auto; display: flex; align-items: center; gap: 26px; padding: 8px 8px 8px 18px; border-radius: 999px; background: rgba(12,12,13,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: inset 0 0 0 1px var(--line2); font-size: 13.5px; }
+.brand { display: flex; align-items: center; gap: 10px; font: 700 13px/1 var(--display); letter-spacing: .3em; }
+.mark { position: relative; width: 24px; height: 15px; }
+.mark i { position: absolute; width: 18%; height: 30%; border-radius: 22%; background: #fff; }
+.mark i:nth-child(1){left:41%;top:0}.mark i:nth-child(2){left:20.5%;top:35%}.mark i:nth-child(3){left:61.5%;top:35%}.mark i:nth-child(4){left:0;top:70%}.mark i:nth-child(5){left:82%;top:70%}
+.nav .links { display: flex; gap: 22px; color: var(--muted); }
+.nav .links a:hover { color: var(--text); }
+.btn { display: inline-flex; align-items: center; gap: 8px; font: 600 13.5px/1 var(--body); padding: 11px 18px; border-radius: 999px; background: #fff; color: #050505; box-shadow: 0 0 30px rgba(255,255,255,.18); transition: box-shadow .3s, transform .3s; }
+.btn:hover { box-shadow: 0 0 44px rgba(255,255,255,.32); transform: translateY(-1px); }
+.btn.ghost { background: rgba(255,255,255,.04); color: var(--text); box-shadow: inset 0 0 0 1px var(--line2); }
+
+/* hero */
+.hero { position: relative; height: min(920px, 100svh); min-height: 640px; display: grid; justify-items: center; align-content: start; text-align: center; padding-top: clamp(120px, 16vh, 170px); overflow: hidden; }
+#waves { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+.hero::after { content: ""; position: absolute; inset: auto 0 0; height: 30%; background: linear-gradient(transparent, var(--bg)); z-index: 1; }
+.hero > *:not(canvas) { position: relative; z-index: 2; }
+.hero h1 { margin: 0; font: 700 clamp(36px, 6.2vw, 72px)/1.02 var(--display); letter-spacing: -.035em; max-width: 14ch; }
+.hero p { margin: 16px 0 26px; color: var(--muted); font-size: clamp(15px, 1.6vw, 17px); }
+.tile { margin-top: clamp(40px, 9vh, 90px); width: 74px; height: 74px; border-radius: 20px; display: grid; place-items: center; background: linear-gradient(180deg, #2a2a2d, #0f0f10); box-shadow: inset 0 1px 0 rgba(255,255,255,.18), inset 0 0 0 1px var(--line2), 0 0 0 10px rgba(255,255,255,.03), 0 0 90px rgba(255,255,255,.22), 0 30px 60px rgba(0,0,0,.7); }
+.tile .mark { width: 34px; height: 22px; }
+.tile .mark i { background: #fff; box-shadow: 0 0 10px rgba(151,71,255,.8); }
+.beam { width: 1px; height: 120px; margin-top: -2px; background: linear-gradient(rgba(255,255,255,.5), transparent); }
+
+/* logos */
+.logos { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px 44px; margin: 0 auto; color: var(--dim); font: 600 14px/1 var(--display); letter-spacing: .02em; position: relative; z-index: 3; }
+.logos span { display: inline-flex; align-items: center; gap: 8px; }
+.logos svg { width: 15px; height: 15px; }
+.logos-k { text-align: center; color: var(--dim); font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; margin: -70px 0 18px; position: relative; z-index: 3; }
+
+/* sections */
+section.s { padding: clamp(90px, 13vw, 150px) 0 0; }
+.head { text-align: center; display: grid; justify-items: center; gap: 14px; margin-bottom: 44px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 8px; border-radius: 999px; background: var(--card2); box-shadow: inset 0 0 0 1px var(--line2); font: 600 10.5px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: #c7c7cc; }
+.chip i { width: 14px; height: 14px; border-radius: 4px; background: linear-gradient(135deg, #fff, #777); }
+.head h2 { margin: 0; font: 700 clamp(28px, 4vw, 44px)/1.05 var(--display); letter-spacing: -.03em; }
+.head p { margin: 0; color: var(--muted); max-width: 52ch; }
+
+.feat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.f { display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: 16px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); }
+.ico { flex: none; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(180deg, #232325, #111112); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 0 0 1px var(--line2); }
+.ico svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.f b { font: 600 14.5px/1.3 var(--body); }
+
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.st { position: relative; min-height: 330px; padding: 24px 20px 0; border-radius: 18px; overflow: hidden; background: linear-gradient(180deg, #111112, #08080a); box-shadow: inset 0 0 0 1px var(--line); text-align: center; display: flex; flex-direction: column; }
+.st h3 { margin: 0; font: 600 17px/1.2 var(--display); }
+.st p { margin: 8px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.st .vis { margin-top: auto; height: 170px; display: grid; place-items: center; position: relative; }
+.orb { width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle at 50% 35%, #2b2b2e, #0b0b0c 70%); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 0 60px rgba(255,255,255,.07); display: grid; place-items: center; }
+.orb .mark { width: 22px; height: 14px; }
+.list { width: 100%; display: grid; gap: 6px; padding: 0 0 18px; text-align: left; font-size: 12px; color: #b9b9be; }
+.list span { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; background: rgba(255,255,255,.03); }
+.list span.on { background: linear-gradient(90deg, #3a3a3d, #1c1c1e); color: #fff; box-shadow: inset 0 0 0 1px var(--line2); }
+.list span i { width: 6px; height: 6px; border-radius: 50%; background: #6b6b70; }
+.list span.on i { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.cube { width: 96px; height: 96px; position: relative; transform-style: preserve-3d; transform: rotateX(-24deg) rotateY(38deg); animation: spin 14s linear infinite; }
+.cube b { position: absolute; inset: 0; border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.02)); box-shadow: inset 0 0 0 1px rgba(255,255,255,.25); }
+.cube b:nth-child(1){transform:translateZ(48px)}.cube b:nth-child(2){transform:rotateY(90deg) translateZ(48px)}.cube b:nth-child(3){transform:rotateY(180deg) translateZ(48px)}.cube b:nth-child(4){transform:rotateY(-90deg) translateZ(48px)}.cube b:nth-child(5){transform:rotateX(90deg) translateZ(48px)}.cube b:nth-child(6){transform:rotateX(-90deg) translateZ(48px)}
+@keyframes spin { to { transform: rotateX(-24deg) rotateY(398deg); } }
+.dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.35) 1px, transparent 1.4px); background-size: 14px 14px; mask-image: radial-gradient(circle at 50% 60%, #000, transparent 70%); -webkit-mask-image: radial-gradient(circle at 50% 60%, #000, transparent 70%); opacity: .35; }
+.screen { width: 92%; height: 140px; margin-bottom: -8px; border-radius: 12px 12px 0 0; background: #0a0a0b; box-shadow: inset 0 0 0 1px var(--line2); padding: 12px; text-align: left; }
+.screen .bar { display: flex; gap: 5px; margin-bottom: 10px; } .screen .bar i { width: 6px; height: 6px; border-radius: 50%; background: #3a3a3d; }
+.screen .kp { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.screen .kp div { border-radius: 7px; padding: 7px; background: rgba(255,255,255,.04); font-size: 10px; color: var(--muted); }
+.screen .kp b { display: block; color: #fff; font: 700 15px/1.1 var(--display); }
+.screen .bars { display: flex; align-items: flex-end; gap: 4px; height: 38px; margin-top: 8px; }
+.screen .bars i { flex: 1; border-radius: 3px; background: rgba(255,255,255,.18); } .screen .bars i:last-child { background: var(--accent); }
+
+.bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.b { position: relative; border-radius: 18px; padding: 20px; min-height: 250px; background: linear-gradient(180deg, #111112, #08080a); box-shadow: inset 0 0 0 1px var(--line); overflow: hidden; display: flex; flex-direction: column; }
+.b.w2 { grid-column: span 2; }
+.b h3 { margin: auto 0 0; font: 600 16px/1.25 var(--display); position: relative; }
+.b p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; max-width: 42ch; position: relative; }
+.mods { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+.mods span { height: 64px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(180deg, #1d1d1f, #0e0e0f); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 0 0 1px var(--line); font-size: 10.5px; color: #c7c7cc; text-align: center; padding: 6px; }
+.mods span.on { background: linear-gradient(180deg, #2c2c30, #151517); color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,.18), inset 0 0 0 1px rgba(151,71,255,.55), 0 0 26px rgba(151,71,255,.25); }
+.term { font: 500 12px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; color: #9b9ba0; background: #070708; border-radius: 12px; padding: 14px; box-shadow: inset 0 0 0 1px var(--line); margin-bottom: 16px; }
+.term em { font-style: normal; color: #fff; } .term u { text-decoration: none; color: #c9a2ff; }
+.ring { position: absolute; right: -60px; top: -60px; width: 260px; height: 260px; border-radius: 50%; background: repeating-radial-gradient(circle, rgba(255,255,255,.08) 0 1px, transparent 1px 14px); }
+
+.cta { margin: clamp(90px, 13vw, 150px) auto 0; text-align: center; padding: 70px 24px; border-radius: 26px; background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.12), transparent 60%), #0a0a0b; box-shadow: inset 0 0 0 1px var(--line2); }
+.cta h2 { margin: 0; font: 700 clamp(28px, 4.4vw, 48px)/1.05 var(--display); letter-spacing: -.03em; }
+.cta p { margin: 14px auto 26px; color: var(--muted); max-width: 46ch; }
+footer { padding: 70px 0 50px; text-align: center; color: var(--dim); font-size: 12.5px; }
+footer .brand { justify-content: center; margin-bottom: 14px; color: var(--muted); }
+
+@media (max-width: 860px) {
+  .nav .links { display: none; }
+  .feat, .bento { grid-template-columns: 1fr; } .b.w2 { grid-column: auto; }
+  .steps { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } .logos { gap: 12px 26px; font-size: 12.5px; } }
+@media (prefers-reduced-motion: reduce) { .cube { animation: none; } }
+</style>
+</head>
+<body>
+<header class="nav"><div class="pill">
+  <a class="brand" href="#"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>MERKORN</a>
+  <nav class="links"><a href="#">Come lavoriamo</a><a href="#">Servizi</a><a href="#">Chi siamo</a></nav>
+  <a class="btn" href="#">Contattaci</a>
+</div></header>
+
+<section class="hero">
+  <canvas id="waves" aria-hidden="true"></canvas>
+  <h1 class="silver">Gestionali modulari su misura per le PMI.</h1>
+  <p>Dati chiari. Decisioni rapide. Costruiti per crescere.</p>
+  <a class="btn" href="#">Prenota un appuntamento</a>
+  <div class="tile"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span></div>
+  <div class="beam"></div>
+</section>
+
+<p class="logos-k">Si collega con i programmi che usi già</p>
+<div class="logos wrap">
+  <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="1.5" width="11" height="13" rx="2"/><path d="M5 5h6M5 8h6M5 11h3"/></svg>Fatturazione elettronica</span>
+  <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="11" rx="2"/><path d="M1.5 6.5h13M6 2.5v11"/></svg>Excel</span>
+  <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 13V7l6-4 6 4v6z"/><path d="M6 13V9h4v4"/></svg>Contabilità</span>
+  <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h2l1.5 7h7L14 6H5"/><circle cx="6.5" cy="13.5" r="1"/><circle cx="11.5" cy="13.5" r="1"/></svg>E-commerce</span>
+  <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 11V4h8v7M9.5 7h3l2 2v2h-5"/><circle cx="4.5" cy="12" r="1.3"/><circle cx="11.5" cy="12" r="1.3"/></svg>Corrieri</span>
+  <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6l6-3.5L14 6M3 6v6M6.5 6v6M9.5 6v6M13 6v6M1.5 13.5h13"/></svg>Banche</span>
+</div>
+
+<section class="s"><div class="wrap">
+  <div class="head"><span class="chip"><i></i>Introduzione</span><h2 class="silver">Cos'è Merkorn?</h2><p>Una software house pugliese che costruisce gestionali a moduli, collegati tra loro e disegnati attorno al tuo lavoro.</p></div>
+  <div class="feat">
+    <div class="f"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></span><b>Moduli su misura per ogni reparto</b></div>
+    <div class="f"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><b>Dati aggiornati in tempo reale</b></div>
+    <div class="f"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 7H6a4 4 0 0 0 0 8h3M15 7h3a4 4 0 0 1 0 8h-3M8 11h8"/></svg></span><b>Integrato con i tuoi programmi</b></div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="head"><span class="chip"><i></i>Analisi · Moduli · Su misura · Interfaccia</span><h2 class="silver">Come funziona</h2><p>Quattro fasi, ognuna con un risultato concreto.</p></div>
+  <div class="steps">
+    <article class="st"><h3>Capiamo come lavori</h3><p>Studiamo i processi e troviamo dove si guadagna tempo.</p><div class="vis"><div class="orb"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span></div></div></article>
+    <article class="st"><h3>Scegliamo i moduli</h3><p>Basi collaudate per partire veloci.</p><div class="vis"><div class="list"><span><i></i>Anagrafiche</span><span class="on"><i></i>Magazzino</span><span><i></i>Ordini</span><span><i></i>Fatturazione</span></div></div></article>
+    <article class="st"><h3>Costruiamo su misura</h3><p>Le funzioni della tua azienda, una alla volta.</p><div class="vis"><div class="dots"></div><div class="cube"><b></b><b></b><b></b><b></b><b></b><b></b></div></div></article>
+    <article class="st"><h3>Rendiamo i dati leggibili</h3><p>Schermate chiare, decisioni rapide.</p><div class="vis" style="align-items:end"><div class="screen"><div class="bar"><i></i><i></i><i></i></div><div class="kp"><div><b>128</b>Ordini oggi</div><div><b>€ 84k</b>Fatturato</div></div><div class="bars"><i style="height:45%"></i><i style="height:62%"></i><i style="height:55%"></i><i style="height:72%"></i><i style="height:66%"></i><i style="height:90%"></i></div></div></div></article>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="head"><span class="chip"><i></i>Servizi</span><h2 class="silver">Cosa facciamo</h2><p>Tutto quello che serve per avere i dati sotto controllo e decidere con più sicurezza.</p></div>
+  <div class="bento">
+    <article class="b w2"><div class="mods"><span>Ordini</span><span class="on">Magazzino</span><span>Produzione</span><span>Commesse</span><span>Fatture</span><span>Consegne</span><span>Clienti</span><span>Report</span></div><h3>Gestionale su misura</h3><p>Un ERP a moduli che riunisce tutta l'azienda e ti dà la visione completa.</p></article>
+    <article class="b"><div class="ring"></div><h3>Analisi dei processi</h3><p>Una fotografia chiara di come lavori oggi e delle priorità per crescere.</p></article>
+    <article class="b"><div class="list" style="padding:0 0 16px"><span><i></i>Carico merce</span><span class="on"><i></i>Consegna con firma</span><span><i></i>Inventario</span></div><h3>App per magazzino e consegne</h3><p>I dati del magazzino, subito visibili in ufficio.</p></article>
+    <article class="b w2"><div class="term"><em>merkorn</em> aggiorna <u>modulo magazzino</u><br>✓ nuova funzione rilasciata<br>✓ dati sincronizzati con la contabilità<br><em>pronto</em> stesso team, sempre</div><h3>Assistenza ed evoluzione</h3><p>Il gestionale cresce con la tua azienda, seguito dallo stesso team.</p></article>
+  </div>
+  <div class="cta"><h2 class="silver">Scopri cosa può cambiare nella tua azienda</h2><p>Ci vediamo in azienda, guardiamo insieme come lavorate e ti mostriamo cosa può cambiare.</p><a class="btn" href="#">Prenota un appuntamento</a></div>
+</div></section>
+
+<footer><div class="brand"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>MERKORN</div>Software house · Mottola (TA), Puglia · merkorn.com</footer>
+
+<script>
+/* Silver wave landscape: two curved dunes drawn as many thin lines, moving slowly */
+(() => {
+  const c = document.getElementById('waves'), x = c.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w, h, dpr;
+  const size = () => { dpr = Math.min(devicePixelRatio || 1, 2); w = c.clientWidth; h = c.clientHeight; c.width = w * dpr; c.height = h * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0); };
+  size(); addEventListener('resize', size);
+  const draw = t => {
+    x.clearRect(0, 0, w, h);
+    const lines = 46, horizon = h * .6;
+    for (let i = 0; i < lines; i++) {
+      const k = i / (lines - 1);                       // 0 = far, 1 = near
+      const y0 = horizon + Math.pow(k, 2.2) * h * .42;  // perspective spacing
+      const amp = (40 + k * 260) * Math.min(1, w / 1100);
+      x.beginPath();
+      for (let px = -20; px <= w + 20; px += 8) {
+        const u = px / w - .5;
+        // two dunes rising at the sides, valley in the middle
+        const dune = Math.pow(Math.abs(u) * 2, 2.4) * amp * 1.4;
+        const ripple = Math.sin(u * 9 + t * .00025 + k * 6) * (4 + k * 10);
+        const y = y0 - dune + ripple;
+        px < 0 ? x.moveTo(px, y) : x.lineTo(px, y);
+      }
+      const a = (.05 + k * .32) * (1 - k * .35);
+      x.strokeStyle = `rgba(235,235,240,${a})`;
+      x.lineWidth = .6 + k * .7;
+      x.stroke();
+    }
+    // vertical light streaks
+    for (let i = 0; i < 9; i++) {
+      const sx = w * (.12 + i * .095) + Math.sin(i * 7.3) * 30, sh = 40 + (i * 37 % 90);
+      const g = x.createLinearGradient(0, h * .08, 0, h * .08 + sh);
+      g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(.5, 'rgba(255,255,255,.35)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+      x.fillStyle = g; x.fillRect(sx, h * .06 + (i * 53 % 120), 1, sh);
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  };
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
