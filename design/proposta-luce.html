@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merkorn, proposta luce</title>
+<style>
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; font-display: swap; src: url(../assets/fonts/dm-sans.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 100 900; font-display: swap; src: url(../assets/fonts/inter.woff2) format("woff2"); }
+:root {
+  --bg: #06061a; --bg2: #0b0b26; --card: rgba(22,20,52,.62); --card2: rgba(30,27,70,.7);
+  --line: rgba(160,150,255,.14); --line2: rgba(180,170,255,.24);
+  --text: #f3f2ff; --muted: #a5a2c8; --dim: #6c6993; --v: #9747FF; --v2: #6d5cff;
+  --display: "DM Sans", system-ui, sans-serif; --body: "Inter", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; overflow-x: clip; }
+body { background: var(--bg); color: var(--text); font: 400 15px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+.wrap { width: min(1120px, 100% - 32px); margin-inline: auto; position: relative; z-index: 1; }
+h1, h2, h3 { font-family: var(--display); margin: 0; letter-spacing: -.03em; }
+.mark { position: relative; display: inline-block; width: 24px; height: 15px; flex: none; }
+.mark i { position: absolute; width: 18%; height: 30%; border-radius: 22%; background: currentColor; }
+.mark i:nth-child(1){left:41%;top:0}.mark i:nth-child(2){left:20.5%;top:35%}.mark i:nth-child(3){left:61.5%;top:35%}.mark i:nth-child(4){left:0;top:70%}.mark i:nth-child(5){left:82%;top:70%}
+.stars { position: absolute; inset: 0; pointer-events: none; background-image:
+  radial-gradient(1px 1px at 12% 18%, #fff8, transparent), radial-gradient(1px 1px at 78% 12%, #fff6, transparent),
+  radial-gradient(1.5px 1.5px at 64% 42%, #fff7, transparent), radial-gradient(1px 1px at 30% 70%, #fff5, transparent),
+  radial-gradient(1px 1px at 88% 66%, #fff6, transparent), radial-gradient(1.5px 1.5px at 46% 88%, #fff5, transparent),
+  radial-gradient(1px 1px at 6% 52%, #fff5, transparent), radial-gradient(1px 1px at 94% 34%, #fff5, transparent); }
+
+/* nav */
+.nav { position: fixed; inset: 16px 0 auto; z-index: 30; }
+.nav .in { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 10px 10px 10px 18px; border-radius: 16px; background: rgba(10,10,32,.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: inset 0 0 0 1px var(--line); }
+.brand { display: flex; align-items: center; gap: 10px; font: 700 13px/1 var(--display); letter-spacing: .3em; }
+.brand .mark { color: var(--v); }
+.nav nav { display: flex; gap: 28px; font-size: 14px; color: var(--muted); }
+.nav nav a:hover { color: var(--text); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border-radius: 999px; font: 600 14px/1 var(--body); background: linear-gradient(180deg, #a866ff, #7b3cf0); color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 8px 30px rgba(151,71,255,.45); transition: transform .3s, box-shadow .3s; }
+.btn:hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 12px 40px rgba(151,71,255,.6); }
+.btn.ghost { background: rgba(255,255,255,.05); box-shadow: inset 0 0 0 1px var(--line2); }
+
+/* hero */
+.hero { position: relative; padding: 170px 0 0; text-align: center; overflow: hidden; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(109,92,255,.22), transparent 70%), var(--bg); }
+.beam { position: absolute; top: -120px; left: -10%; width: 70%; height: 900px; background: linear-gradient(115deg, rgba(190,180,255,.0) 30%, rgba(190,180,255,.22) 46%, rgba(255,255,255,.35) 50%, rgba(190,180,255,.18) 54%, transparent 70%); filter: blur(30px); transform: rotate(8deg); pointer-events: none; animation: beam 9s ease-in-out infinite alternate; }
+.beam.b2 { left: auto; right: -20%; width: 50%; opacity: .45; transform: rotate(-14deg) scaleX(-1); animation-delay: -4s; }
+@keyframes beam { from { opacity: .7; translate: -2% 0; } to { opacity: 1; translate: 3% 0; } }
+.flare { position: absolute; top: 40px; left: 18%; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.55), rgba(170,160,255,.15) 30%, transparent 65%); filter: blur(6px); pointer-events: none; }
+.hero h1 { font-size: clamp(40px, 6.4vw, 76px); line-height: 1.02; max-width: 15ch; margin: 0 auto; font-weight: 700; }
+.hero h1 em { font-style: normal; background: linear-gradient(90deg, #b98bff, #8d7dff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero .lead { margin: 18px auto 30px; max-width: 46ch; color: var(--muted); font-size: clamp(15px, 1.6vw, 18px); }
+.hero .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* app mockup */
+.app { position: relative; margin: 70px auto 0; width: min(980px, 100%); border-radius: 18px 18px 0 0; background: linear-gradient(180deg, rgba(26,24,62,.92), rgba(12,12,34,.98)); box-shadow: inset 0 0 0 1px var(--line2), 0 -20px 80px rgba(109,92,255,.25); padding: 16px; text-align: left; }
+.app::before { content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; background: linear-gradient(180deg, rgba(200,190,255,.5), transparent 40%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+.app-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 6px 14px; font-size: 13px; color: var(--muted); }
+.app-top b { color: var(--text); font: 600 15px/1 var(--display); }
+.tabs { display: flex; gap: 6px; } .tabs span { padding: 6px 10px; border-radius: 8px; font-size: 12px; } .tabs span.on { background: rgba(151,71,255,.22); color: #fff; box-shadow: inset 0 0 0 1px rgba(151,71,255,.5); }
+.app-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 10px; }
+.tile { border-radius: 12px; padding: 14px; background: rgba(255,255,255,.035); box-shadow: inset 0 0 0 1px var(--line); }
+.tile small { display: block; color: var(--muted); font-size: 11.5px; }
+.tile b { display: block; font: 700 26px/1.1 var(--display); margin-top: 4px; }
+.tile .up { color: #8de0b0; font-size: 11.5px; }
+.tile.chart { grid-row: span 2; display: flex; flex-direction: column; }
+.tile.chart svg { margin-top: auto; width: 100%; height: 120px; }
+.tile.week { grid-column: span 3; }
+.tile.hot { background: linear-gradient(160deg, #5b4cf5, #3a2db8); box-shadow: inset 0 1px 0 rgba(255,255,255,.25); }
+.tile.hot small { color: #dcd6ff; }
+.bars { display: flex; align-items: flex-end; gap: 5px; height: 46px; margin-top: 10px; } .bars i { flex: 1; border-radius: 3px; background: rgba(170,160,255,.3); } .bars i:last-child { background: var(--v); }
+.app-fade { position: absolute; inset: auto 0 0; height: 45%; background: linear-gradient(transparent, var(--bg)); border-radius: inherit; }
+
+/* logos */
+.logos { padding: 50px 0 0; text-align: center; }
+.logos p { margin: 0 0 22px; color: var(--dim); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
+.logos .row { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px 46px; color: #d9d6f5; font: 600 15px/1 var(--display); }
+.logos span { display: inline-flex; align-items: center; gap: 8px; opacity: .85; }
+.logos svg { width: 17px; height: 17px; }
+
+/* sections */
+section.s { position: relative; padding: clamp(100px, 13vw, 150px) 0 0; }
+.head { text-align: center; max-width: 640px; margin: 0 auto 46px; }
+.head h2 { font-size: clamp(30px, 4.4vw, 50px); line-height: 1.05; }
+.head p { margin: 14px 0 0; color: var(--muted); }
+.eyebrow { display: inline-block; margin-bottom: 14px; padding: 6px 12px; border-radius: 999px; font: 600 11px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: #cfc6ff; background: rgba(151,71,255,.12); box-shadow: inset 0 0 0 1px rgba(151,71,255,.35); }
+
+/* problem panel with floating chips */
+.panel { position: relative; border-radius: 22px; min-height: 340px; padding: 48px; overflow: hidden; background: radial-gradient(ellipse at 70% 40%, rgba(109,92,255,.35), transparent 60%), linear-gradient(160deg, #191846, #0b0b26); box-shadow: inset 0 0 0 1px var(--line2); display: grid; grid-template-columns: 1fr 1.1fr; gap: 30px; align-items: center; }
+.panel h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1.05; }
+.panel p { color: var(--muted); max-width: 36ch; margin: 14px 0 0; }
+.float { position: relative; height: 260px; }
+.chip { position: absolute; padding: 10px 14px; border-radius: 12px; font-size: 13px; background: var(--card2); backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px var(--line2), 0 10px 30px rgba(0,0,0,.35); white-space: nowrap; animation: bob 6s ease-in-out infinite; }
+.chip small { display: block; color: var(--muted); font-size: 11px; }
+.chip::before { content: ""; position: absolute; left: 50%; top: -60px; width: 1px; height: 60px; background: linear-gradient(transparent, rgba(180,170,255,.5)); }
+.chip.c1 { left: 6%; top: 34%; } .chip.c2 { left: 46%; top: 8%; animation-delay: -2s; } .chip.c3 { left: 56%; top: 58%; animation-delay: -4s; } .chip.c4 { left: 18%; top: 76%; animation-delay: -1s; }
+@keyframes bob { 50% { translate: 0 -8px; } }
+
+/* unified diagram */
+.diagram { position: relative; display: grid; grid-template-columns: 1fr auto 1fr; gap: 0 60px; align-items: center; }
+.diagram .col { display: grid; gap: 70px; }
+.node { position: relative; padding: 14px 16px; border-radius: 14px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); }
+.node b { display: block; font: 600 15px/1.2 var(--display); }
+.node small { color: var(--muted); font-size: 12.5px; }
+.col.l .node::after, .col.r .node::after { content: ""; position: absolute; top: 50%; width: 60px; height: 1px; background: linear-gradient(90deg, rgba(151,71,255,.0), rgba(151,71,255,.8)); }
+.col.l .node::after { left: 100%; } .col.r .node::after { right: 100%; transform: scaleX(-1); }
+.core { position: relative; width: 150px; height: 150px; border-radius: 34px; display: grid; place-items: center; background: linear-gradient(160deg, #6a5cff, #3b2fc4); box-shadow: inset 0 1px 0 rgba(255,255,255,.4), inset 0 0 0 1px rgba(255,255,255,.18), 0 0 0 14px rgba(109,92,255,.12), 0 0 0 28px rgba(109,92,255,.06), 0 0 90px rgba(120,100,255,.7); }
+.core .mark { width: 62px; height: 40px; color: #fff; }
+.core::after { content: ""; position: absolute; inset: -6px; border-radius: 40px; border: 1px dashed rgba(200,190,255,.35); animation: spin 30s linear infinite; }
+@keyframes spin { to { rotate: 360deg; } }
+
+/* bento */
+.bento { display: grid; grid-template-columns: 1fr 1.5fr; gap: 14px; }
+.bx { position: relative; border-radius: 20px; padding: 26px; min-height: 260px; overflow: hidden; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); display: flex; flex-direction: column; }
+.bx h3 { font-size: 22px; line-height: 1.15; } .bx p { margin: 8px 0 0; color: var(--muted); font-size: 14px; max-width: 40ch; }
+.bx.blue { background: linear-gradient(160deg, #5b4cf5, #2f24a8); box-shadow: inset 0 1px 0 rgba(255,255,255,.25); }
+.bx.blue p { color: #ddd8ff; }
+.bx .mini { margin-top: auto; padding-top: 22px; }
+.list { display: grid; gap: 8px; } .list span { display: flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,.04); box-shadow: inset 0 0 0 1px var(--line); font-size: 13px; } .list span em { font-style: normal; color: var(--muted); font-size: 12px; } .list span.on { box-shadow: inset 0 0 0 1px rgba(151,71,255,.6); background: rgba(151,71,255,.12); }
+.meter { display: grid; gap: 6px; font-size: 13px; } .meter + .meter { margin-top: 12px; } .meter .t { display: flex; justify-content: space-between; } .meter .t em { font-style: normal; color: var(--muted); font-size: 12px; } .meter .b { height: 7px; border-radius: 4px; background: rgba(255,255,255,.08); } .meter .b i { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, #6d5cff, #b07bff); }
+
+/* glass tiles */
+.glass { display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; perspective: 1200px; padding: 20px 0; }
+.gt { width: 186px; min-height: 200px; padding: 22px 18px; border-radius: 22px; text-align: center; background: linear-gradient(160deg, rgba(60,55,140,.55), rgba(20,18,55,.8)); box-shadow: inset 0 1px 0 rgba(255,255,255,.18), inset 0 0 0 1px var(--line2), 0 30px 60px rgba(0,0,0,.45); backdrop-filter: blur(8px); transition: transform .5s; }
+.gt:nth-child(1){transform:rotateY(18deg) rotateZ(-4deg) translateY(30px)} .gt:nth-child(2){transform:rotateY(9deg) rotateZ(-2deg)} .gt:nth-child(3){transform:translateY(-24px)} .gt:nth-child(4){transform:rotateY(-9deg) rotateZ(2deg)} .gt:nth-child(5){transform:rotateY(-18deg) rotateZ(4deg) translateY(30px)}
+.gt:hover { transform: translateY(-10px) !important; }
+.gt.on { background: linear-gradient(160deg, #6a5cff, #3326b5); box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 0 70px rgba(120,100,255,.55); }
+.gt .gi { width: 52px; height: 52px; margin: 0 auto 16px; border-radius: 14px; display: grid; place-items: center; background: rgba(255,255,255,.08); box-shadow: inset 0 1px 0 rgba(255,255,255,.2); }
+.gt .gi svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.gt b { display: block; font: 600 16px/1.2 var(--display); } .gt small { display: block; margin-top: 6px; color: #c3bfe6; font-size: 12.5px; line-height: 1.45; }
+
+/* cta */
+.cta { position: relative; margin-top: clamp(110px, 14vw, 170px); padding: 120px 0 150px; text-align: center; overflow: hidden; }
+.cone { position: absolute; left: 50%; bottom: -40px; width: 720px; height: 520px; translate: -50% 0; background: radial-gradient(ellipse 50% 70% at 50% 100%, rgba(170,160,255,.55), rgba(109,92,255,.18) 40%, transparent 70%); filter: blur(10px); pointer-events: none; }
+.cone::after { content: ""; position: absolute; left: 50%; bottom: 40px; width: 2px; height: 360px; translate: -50% 0; background: linear-gradient(transparent, rgba(255,255,255,.9)); filter: blur(1px); }
+.cta small { color: #cfc6ff; font: 600 13px/1 var(--display); letter-spacing: .3em; }
+.cta h2 { font-size: clamp(36px, 6vw, 68px); line-height: 1.02; margin: 16px 0 14px; }
+.cta p { color: var(--muted); margin: 0 auto 30px; max-width: 42ch; }
+footer { border-top: 1px solid var(--line); padding: 36px 0 44px; color: var(--dim); font-size: 13px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+footer nav { display: flex; gap: 22px; }
+
+@media (max-width: 900px) {
+  .nav nav { display: none; }
+  .app-grid { grid-template-columns: 1fr 1fr; } .tile.chart, .tile.week { grid-column: 1 / -1; grid-row: auto; }
+  .panel { grid-template-columns: 1fr; padding: 30px; } .float { height: 220px; }
+  .diagram { grid-template-columns: 1fr; gap: 16px; justify-items: center; } .diagram .col { gap: 12px; width: 100%; } .col.l .node::after, .col.r .node::after { display: none; } .core { margin: 20px 0; order: -1; }
+  .bento { grid-template-columns: 1fr; }
+  .gt { transform: none !important; width: calc(50% - 8px); }
+}
+@media (max-width: 520px) { .gt { width: 100%; min-height: 0; } .chip { font-size: 12px; } .chip.c2 { left: 34%; } .chip.c3 { left: 40%; } }
+@media (prefers-reduced-motion: reduce) { .beam, .chip, .core::after { animation: none; } }
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap in">
+  <a class="brand" href="#"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>MERKORN</a>
+  <nav><a href="#">Come lavoriamo</a><a href="#">Servizi</a><a href="#">Chi siamo</a></nav>
+  <a class="btn" href="#">Contattaci</a>
+</div></header>
+
+<section class="hero">
+  <div class="beam"></div><div class="beam b2"></div><div class="flare"></div><div class="stars"></div>
+  <div class="wrap">
+    <h1>Dati chiari, <em>decisioni migliori</em></h1>
+    <p class="lead">Gestionali su misura per le PMI. Ordini, magazzino e produzione in un unico posto, sempre aggiornati.</p>
+    <div class="actions"><a class="btn" href="#">Prenota un appuntamento</a><a class="btn ghost" href="#">Come lavoriamo</a></div>
+    <div class="app">
+      <div class="app-top"><b>Buongiorno, Marco</b><div class="tabs"><span class="on">Oggi</span><span>Settimana</span><span>Mese</span></div></div>
+      <div class="app-grid">
+        <div class="tile chart"><small>Fatturato del mese</small><b>€ 84.300</b><span class="up">+18% sul mese scorso</span>
+          <svg viewBox="0 0 300 120" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9747FF" stop-opacity=".45"/><stop offset="1" stop-color="#9747FF" stop-opacity="0"/></linearGradient></defs><path d="M0 95 C30 90 45 70 70 74 S110 92 135 70 S175 30 205 44 S250 50 300 14 L300 120 L0 120Z" fill="url(#g)"/><path d="M0 95 C30 90 45 70 70 74 S110 92 135 70 S175 30 205 44 S250 50 300 14" fill="none" stroke="#b07bff" stroke-width="2.5"/></svg></div>
+        <div class="tile"><small>Ordini di oggi</small><b>128</b><span class="up">+12%</span></div>
+        <div class="tile"><small>Consegne in corso</small><b>14</b><small>3 entro un'ora</small></div>
+        <div class="tile hot"><small>Da riordinare</small><b>6</b><small>articoli sotto soglia</small></div>
+        <div class="tile week"><small>Ordini della settimana</small><div class="bars"><i style="height:45%"></i><i style="height:62%"></i><i style="height:54%"></i><i style="height:72%"></i><i style="height:66%"></i><i style="height:40%"></i><i style="height:90%"></i></div></div>
+      </div>
+      <div class="app-fade"></div>
+    </div>
+  </div>
+</section>
+
+<div class="logos wrap">
+  <p>Si collega con i programmi che usi già</p>
+  <div class="row">
+    <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="1.5" width="11" height="13" rx="2"/><path d="M5 5h6M5 8h6M5 11h3"/></svg>Fatturazione elettronica</span>
+    <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="11" rx="2"/><path d="M1.5 6.5h13M6 2.5v11"/></svg>Excel</span>
+    <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 13V7l6-4 6 4v6z"/><path d="M6 13V9h4v4"/></svg>Contabilità</span>
+    <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h2l1.5 7h7L14 6H5"/><circle cx="6.5" cy="13.5" r="1"/><circle cx="11.5" cy="13.5" r="1"/></svg>E-commerce</span>
+    <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 11V4h8v7M9.5 7h3l2 2v2h-5"/><circle cx="4.5" cy="12" r="1.3"/><circle cx="11.5" cy="12" r="1.3"/></svg>Corrieri</span>
+  </div>
+</div>
+
+<section class="s"><div class="wrap">
+  <div class="panel">
+    <div><span class="eyebrow">Ogni giorno</span><h2>I dati sono ovunque.<br>Mettiamoli in ordine.</h2><p>Ordini su WhatsApp, giacenze su Excel, commesse al telefono. Con un unico gestionale li vedi tutti insieme.</p></div>
+    <div class="float" aria-hidden="true">
+      <div class="chip c1">Ordine Rossi<small>arrivato su WhatsApp</small></div>
+      <div class="chip c2">Giacenza olio 5 L<small>foglio Excel</small></div>
+      <div class="chip c3">Commessa fiera Bari<small>al 45%</small></div>
+      <div class="chip c4">Fattura Bianchi<small>da emettere</small></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="head"><span class="eyebrow">Un unico gestionale</span><h2>Tutta l'azienda,<br>in un solo posto</h2><p>Ogni reparto è un modulo, e tutti parlano tra loro.</p></div>
+  <div class="diagram">
+    <div class="col l"><div class="node"><b>Ordini</b><small>Dal cliente al magazzino</small></div><div class="node"><b>Magazzino</b><small>Giacenze sempre aggiornate</small></div></div>
+    <div class="core"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span></div>
+    <div class="col r"><div class="node"><b>Produzione</b><small>Commesse e reparti</small></div><div class="node"><b>Fatture</b><small>Collegate alla contabilità</small></div></div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="head"><span class="eyebrow">Cosa facciamo</span><h2>Tutto quello che serve<br>per decidere meglio</h2></div>
+  <div class="bento">
+    <article class="bx blue"><h3>Il tuo lavoro,<br>in una dashboard</h3><p>Apri la schermata e sai subito come sta andando l'azienda.</p><div class="mini"><div class="meter"><div class="t">Linea confezionamento<em>80%</em></div><div class="b"><i style="width:80%"></i></div></div><div class="meter"><div class="t">Ordine fiera Bari<em>45%</em></div><div class="b"><i style="width:45%"></i></div></div></div></article>
+    <article class="bx"><h3>Gestionale su misura</h3><p>Un ERP a moduli che riunisce ordini, magazzino, produzione e commesse.</p><div class="mini list"><span>Ordini <em>128 oggi</em></span><span class="on">Magazzino <em>6 da riordinare</em></span><span>Produzione <em>3 commesse</em></span></div></article>
+    <article class="bx"><h3>App per magazzino e consegne</h3><p>Carichi, scarichi e consegne con la firma del cliente, visibili subito in ufficio.</p></article>
+    <article class="bx"><h3>Analisi e assistenza</h3><p>Una fotografia chiara di come lavori, e lo stesso team che segue il gestionale nel tempo.</p></article>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="head"><span class="eyebrow">Il metodo</span><h2>Costruito su basi solide</h2><p>Cinque blocchi, come il nostro marchio.</p></div>
+  <div class="glass">
+    <div class="gt"><div class="gi"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></div><b>Analisi</b><small>Capiamo come lavori e dove si guadagna tempo.</small></div>
+    <div class="gt"><div class="gi"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></div><b>Moduli</b><small>Basi collaudate per partire veloci.</small></div>
+    <div class="gt on"><div class="gi"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div><b>Su misura</b><small>Le funzioni della tua azienda, una alla volta.</small></div>
+    <div class="gt"><div class="gi"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><b>Dati</b><small>Schermate chiare, decisioni più rapide.</small></div>
+    <div class="gt"><div class="gi"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></div><b>Evoluzione</b><small>Il gestionale cresce con la tua azienda.</small></div>
+  </div>
+</div></section>
+
+<section class="cta">
+  <div class="stars"></div><div class="cone"></div>
+  <div class="wrap"><small>MERKORN</small><h2>Scopri cosa può<br>cambiare per te</h2><p>Ci vediamo in azienda, guardiamo insieme come lavorate e ti mostriamo cosa può cambiare.</p><a class="btn" href="#">Prenota un appuntamento</a></div>
+</section>
+
+<footer><div class="wrap"><span>Merkorn S.r.l.s. · Mottola (TA), Puglia</span><nav><a href="#">Privacy policy</a><a href="#">Cookie policy</a><a href="#">Contattaci</a></nav></div></footer>
+</body>
+</html>
