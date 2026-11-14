@@ -7,7 +7,7 @@ card impilate, dashboard) sono riutilizzati tra le pagine, ognuna con i propri c
 """
 import re
 from pathlib import Path
-from partials import page, contact_form, EMAIL, BASE
+from partials import page, contact_form, EMAIL, BASE, SCULPT, GHOST
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -90,6 +90,7 @@ def page_hero(eyebrow, lines, lead, lit):
       <p class="lead">{lead}</p>
       <div class="mini" aria-hidden="true">{mini}</div>
     </div>
+    {SCULPT}{GHOST}
   </section>"""
 
 
@@ -143,6 +144,7 @@ def band(eyebrow, title, text, cta=("contattaci.html", "Prenota un appuntamento"
         <h2>{title}</h2>
         <p>{text}</p>
         <a class="btn light" href="{cta[0]}"><span>{cta[1]}</span></a>
+        {SCULPT}
       </div>
     </div>
   </section>"""
@@ -415,6 +417,12 @@ E404 = f"""  <section class="e404" data-name="Pagina non trovata"><div class="wr
 SERVICES_LD = [{"@type": "Service", "name": h, "serviceType": h, "description": p, "provider": {"@id": "https://merkorn.com/#org"},
                 "areaServed": ["Taranto", "Bari", "Brindisi", "Lecce", "Matera", "Puglia", "Italia"]} for _, h, p, _ in SERVICES]
 
+NUMS = '<div class="nums">' + "".join(
+    f'<div class="row" data-enter><p>{t}</p><div class="n"><b>{n}</b><small>{k}</small></div></div>' for t, n, k in [
+        ("Dall'analisi all'interfaccia, ogni fase ha un risultato concreto da verificare.", "4", "Fasi di lavoro"),
+        ("Ordini, magazzino, produzione e fatture collegati tra loro.", "1", "Sistema unico"),
+        ("Il gestionale nasce dai tuoi processi e cresce con la tua azienda.", "100%", "Su misura")]) + "</div>"
+
 HOME = f"""  <section class="hero" data-exit data-name="Inizio">
     <div class="wrap">
       <div class="center">
@@ -428,9 +436,10 @@ HOME = f"""  <section class="hero" data-exit data-name="Inizio">
           <a class="btn" href="contattaci.html"><span>Prenota un appuntamento</span></a>
           <a class="btn ghost" href="metodo.html"><span>Come lavoriamo</span></a>
         </div>
-        <div class="scroll-cue"><i aria-hidden="true"></i>Scorri per continuare</div>
       </div>
     </div>
+    {SCULPT}{GHOST}
+    <a class="peek" href="servizi.html"><span class="th"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span><span><small>/01</small><b>Su misura per ogni reparto</b></span><span class="ar" aria-hidden="true">→</span></a>
   </section>
 
   {statement("Il nostro approccio",
@@ -442,6 +451,8 @@ HOME = f"""  <section class="hero" data-exit data-name="Inizio">
   {hscroll("Come lavoriamo", "Quattro fasi per un gestionale che usi ogni giorno", ("metodo.html", "Il metodo nel dettaglio"), phase_panels(), "Come lavoriamo")}
 
   {section("Servizi", "Servizi", "Gestionali personalizzati per ogni reparto", "Più controllo su ogni area dell'azienda, dagli ordini alla produzione.", HOME_SERVICES)}
+
+  {section("In numeri", "In numeri", "Un metodo chiaro, un sistema unico", None, NUMS)}
 
   {band("Primo incontro", "Scopri cosa può cambiare nella tua azienda", CHAT_TEXT)}
 

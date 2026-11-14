@@ -4,7 +4,7 @@
 // start after the page has loaded and painted, so compiling the shader never delays the opening animation
 function merkornNebula() {
   const canvas = document.getElementById('sky');
-  if (!canvas) return;
+  if (!canvas || getComputedStyle(canvas).display === 'none') return;
   const gl = canvas.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'high-performance' });
   if (!gl) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

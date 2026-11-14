@@ -217,9 +217,27 @@ def footer():
 HUD = """<div class="hud" aria-hidden="true"><span class="pm"><i></i><i></i><i></i><i></i><i></i></span><div><b>Sezione</b><span class="hud-name">Inizio</span><small class="hud-by">powered by <strong>Merkorn</strong></small></div></div>"""
 
 
+SCULPT_DEFS = """<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="sc-t" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5A5A62"/><stop offset="1" stop-color="#2A2A2F"/></linearGradient>
+<linearGradient id="sc-l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1C1C20"/><stop offset="1" stop-color="#0B0B0D"/></linearGradient>
+<linearGradient id="sc-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34343A"/><stop offset="1" stop-color="#141416"/></linearGradient>
+<linearGradient id="sc-vt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C49BFF"/><stop offset="1" stop-color="#8A3CF0"/></linearGradient>
+<linearGradient id="sc-vl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6A22C9"/><stop offset="1" stop-color="#3B0F7A"/></linearGradient>
+<linearGradient id="sc-vr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8D47EE"/><stop offset="1" stop-color="#4F19A0"/></linearGradient>
+<g id="sc-cube"><path d="M0 -50 L86.6 0 L0 50 L-86.6 0Z" fill="url(#sc-t)"/><path d="M-86.6 0 L0 50 L0 150 L-86.6 100Z" fill="url(#sc-l)"/><path d="M86.6 0 L0 50 L0 150 L86.6 100Z" fill="url(#sc-r)"/><path d="M-86.6 0 L0 50 L86.6 0" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2"/></g>
+<g id="sc-vcube"><path d="M0 -50 L86.6 0 L0 50 L-86.6 0Z" fill="url(#sc-vt)"/><path d="M-86.6 0 L0 50 L0 150 L-86.6 100Z" fill="url(#sc-vl)"/><path d="M86.6 0 L0 50 L0 150 L86.6 100Z" fill="url(#sc-vr)"/><path d="M-86.6 0 L0 50 L86.6 0" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.2"/></g>
+<g id="sc-pyr"><ellipse cx="0" cy="250" rx="420" ry="70" fill="rgba(0,0,0,.35)" style="filter:blur(18px)"/><use href="#sc-cube" x="-260" y="150"/><use href="#sc-cube" x="260" y="150"/><use href="#sc-cube" x="-130" y="10"/><use href="#sc-cube" x="130" y="10"/><use href="#sc-vcube" x="0" y="-150"/></g>
+</defs></svg>"""
+
+# the five blocks of the mark as a 3D sculpture
+SCULPT = '<svg class="sculpt" viewBox="-480 -260 960 600" aria-hidden="true" focusable="false"><use href="#sc-pyr"/></svg>'
+GHOST = '<div class="ghostword" aria-hidden="true">Merkorn</div>'
+
+
 def page(path, title, description, seed, body, form=True, scripts=(), extra_ld=()):
     return f"""{head(title, description, path, extra_ld)}
 <body data-seed="{seed}">
+{SCULPT_DEFS}
 <canvas id="sky" aria-hidden="true"></canvas>
 {nav(path)}
 <main id="contenuto">
