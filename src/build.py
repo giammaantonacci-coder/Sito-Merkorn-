@@ -89,6 +89,7 @@ def page_hero(eyebrow, lines, lead, lit):
       <h1>{h}</h1>
       <p class="lead">{lead}</p>
       <div class="mini" aria-hidden="true">{mini}</div>
+      <div class="actions"><a class="btn light" href="contattaci.html"><span>Prenota un appuntamento</span></a></div>
     </div>
     {SCULPT}{GHOST}
   </section>"""
@@ -423,6 +424,81 @@ NUMS = '<div class="nums">' + "".join(
         ("Ordini, magazzino, produzione e fatture collegati tra loro.", "1", "Sistema unico"),
         ("Il gestionale nasce dai tuoi processi e cresce con la tua azienda.", "100%", "Su misura")]) + "</div>"
 
+
+# ---------------------------------------------------------------- struttura come nel riferimento
+
+def sc_card(n, plain, em, kicker, bold, text, href="contattaci.html", tags=None, cta="Scopri di più"):
+    tone = " g" if n % 2 == 0 else ""
+    t = "<ul>" + "".join(f"<li>{x}</li>" for x in tags) + "</ul>" if tags else ""
+    return (f'<article class="sc-card{tone}"><h3>{plain} <em>{em}</em></h3><span class="k">{kicker}</span>{SCULPT}'
+            f'<div class="bot"><b>{bold}</b><p>{text}</p>{t}<a class="btn" href="{href}"><span>{cta}</span></a></div>'
+            f'<span class="no" aria-hidden="true">{n:02d}</span></article>')
+
+
+def sc_about(step, label, title, lead, cards_html, cta=("contattaci.html", "Prenota un appuntamento"), name=None):
+    others = " ".join(f"{i:02d}" for i in range(1, 5) if i != step)
+    return f"""<section class="sc" data-name="{name or label}">
+    <div class="wrap sc-about-in">
+      <div class="sc-left" data-enter>
+        <div class="sc-steps"><b>{step:02d}</b><i></i><span>{others}</span></div>
+        <p class="sc-lead">{lead}</p>
+        <span class="eyebrow">{label}</span>
+        <h2>{title}</h2>
+        <a class="btn" href="{cta[0]}"><span>{cta[1]}</span></a>
+      </div>
+      <div class="sc-right" data-enter>
+        <div class="sc-track" tabindex="0" aria-label="{label}">{cards_html}</div>
+        <div class="sc-arrows"><button type="button" data-sc="-1" aria-label="Precedente">←</button><button type="button" data-sc="1" aria-label="Successiva">→</button></div>
+      </div>
+    </div>
+  </section>"""
+
+
+def sc_panel(label, strong, grey, inner, name=None):
+    return f"""<section class="sc-panel" data-name="{name or label}">
+    <div class="wrap">
+      <div class="sc-head" data-enter><span class="eyebrow">{label}</span><h2>{strong} <span>{grey}</span></h2></div>
+      <div class="sc-body">{inner}</div>
+    </div>
+  </section>"""
+
+
+def sc_rows(items, name="In numeri"):
+    rows = "".join(f'<div class="row" data-enter><p>{t}</p><div class="n"><b>{n}</b><small>{k}</small></div></div>' for t, n, k in items)
+    return f'<section class="sc" data-name="{name}"><div class="wrap"><div class="nums" style="margin-top:0">{rows}</div></div></section>'
+
+
+SC_FEAT = """<div class="sc-feat">
+        <div class="sc-dark">
+          <div class="scr" aria-hidden="true"><div class="kp"><div><b>128</b>Ordini oggi</div><div><b>€ 84k</b>Fatturato</div><div class="v"><b>6</b>Da riordinare</div></div><span style="font-size:10.5px;color:#B5B5BB">Ordini della settimana</span><div class="bars"><i style="height:45%"></i><i style="height:62%"></i><i style="height:55%"></i><i style="height:74%"></i><i style="height:66%"></i><i style="height:40%"></i><i style="height:92%"></i></div></div>
+          <a class="play" href="metodo.html" aria-label="Guarda come si vedono i dati">▶</a>
+          <span class="tag">Una dashboard di esempio</span>
+        </div>
+        <div class="sc-soft">
+          <div class="top"><span>Merkorn</span><a href="chi-siamo.html">Chi siamo</a></div>
+          <h3>Il team</h3>
+          <div class="sc-wave" aria-hidden="true">""" + "".join(f'<i style="height:{30 + round(abs(__import__("math").sin(i * 1.7)) * 70)}%"></i>' for i in range(26)) + """</div>
+          <div class="foot"><p>Sales manager, project manager, product designer e developer. Un solo team, dal primo incontro all'assistenza.</p><div class="sc-av" aria-hidden="true"><span>SM</span><span>PM</span><span>PD</span><span>DV</span></div></div>
+        </div>
+      </div>"""
+
+SERVICE_CARDS = "".join(sc_card(i, *x) for i, x in enumerate([
+    ("Gestionale", "su misura", "Sviluppo", "Tutta l'azienda in un unico sistema", "Un ERP personalizzato per ordini, magazzino, produzione e commesse.", "servizi.html", ["Ordini", "Magazzino", "Produzione", "Commesse"]),
+    ("Analisi dei", "processi", "Consulenza", "Una fotografia chiara di come lavori", "Dove si guadagna tempo e da dove conviene partire.", "servizi.html", ["Mappa del processo", "Priorità"]),
+    ("App per il", "magazzino", "Mobile", "Magazzino e consegne dal telefono", "Carichi, scarichi e consegne con la firma del cliente, visibili subito in ufficio.", "servizi.html", ["Consegne", "Inventario"]),
+    ("Assistenza ed", "evoluzione", "Dopo il rilascio", "Il gestionale cresce con te", "Seguito nel tempo dallo stesso team che l'ha costruito.", "servizi.html", ["Aggiornamenti", "Nuove funzioni"]),
+], 1))
+
+PHASE_CARDS = "".join(sc_card(i, plain, em, k, h, f"{p} <b style='display:inline;font:inherit;color:#fff'>{r}.</b>", "contattaci.html")
+                      for i, (plain, em, (k, h, p, r)) in enumerate(zip(["Capiamo", "Basi", "Parti", "Dati"], ["come lavori", "solide", "su misura", "leggibili"], PHASES), 1))
+
+TEAM_CARDS = "".join(sc_card(i, *x) for i, x in enumerate([
+    ("Sales", "manager", "Il primo contatto", "Viene in azienda e ascolta", "Prepara con te proposta, tempi e costi."),
+    ("Project", "manager", "Requisiti e dati", "Trasforma le esigenze in requisiti", "Analizza dati e processi e segue l'avanzamento del progetto."),
+    ("Product", "designer", "Esperienza d'uso", "Progetta le schermate", "Le disegna e le prova con chi le userà ogni giorno."),
+    ("Developer", "", "Codice", "Scrive e segue il software", "Lo collega ai tuoi programmi e lo segue dopo il rilascio."),
+], 1))
+
 HOME = f"""  <section class="hero" data-exit data-name="Inizio">
     <div class="wrap">
       <div class="center">
@@ -442,55 +518,38 @@ HOME = f"""  <section class="hero" data-exit data-name="Inizio">
     <a class="peek" href="servizi.html"><span class="th"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span><span><small>/01</small><b>Su misura per ogni reparto</b></span><span class="ar" aria-hidden="true">→</span></a>
   </section>
 
-  {statement("Il nostro approccio",
-             "Dati chiari, decisioni migliori.",
-             "Dati,decisioni",
-             "Ordini, magazzino e produzione in un unico posto, sempre aggiornati. Più tempo per pensare alla strategia.",
-             "Approccio")}
+  {sc_about(1, "Chi siamo", "Software house pugliese per le PMI", "Costruiamo gestionali chiari e semplici da usare, disegnati insieme alle persone che li useranno ogni giorno.", SERVICE_CARDS)}
 
-  {hscroll("Come lavoriamo", "Quattro fasi per un gestionale che usi ogni giorno", ("metodo.html", "Il metodo nel dettaglio"), phase_panels(), "Come lavoriamo")}
+  {sc_panel("Il metodo", "Partiamo da come lavori e costruiamo il gestionale attorno a te.", "Moduli collaudati, funzioni su misura e schermate chiare, per avere i dati sotto controllo ogni giorno.", SC_FEAT)}
 
-  {section("Servizi", "Servizi", "Gestionali personalizzati per ogni reparto", "Più controllo su ogni area dell'azienda, dagli ordini alla produzione.", HOME_SERVICES)}
+  {sc_rows([("Dall'analisi all'interfaccia, ogni fase ha un risultato concreto da verificare.", "4", "Fasi di lavoro"),
+            ("Ordini, magazzino, produzione e fatture collegati tra loro.", "1", "Sistema unico"),
+            ("Il gestionale nasce dai tuoi processi e cresce con la tua azienda.", "100%", "Su misura")])}
 
-  {section("In numeri", "In numeri", "Un metodo chiaro, un sistema unico", None, NUMS)}
+  {faq(FAQ_HOME, "Software gestionale su misura, le domande più comuni")}
 
-  {band("Primo incontro", "Scopri cosa può cambiare nella tua azienda", CHAT_TEXT)}
-
-  {principles()}
-
-  {faq(FAQ_HOME, "Software gestionale su misura, le domande più comuni")}"""
+  {band("Primo incontro", "Scopri cosa può cambiare nella tua azienda", CHAT_TEXT)}"""
 
 METODO = f"""  {page_hero("Come lavoriamo", ["Come sviluppiamo un <em>gestionale personalizzato</em>"], "Quattro fasi, ognuna con un risultato concreto da verificare.", 2)}
 
-  <section data-name="Le fasi">
-    <div class="wrap">
-      <div class="sec-head" data-enter><span class="eyebrow">Le fasi</span><h2>Dall'analisi alle schermate</h2></div>
-      {legs()}
-    </div>
-  </section>
+  {sc_about(2, "Le fasi", "Dall'analisi alle schermate", "Ogni fase si chiude con qualcosa che puoi vedere e verificare, prima di passare alla successiva.", PHASE_CARDS)}
 
-  {dashboard()}
+  {sc_panel("Fase 4 in pratica", "Così i dati diventano decisioni.", "Quattro schermate di esempio e il perché di ogni scelta.", "")}
 
-  {principles()}"""
+  {SCREENS}
+
+  {sc_rows([(d, f"0{i}", t) for i, (t, d) in enumerate(PRINCIPLES, 1)], "Principi")}
+
+  {band("Primo incontro", "Scopri cosa può cambiare nella tua azienda", CHAT_TEXT)}"""
 
 SERVIZI = f"""  {page_hero("Servizi", ["Software gestionale <em>personalizzato</em> per la tua azienda"], "Tutto quello che serve per avere i dati sotto controllo e decidere con più sicurezza.", 3)}
 
-  {hscroll("Cosa facciamo", "Quattro servizi, un solo progetto", None, service_panels(), "Cosa facciamo")}
+  {sc_about(3, "Cosa facciamo", "Quattro servizi, un solo progetto", "Dall'analisi all'assistenza ti seguono sempre le stesse persone, con un team interno e senza subappalti.", SERVICE_CARDS)}
 
-  {statement("Un unico progetto",
-             "Dall'analisi all'assistenza, sempre le stesse persone.",
-             "stesse,persone",
-             "Team interno, senza subappalti.",
-             "Un unico progetto")}
-
-  {section("Per chi lavoriamo", "Per chi lavoriamo", "Imprese che vogliono crescere con i propri dati",
-           "Soprattutto PMI pugliesi, molte nella filiera agroalimentare.",
-           cards([("Produzione", "Agroalimentare e produzione", "Lotti, scadenze e commesse sempre tracciati."),
-                  ("Distribuzione", "Commercio e logistica", "Giacenze, ordini e consegne sempre aggiornati."),
-                  ("Servizi", "Squadre sul territorio", "Interventi e rapportini visibili subito in ufficio.")], "three"))}
-
-  {prose("Integrazioni", "Integrazioni", "Collegato ai programmi che usi già",
-         ["Contabilità e fatturazione elettronica collegate al gestionale. Ogni dato si scrive una volta sola."])}
+  {sc_panel("Per chi lavoriamo", "Imprese che vogliono crescere con i propri dati.", "Soprattutto PMI pugliesi, molte nella filiera agroalimentare. Contabilità e fatturazione elettronica restano collegate al gestionale.",
+            cards([("Produzione", "Agroalimentare e produzione", "Lotti, scadenze e commesse sempre tracciati."),
+                   ("Distribuzione", "Commercio e logistica", "Giacenze, ordini e consegne sempre aggiornati."),
+                   ("Servizi", "Squadre sul territorio", "Interventi e rapportini visibili subito in ufficio.")], "three"))}
 
   {faq(FAQ_SERVIZI, "Domande sui nostri servizi")}
 
@@ -498,29 +557,12 @@ SERVIZI = f"""  {page_hero("Servizi", ["Software gestionale <em>personalizzato</
 
 CHI = f"""  {page_hero("Chi siamo", ["Una software house in Puglia che <em>prima viene a vedere</em>"], "Siamo a Mottola, in provincia di Taranto. Aiutiamo le PMI a lavorare meglio con i propri dati.", 4)}
 
-  {statement("Missione",
-             "Rendere il digitale comprensibile e utile per chi lavora nelle PMI pugliesi.",
-             "comprensibile,utile",
-             "Con strumenti su misura e contenuti chiari.",
-             "Missione")}
+  {sc_about(4, "Il team", "Le persone che seguono il tuo progetto", "Un team interno, dal primo incontro all'assistenza. Le persone che conosci all'inizio sono le stesse che ti seguono dopo.", TEAM_CARDS, ("contattaci.html", "Conosciamoci"))}
 
-  {prose("Esperienza d'uso", "Esperienza d'uso", "Prima si progetta l'uso, poi si scrive il codice",
-         ["Disegniamo le schermate con chi le userà e le proviamo sul posto, finché ogni passaggio è chiaro."])}
-
-  {section("Il team", "Il team", "Le persone che seguono il tuo progetto",
-           "Un team interno, dal primo incontro all'assistenza.",
-           cards([("Commerciale", "Sales manager", "Il tuo primo contatto. Viene in azienda e prepara con te proposta, tempi e costi."),
-                  ("Requisiti", "Project manager e data analyst", "Trasforma le esigenze in requisiti chiari e segue l'avanzamento del progetto."),
-                  ("Design", "Product designer", "Progetta le schermate e le prova con chi le userà."),
-                  ("Codice", "Developer", "Scrive il software, lo collega ai tuoi programmi e lo segue dopo il rilascio.")]))}
-
-  {prose("Come costruiamo", "Come costruiamo", "Fondamenta riusabili, superficie su misura",
-         ["I cinque blocchi del marchio sono il metodo. Moduli collaudati alla base, componenti su misura sopra, le tue schermate in cima."])}
-
-  {section("Valori", "Come lavoriamo con i clienti", "Tre impegni che manteniamo", None,
-           cards([("Concretezza", "Esempi basati su esperienze reali", "Ogni proposta parte da situazioni già viste in altre aziende."),
-                  ("Chiarezza", "Tempi e costi definiti", "Durata e costo di ogni fase, concordati prima di iniziare."),
-                  ("Continuità", "Lo stesso team nel tempo", "Chi scrive il software lo segue anche dopo.")], "three"))}
+  {sc_panel("Missione", "Rendere il digitale comprensibile e utile per chi lavora nelle PMI pugliesi.", "Prima si progetta l'uso, poi si scrive il codice. Moduli collaudati alla base, componenti su misura sopra, le tue schermate in cima.",
+            cards([("Concretezza", "Esempi basati su esperienze reali", "Ogni proposta parte da situazioni già viste in altre aziende."),
+                   ("Chiarezza", "Tempi e costi definiti", "Durata e costo di ogni fase, concordati prima di iniziare."),
+                   ("Continuità", "Lo stesso team nel tempo", "Chi scrive il software lo segue anche dopo.")], "three"))}
 
   {band("Primo incontro", "Conosciamoci in azienda", CHAT_TEXT)}"""
 

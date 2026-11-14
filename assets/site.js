@@ -330,3 +330,22 @@
     });
   });
 })();
+
+/* card rows with arrows: scroll by one card, disable an arrow at the ends */
+document.querySelectorAll('.sc-right').forEach(box => {
+  const track = box.querySelector('.sc-track');
+  const [prev, next] = box.querySelectorAll('[data-sc]');
+  if (!track || !prev) return;
+  const step = () => (track.firstElementChild ? track.firstElementChild.getBoundingClientRect().width + 14 : track.clientWidth);
+  const sync = () => {
+    prev.disabled = track.scrollLeft < 4;
+    next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 4;
+  };
+  box.addEventListener('click', e => {
+    const b = e.target.closest('[data-sc]'); if (!b) return;
+    track.scrollBy({ left: step() * Number(b.dataset.sc), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  });
+  track.addEventListener('scroll', sync, { passive: true });
+  addEventListener('resize', sync);
+  sync();
+});
