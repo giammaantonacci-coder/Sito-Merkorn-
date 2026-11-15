@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta 5 · Matrice di punti</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="prove.css">
+<style>
+body { background: #ECEBEE; color: #100E13; }
+.topbar { display: none; }
+.nav { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 20px; padding: 12px clamp(16px, 3vw, 28px); background: rgba(236,235,238,.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); font-size: 12.5px; }
+.nav .logo { display: flex; align-items: center; gap: 9px; font: 600 15px/1 var(--display); }
+.nav .logo .mark i { background: #100E13; }
+.nav nav { display: flex; gap: 28px; margin: 0 auto; color: #3B3640; } .nav nav a:hover { color: var(--accent); }
+.nav .r { display: flex; align-items: center; gap: 16px; }
+.nav .bk { padding: 9px 14px; border-radius: 9px; background: #100E13; color: #fff; font-weight: 600; }
+.nav .all { color: #6F6977; }
+.grid-bg { background-image: linear-gradient(rgba(16,14,19,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(16,14,19,.045) 1px, transparent 1px); background-size: 28px 28px; }
+.hero { position: relative; text-align: center; padding: clamp(50px, 7vw, 80px) 16px 70px; overflow: hidden; }
+.dm { display: block; margin: 0 auto; height: auto; }
+.dm circle { fill: #100E13; }
+.dm .off { fill: rgba(16,14,19,.07); }
+.flow { position: relative; width: min(1000px, 100%); margin: 30px auto; aspect-ratio: 1000 / 300; }
+.flow svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.flow .ln { fill: none; stroke: rgba(16,14,19,.35); stroke-width: 1; }
+.flow .dt { fill: #100E13; }
+.flow .run { fill: var(--accent); filter: drop-shadow(0 0 4px rgba(151,71,255,.8)); }
+.flow .pill rect { fill: #F6F5F7; stroke: rgba(16,14,19,.35); }
+.flow .pill text { font: 500 10px/1 ui-monospace, "SF Mono", Menlo, monospace; fill: #100E13; }
+.tile { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 15%; aspect-ratio: 1; border-radius: 22%; background: #DAD8DD; display: grid; place-items: center; box-shadow: inset 0 0 0 1px rgba(16,14,19,.06); }
+.tile > div { width: 78%; height: 78%; border-radius: 20%; background: #F6F5F7; display: grid; place-items: center; box-shadow: 0 10px 30px rgba(16,14,19,.12), inset 0 0 0 1px rgba(16,14,19,.06); transition: transform .4s; }
+.tile:hover > div { transform: scale(1.05); }
+.tile .mark { width: 54%; height: 34%; } .tile .mark i { background: #100E13; border-radius: 18%; }
+.tile .mark i:nth-child(1) { background: var(--accent); animation: pulse 2.4s ease-in-out infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 12px var(--accent); } }
+.hero p { margin: 26px auto 0; max-width: 46ch; color: #5E5866; font-size: 14px; }
+.cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; padding: 6px 16px 6px 6px; border-radius: 12px; background: #100E13; color: #fff; font: 600 13.5px/1 var(--body); box-shadow: 0 0 0 3px rgba(16,14,19,.12); transition: transform .3s; }
+.cta:hover { transform: translateY(-2px); }
+.cta b { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: var(--accent); }
+.cta b .mark { width: 16px; height: 10px; } .cta b .mark i { background: #fff; }
+.stats { width: min(1180px, 100% - 24px); margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr .8fr; border-radius: 18px; background: #F6F5F7; box-shadow: inset 0 0 0 1px rgba(16,14,19,.06); }
+.stats > div { padding: 22px 24px; min-height: 190px; display: flex; flex-direction: column; border-left: 1px solid rgba(16,14,19,.08); }
+.stats > div:first-child { border-left: 0; }
+.stats .cap { color: #6F6977; }
+.stats .dm { margin: auto 0 10px; }
+.stats small { font-size: 12.5px; color: #3B3640; }
+.stats p { font-size: 13px; color: #3B3640; }
+.stats .cta { align-self: flex-start; margin-top: 16px; background: #fff; color: #100E13; box-shadow: inset 0 0 0 1px rgba(16,14,19,.12); }
+.stats .cta b { background: #100E13; }
+.map { position: relative; width: min(1180px, 100% - 32px); margin: 0 auto; padding: clamp(70px, 9vw, 120px) 0; display: grid; grid-template-columns: .9fr 1.1fr; gap: 20px; align-items: center; }
+.map h2 { font-size: clamp(30px, 3.6vw, 46px); line-height: 1.08; letter-spacing: -.035em; }
+.map h2 span { color: #A39DAA; }
+.map p { margin-top: 60px; max-width: 34ch; font-size: 13.5px; color: #3B3640; }
+.map canvas { width: 100%; aspect-ratio: 1.2; display: block; }
+.end { width: min(1180px, 100% - 32px); margin: 0 auto; padding: 20px 0 90px; display: flex; justify-content: space-between; align-items: end; gap: 30px; }
+.end h2 { font-size: clamp(26px, 3vw, 38px); line-height: 1.1; letter-spacing: -.03em; max-width: 20ch; }
+.end h2 span { color: #A39DAA; }
+.end p { max-width: 28ch; font-size: 13px; color: #3B3640; }
+@media (max-width: 860px) {
+  .nav nav, .nav .all { display: none; } .nav .r { margin-left: auto; }
+  .flow { aspect-ratio: 1000 / 420; } .tile { width: 22%; }
+  .stats { grid-template-columns: 1fr; } .stats > div { border-left: 0; border-top: 1px solid rgba(16,14,19,.08); min-height: 0; } .stats > div:first-child { border-top: 0; }
+  .map { grid-template-columns: 1fr; } .map p { margin-top: 20px; }
+  .end { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<header class="nav">
+  <a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a>
+  <nav><a href="#">Servizi</a><a href="#">Come lavoriamo</a><a href="#">Chi siamo</a><a href="#">Contattaci</a></nav>
+  <div class="r"><a class="all" href="index.html">Tutte le proposte</a><a class="bk" href="#">Prenota</a></div>
+</header>
+
+<section class="hero grid-bg">
+  <svg class="dm" data-text="DATI CHIARI." data-mobile="DATI|CHIARI." style="width:min(520px,80vw)"></svg>
+  <div class="flow" aria-hidden="true">
+    <svg viewBox="0 0 1000 300" id="flow"></svg>
+    <div class="tile"><div><span class="mark"><i></i><i></i><i></i><i></i><i></i></span></div></div>
+  </div>
+  <svg class="dm" data-text="DECISIONI MIGLIORI." data-mobile="DECISIONI|MIGLIORI." style="width:min(820px,92vw)"></svg>
+  <p>Merkorn mette in ordine i dati della tua azienda: un gestionale su misura che collega ogni reparto.</p>
+  <a class="cta" href="#"><b><span class="mark"><i></i><i></i><i></i><i></i><i></i></span></b>Prenota un appuntamento</a>
+</section>
+
+<section class="stats">
+  <div><span class="cap">Un sistema</span><svg class="dm" data-text="01" style="width:90px"></svg><small>Un unico gestionale per tutta l'azienda</small></div>
+  <div><span class="cap">Il metodo</span><svg class="dm" data-text="04" style="width:90px"></svg><small>Fasi di lavoro chiare, un risultato per ognuna</small></div>
+  <div><p>Raccontaci come lavori. Ti mostriamo come mettere in ordine ordini, magazzino e produzione.</p><a class="cta" href="#"><b><span class="mark"><i></i><i></i><i></i><i></i><i></i></span></b>Scrivici</a></div>
+</section>
+
+<section class="map">
+  <div><h2>Da Mottola <span>per le aziende</span> di tutta la Puglia</h2><p>Una software house che prima viene a vedere come lavori. Lo stesso team dal primo incontro all'assistenza.</p></div>
+  <canvas id="map" aria-hidden="true"></canvas>
+</section>
+
+<section class="end">
+  <h2>Ogni dato al suo posto, <span>e resta in ordine nel tempo</span></h2>
+  <p>Il gestionale cresce con la tua azienda, seguito dalle stesse persone che l'hanno costruito.</p>
+</section>
+
+<script>
+/* 5x7 dot-matrix font */
+const F = {
+  A:'01110100011000111111100011000110001', B:'11110100011000111110100011000111110', C:'01110100011000010000100001000101110', D:'11110100011000110001100011000111110',
+  E:'11111100001000011110100001000011111', G:'01110100011000010111100011000101111', H:'10001100011000111111100011000110001', I:'01110001000010000100001000010001110',
+  L:'10000100001000010000100001000011111', M:'10001110111010110101100011000110001', N:'10001110011010110011100011000110001', O:'01110100011000110001100011000101110',
+  P:'11110100011000111110100001000010000', R:'11110100011000111110101001001010001', S:'01111100001000001110000010000111110', T:'11111001000010000100001000010000100',
+  U:'10001100011000110001100011000101110', V:'10001100011000110001100010101000100', '0':'01110100011001110101110011000101110', '1':'00100011000010000100001000010001110',
+  '4':'00010001100101010010111110001000010', '.':'00000000000000000000000000110001100', ' ':'00000000000000000000000000000000000'
+};
+const mobile = () => innerWidth < 640;
+function dm(svg) {
+  const lines = (mobile() && svg.dataset.mobile ? svg.dataset.mobile : svg.dataset.text).split('|');
+  const cols = Math.max(...lines.map(l => l.length)) * 6 - 1, rows = lines.length * 9 - 2;
+  svg.setAttribute('viewBox', `-1 -1 ${cols + 1} ${rows + 1}`);
+  let out = '';
+  lines.forEach((line, li) => {
+    const off = (cols - (line.length * 6 - 1)) / 2;
+    [...line].forEach((ch, ci) => {
+      const g = F[ch] || F[' '];
+      for (let r = 0; r < 7; r++) for (let c = 0; c < 5; c++) {
+        const on = g[r * 5 + c] === '1', x = off + ci * 6 + c + .5, y = li * 9 + r + .5;
+        out += on ? `<circle cx="${x}" cy="${y}" r=".38" style="opacity:0;transition:opacity .2s ${(Math.random() * .9).toFixed(2)}s"/>` : `<circle class="off" cx="${x}" cy="${y}" r=".2"/>`;
+      }
+    });
+  });
+  svg.innerHTML = out;
+  requestAnimationFrame(() => requestAnimationFrame(() => svg.querySelectorAll('circle[style]').forEach(c => c.style.opacity = 1)));
+}
+const all = [...document.querySelectorAll('svg.dm')];
+all.forEach(dm);
+let wasMobile = mobile(); addEventListener('resize', () => { if (mobile() !== wasMobile) { wasMobile = mobile(); all.forEach(dm); } });
+// flicker one random dot now and then
+setInterval(() => { const s = all[Math.floor(Math.random() * all.length)], c = s.querySelectorAll('circle[style]'); const d = c[Math.floor(Math.random() * c.length)]; if (!d) return; d.style.transition = 'opacity .08s'; d.style.opacity = .15; setTimeout(() => d.style.opacity = 1, 140); }, 220);
+
+/* connector lines with labelled pills and travelling dots */
+(() => {
+  const s = document.getElementById('flow');
+  const paths = [
+    ['M425,120 C390,120 390,70 350,70 L40,70', [['Ordini', 230], ['Clienti', 120]]],
+    ['M425,180 C390,180 390,232 350,232 L60,232', [['Magazzino', 250], ['Produzione', 140]]],
+    ['M575,120 C610,120 610,70 650,70 L960,70', [['Fatture', 760]]],
+    ['M575,180 C610,180 610,232 650,232 L940,232', [['Consegne', 740], ['Commesse', 860]]],
+  ];
+  let h = '';
+  paths.forEach(([d, pills], i) => {
+    h += `<path class="ln" id="p${i}" d="${d}"/>`;
+    const end = d.match(/L(\d+),(\d+)$/); h += `<circle class="dt" cx="${end[1]}" cy="${end[2]}" r="3.5"/>`;
+    const y = +end[2];
+    pills.forEach(([t, x]) => { const w = t.length * 6.4 + 18; h += `<g class="pill"><rect x="${x - w / 2}" y="${y - 9}" width="${w}" height="18" rx="9"/><text x="${x}" y="${y + 3.5}" text-anchor="middle">${t}</text></g>`; });
+    h += `<circle class="run" r="3.5"><animateMotion dur="${3.2 + i * .7}s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#p${i}"/></animateMotion></circle>`;
+  });
+  s.innerHTML = h;
+})();
+
+/* halftone map of Puglia */
+(() => {
+  const c = document.getElementById('map'), x = c.getContext('2d');
+  const P = [[15.0,41.9],[15.6,41.93],[16.0,41.95],[16.2,41.9],[16.17,41.75],[15.95,41.62],[16.4,41.32],[16.9,41.12],[17.3,40.95],[17.9,40.68],[18.3,40.42],[18.52,40.14],[18.37,39.8],[18.0,40.05],[17.75,40.3],[17.2,40.42],[16.9,40.47],[16.75,40.65],[16.4,40.75],[16.0,41.0],[15.55,41.05],[15.2,41.25],[14.95,41.5]];
+  const draw = () => {
+    const d = Math.min(devicePixelRatio || 1, 2), w = c.clientWidth, h = c.clientHeight; c.width = w * d; c.height = h * d; x.setTransform(d, 0, 0, d, 0, 0); x.clearRect(0, 0, w, h);
+    const pr = ([lo, la]) => [(lo - 14.8) / 3.9 * w, (42.05 - la) / 2.35 * h];
+    const poly = P.map(pr), [mx, my] = pr([17.04, 40.63]);
+    const inside = (px, py) => { let r = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const [xi, yi] = poly[i], [xj, yj] = poly[j]; if ((yi > py) !== (yj > py) && px < (xj - xi) * (py - yi) / (yj - yi) + xi) r = !r; } return r; };
+    const step = Math.max(6, w / 90);
+    for (let py = step / 2; py < h; py += step) for (let px = step / 2; px < w; px += step) {
+      const dist = Math.hypot(px - mx, py - my);
+      if (inside(px, py)) {
+        const k = Math.max(0, 1 - dist / (w * .45));
+        const r = step * (.12 + .3 * k + Math.random() * .1);
+        x.fillStyle = dist < step * 1.6 ? '#9747FF' : `rgba(16,14,19,${.35 + k * .5})`;
+        if (Math.random() < .85 + k * .15) { x.fillRect(px - r, py - r * 1.4, r * 2, r * 2.8); }
+      } else if (Math.random() < .015) { x.fillStyle = 'rgba(16,14,19,.25)'; x.fillRect(px - 1, py - 1, 2, 2); }
+    }
+    x.fillStyle = '#100E13'; x.font = '500 11px ui-monospace, Menlo, monospace'; x.fillText('Mottola', mx + 10, my + 4);
+  };
+  draw(); addEventListener('resize', draw);
+})();
+</script>
+</body>
+</html>

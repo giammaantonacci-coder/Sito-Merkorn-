@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta 4 · Racconto orizzontale</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="prove.css">
+<style>
+.track-wrap { position: relative; height: 600vh; }
+.sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.track { display: flex; height: 100%; will-change: transform; }
+.pan { position: relative; flex: none; width: 100vw; height: 100%; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 0 clamp(20px, 6vw, 90px); overflow: hidden; }
+.pan .txt { position: relative; z-index: 2; }
+.pan .n { font: 300 clamp(110px, 20vw, 300px)/.8 var(--display); letter-spacing: -.08em; color: transparent; -webkit-text-stroke: 1px rgba(242,239,234,.35); }
+.pan h2 { margin-top: 10px; font-size: clamp(38px, 5vw, 76px); line-height: 1; }
+.pan p { margin-top: 18px; max-width: 38ch; color: #D9D3E0; font-size: 16px; }
+.pan .btn { margin-top: 26px; }
+.blob { position: absolute; z-index: 1; right: 4vw; top: 50%; width: min(46vw, 620px); aspect-ratio: 1; translate: 0 -50%; filter: blur(30px) contrast(1.1); }
+.blob i { position: absolute; border-radius: 50%; mix-blend-mode: screen; animation: float 9s ease-in-out infinite; }
+.blob i:nth-child(1) { inset: 10% 20% 25% 5%; background: radial-gradient(circle at 40% 40%, #C9A2FF, #9747FF 50%, transparent 70%); }
+.blob i:nth-child(2) { inset: 25% 5% 5% 30%; background: radial-gradient(circle at 50% 50%, #6D28D9, #3B1680 55%, transparent 72%); animation-duration: 11s; animation-direction: reverse; }
+.blob i:nth-child(3) { inset: 30% 30% 20% 25%; background: radial-gradient(circle, #F2EFEA, rgba(242,239,234,0) 60%); opacity: .5; animation-duration: 7s; }
+@keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(8%, -6%) scale(1.08); } 66% { transform: translate(-6%, 7%) scale(.94); } }
+.pan:nth-child(2) .blob { filter: blur(30px) hue-rotate(-20deg); } .pan:nth-child(3) .blob { filter: blur(30px) hue-rotate(25deg); } .pan:nth-child(4) .blob { filter: blur(26px) saturate(.6); } .pan:nth-child(5) .blob { filter: blur(30px) hue-rotate(-40deg) brightness(1.2); }
+.pan .glass { position: absolute; z-index: 2; right: calc(4vw + min(46vw, 620px) * .18); top: 50%; translate: 0 -50%; width: min(30vw, 380px); padding: 22px; border-radius: 24px; background: rgba(23,20,27,.35); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 0 1px rgba(242,239,234,.18); }
+.glass small { display: block; color: var(--muted); font-size: 12px; } .glass b { display: block; margin-top: 8px; font: 500 46px/1 var(--display); letter-spacing: -.04em; } .glass span { display: block; margin-top: 10px; font-size: 13px; color: var(--soft); }
+.glass ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; font-size: 13.5px; } .glass li { display: flex; gap: 10px; align-items: center; } .glass li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.prog { position: fixed; z-index: 6; left: 50%; bottom: 24px; translate: -50% 0; display: flex; gap: 6px; padding: 6px; border-radius: 999px; background: rgba(23,20,27,.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px var(--rule); }
+.prog a { white-space: nowrap; padding: 8px 14px; border-radius: 999px; font-size: 12px; color: var(--muted); transition: background .3s, color .3s; }
+.prog a.on { background: var(--text); color: var(--ink); }
+.after { padding: 120px 20px; text-align: center; }
+.after h2 { font-size: clamp(40px, 6vw, 90px); line-height: 1; }
+.after .btn { margin-top: 26px; }
+@media (max-width: 760px) {
+  .pan { grid-template-columns: 1fr; align-content: center; }
+  .blob { right: -20vw; top: 22%; width: 90vw; translate: 0 0; opacity: .8; }
+  .pan .glass { display: none; }
+  .pan .n { font-size: 34vw; }
+  .prog a { padding: 7px 9px; font-size: 10.5px; }
+}
+</style>
+</head>
+<body>
+<header class="topbar"><a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a><span class="tag">Proposta 4 · Racconto orizzontale</span><a class="back" href="index.html">Tutte le proposte</a></header>
+<section class="track-wrap" id="wrap">
+  <div class="sticky"><div class="track" id="track">
+    <div class="pan"><div class="txt"><span class="cap">Merkorn</span><h2 style="font-size:clamp(46px,6.4vw,100px)">Dati chiari. <span class="vio">Decisioni migliori.</span></h2><p>Software gestionale su misura per le PMI. Scorri e attraversa il nostro metodo.</p></div><div class="blob"><i></i><i></i><i></i></div></div>
+    <div class="pan"><div class="txt"><span class="n">01</span><h2>Capiamo come lavori</h2><p>Studiamo i tuoi processi e troviamo dove si può guadagnare tempo.</p></div><div class="blob"><i></i><i></i><i></i></div><div class="glass"><small>Risultato</small><b>Priorità</b><span>chiare fin da subito</span></div></div>
+    <div class="pan"><div class="txt"><span class="n">02</span><h2>Partiamo da basi solide</h2><p>Moduli già collaudati per partire veloci e investire dove serve davvero.</p></div><div class="blob"><i></i><i></i><i></i></div><div class="glass"><small>Moduli pronti</small><ul><li>Ordini e clienti</li><li>Magazzino</li><li>Documenti di trasporto</li></ul></div></div>
+    <div class="pan"><div class="txt"><span class="n">03</span><h2>Costruiamo su misura</h2><p>Le funzioni specifiche della tua azienda, rilasciate una alla volta.</p></div><div class="blob"><i></i><i></i><i></i></div><div class="glass"><small>A ogni rilascio</small><b>+1</b><span>un passo avanti</span></div></div>
+    <div class="pan"><div class="txt"><span class="n">04</span><h2>Rendiamo i dati leggibili</h2><p>Schermate chiare che mostrano subito quello che conta.</p><a class="btn" href="#">Prenota un appuntamento</a></div><div class="blob"><i></i><i></i><i></i></div><div class="glass"><small>Ordini di oggi</small><b>128</b><span>↑ 12% rispetto a ieri</span></div></div>
+  </div></div>
+</section>
+<section class="after"><h2>Parliamo della <span class="vio">tua azienda.</span></h2><a class="btn" href="#">Scrivici</a></section>
+<nav class="prog" id="prog"><a>Inizio</a><a>Ascolto</a><a>Basi</a><a>Su misura</a><a>Dati</a></nav>
+<script>
+const wrap = document.getElementById('wrap'), track = document.getElementById('track'), dots = [...document.querySelectorAll('#prog a')];
+const upd = () => {
+  const r = wrap.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight)));
+  track.style.transform = `translateX(${-p * (track.children.length - 1) * innerWidth}px)`;
+  const k = Math.round(p * (track.children.length - 1));
+  dots.forEach((d, i) => d.classList.toggle('on', i === k));
+  document.getElementById('prog').style.opacity = r.bottom > innerHeight * .5 ? 1 : 0;
+};
+dots.forEach((d, i) => d.addEventListener('click', () => scrollTo({ top: wrap.offsetTop + i / (dots.length - 1) * (wrap.offsetHeight - innerHeight), behavior: 'smooth' })));
+addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
+</script>
+</body>
+</html>
