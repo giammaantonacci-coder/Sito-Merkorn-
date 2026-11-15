@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merkorn · Software gestionale su misura</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; font-display: swap; src: url(../../assets/fonts/dm-sans.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 100 900; font-display: swap; src: url(../../assets/fonts/inter.woff2) format("woff2"); }
+:root {
+  --scene: #08070B; --bg: #100E13; --lift: #17141B; --lift2: #1E1A23;
+  --text: #F2EFEA; --muted: #A7A2AE; --dim: #6F6977;
+  --accent: #9747FF; --field: #6D28D9; --soft: #C9A2FF;
+  --rule: rgba(242,239,234,.09); --rule2: rgba(242,239,234,.15);
+  --display: "DM Sans", system-ui, sans-serif; --body: "Inter", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; overflow-x: clip; }
+body { background: var(--scene); color: var(--text); font: 400 15px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 500; letter-spacing: -.035em; text-wrap: balance; }
+p { margin: 0; }
+.wrap { width: min(1180px, 100% - 32px); margin-inline: auto; position: relative; }
+.mark { position: relative; display: inline-block; width: 22px; height: 14px; flex: none; }
+.mark i { position: absolute; width: 18%; height: 30%; border-radius: 22%; background: var(--accent); }
+.mark i:nth-child(1){left:41%;top:0}.mark i:nth-child(2){left:20.5%;top:35%}.mark i:nth-child(3){left:61.5%;top:35%}.mark i:nth-child(4){left:0;top:70%}.mark i:nth-child(5){left:82%;top:70%}
+.mark.w i { background: var(--text); }
+svg.i { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border-radius: 14px; font: 600 14px/1 var(--body); background: var(--accent); color: var(--text); box-shadow: 0 10px 30px rgba(151,71,255,.35), inset 0 1px 0 rgba(255,255,255,.25); transition: transform .3s, background .3s; }
+.btn:hover { transform: translateY(-2px); background: #a35cff; }
+.btn.ghost { background: rgba(242,239,234,.04); box-shadow: inset 0 0 0 1px var(--rule2); }
+.btn.ghost:hover { background: rgba(242,239,234,.09); }
+.pill { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 999px; font: 500 12px/1 var(--body); color: #DCD6E2; background: rgba(242,239,234,.04); box-shadow: inset 0 0 0 1px var(--rule2); }
+.pill b { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+.head { text-align: center; }
+.head h2 { margin: 18px auto 0; max-width: 20ch; font-size: clamp(32px, 4.4vw, 54px); line-height: 1.06; }
+.head p { margin: 16px auto 0; max-width: 56ch; color: var(--muted); font-size: 15px; }
+
+/* ---------- top ---------- */
+.top { position: relative; overflow: hidden; background:
+  radial-gradient(ellipse 60% 40% at 50% 100%, rgba(109,40,217,.38), transparent 70%),
+  radial-gradient(ellipse 50% 40% at 50% 0%, rgba(151,71,255,.10), transparent 70%), var(--scene); }
+.stars { position: absolute; inset: 0; pointer-events: none; background-image:
+  radial-gradient(1.4px 1.4px at 9% 22%, #fff, transparent), radial-gradient(1.2px 1.2px at 88% 26%, #fff, transparent),
+  radial-gradient(1.6px 1.6px at 30% 48%, var(--soft), transparent), radial-gradient(1.2px 1.2px at 70% 44%, #fff, transparent),
+  radial-gradient(1px 1px at 56% 12%, #fff, transparent), radial-gradient(1.3px 1.3px at 94% 52%, var(--soft), transparent),
+  radial-gradient(1px 1px at 17% 58%, #fff, transparent), radial-gradient(1px 1px at 79% 8%, #fff, transparent); opacity: .7; }
+.nav { position: relative; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 0; }
+.logo { display: flex; align-items: center; gap: 10px; font: 600 17px/1 var(--display); letter-spacing: -.01em; }
+.nav nav { display: flex; gap: 28px; font-size: 13.5px; color: var(--muted); }
+.nav nav a:hover, .nav nav a[aria-current] { color: var(--text); }
+.nav .btn { padding: 11px 18px; font-size: 13px; }
+.menu { display: none; width: 42px; height: 42px; border: 0; border-radius: 12px; background: rgba(242,239,234,.06); box-shadow: inset 0 0 0 1px var(--rule2); cursor: pointer; }
+.menu i { display: block; width: 16px; height: 1.6px; margin: 4px auto; background: var(--text); border-radius: 2px; transition: transform .3s; }
+
+.hero { position: relative; z-index: 2; text-align: center; padding: clamp(50px, 8vw, 96px) 0 0; }
+.hero h1 { margin: 22px auto 0; max-width: 15ch; font-size: clamp(42px, 6.6vw, 84px); line-height: 1.02; }
+.hero h1 em { font-style: normal; background: linear-gradient(90deg, var(--soft), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero p { margin: 22px auto 34px; max-width: 54ch; color: var(--muted); font-size: clamp(15px, 1.4vw, 17px); }
+.hero .ctas { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+/* the dark planet rising */
+.planet { position: relative; z-index: 1; margin-top: clamp(80px, 11vw, 140px); padding: clamp(50px, 6vw, 74px) 0 clamp(70px, 9vw, 110px); text-align: center; }
+.planet::before { content: ""; position: absolute; z-index: -1; left: -35%; right: -35%; top: 0; height: 1400px; border-radius: 50%;
+  background: radial-gradient(ellipse 50% 22% at 50% 0%, #17121F, #0B0A0E 70%);
+  box-shadow: 0 -1px 0 rgba(201,162,255,.6), 0 -10px 40px rgba(151,71,255,.35), 0 -40px 120px rgba(109,40,217,.35); }
+.planet h2 { margin: 16px auto 0; font-size: clamp(19px, 2vw, 26px); letter-spacing: -.02em; }
+.areas { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 36px; }
+.areas span { display: flex; align-items: center; justify-content: center; gap: 10px; height: 76px; border-radius: 16px; font: 500 15px/1 var(--display); color: #CFC9D6;
+  background: linear-gradient(180deg, var(--lift), #0E0C11); box-shadow: inset 0 0 0 1px var(--rule), 0 18px 40px rgba(0,0,0,.45); transition: transform .3s, color .3s; }
+.areas span:hover { transform: translateY(-3px); color: var(--text); }
+.areas span.on { color: #fff; background: radial-gradient(circle at 30% 20%, #B98AFF, var(--accent) 50%, var(--field)); box-shadow: 0 20px 50px rgba(151,71,255,.45), inset 0 1px 0 rgba(255,255,255,.3); transform: translateY(-4px) scale(1.04); }
+
+/* ---------- bento ---------- */
+.sec { padding: clamp(80px, 10vw, 130px) 0; position: relative; }
+.bento { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; margin-top: clamp(44px, 5vw, 64px); }
+.bento + .bento { grid-template-columns: 1fr 1.2fr; margin-top: 16px; }
+.card { position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 340px; padding: 24px; border-radius: 22px; background: linear-gradient(180deg, #131017, #0C0A0F); box-shadow: inset 0 0 0 1px var(--rule); }
+.card .hd { display: grid; grid-template-columns: 38px 1fr; gap: 4px 14px; position: relative; z-index: 2; }
+.card .ic { grid-row: span 2; width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; color: var(--soft); background: var(--lift2); box-shadow: inset 0 0 0 1px var(--rule2); }
+.card h3 { font-size: 18px; letter-spacing: -.02em; }
+.card .hd p { font-size: 13px; color: var(--muted); max-width: 46ch; }
+.vis { position: relative; flex: 1; margin-top: 22px; min-height: 200px; }
+
+/* charts */
+.minis { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; height: 100%; }
+.mini { display: flex; flex-direction: column; padding: 14px; border-radius: 15px; background: rgba(242,239,234,.025); box-shadow: inset 0 0 0 1px var(--rule); }
+.mini .t1 { display: flex; align-items: center; gap: 10px; font: 500 14px/1.2 var(--display); }
+.mini .t1 > span { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: var(--text); color: var(--scene); }
+.mini .t1 > span svg { width: 14px; height: 14px; }
+.mini small { display: block; margin-left: 36px; font-size: 11px; color: var(--dim); }
+.mini b { margin-top: 12px; font: 500 28px/1 var(--display); letter-spacing: -.03em; }
+.mini b i { font: 500 11px/1 var(--body); font-style: normal; color: var(--soft); margin-left: 6px; letter-spacing: 0; }
+.mini svg.ch { margin-top: auto; width: 100%; height: 92px; overflow: visible; }
+
+/* focus target */
+.focus { position: absolute; inset: 0; display: grid; place-items: center; }
+.focus svg.ln { position: absolute; inset: 0; width: 100%; height: 100%; }
+.focus .sq { position: relative; width: 134px; height: 134px; border-radius: 28px; display: grid; place-items: center; background: linear-gradient(180deg, var(--lift2), #110E15);
+  box-shadow: inset 0 0 0 1px var(--rule2), 0 0 0 22px rgba(151,71,255,.04), 0 0 0 23px rgba(151,71,255,.16), 0 0 80px rgba(151,71,255,.25); }
+.focus .core { width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; color: #fff; background: radial-gradient(circle at 30% 20%, #B98AFF, var(--accent) 55%, var(--field)); box-shadow: 0 0 40px rgba(151,71,255,.6); }
+.focus .core svg { width: 26px; height: 26px; }
+
+/* orbit */
+.orbit { position: absolute; left: 50%; top: -20px; width: min(420px, 84%); aspect-ratio: 1; translate: -50% 0; }
+.orbit .ring { position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--rule2); background: radial-gradient(circle, rgba(151,71,255,.06), transparent 70%); }
+.orbit .ring:nth-child(2) { inset: 18%; } .orbit .ring:nth-child(3) { inset: 36%; background: #0E0B12; }
+.orbit .node { position: absolute; translate: -50% -50%; display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 999px; font-size: 12px; color: #DCD6E2; white-space: nowrap; background: var(--lift); box-shadow: inset 0 0 0 1px var(--rule2), 0 10px 24px rgba(0,0,0,.5); }
+.orbit .node i { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #3A3540, #1E1A23); display: grid; place-items: center; }
+.orbit .node i::after { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+.orbit .node.v i::after { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+.orbit .ctr { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; background: var(--lift2); box-shadow: inset 0 0 0 1px var(--rule2), 0 0 50px rgba(151,71,255,.45); }
+
+/* stacked screens */
+.stack { position: absolute; inset: 0; }
+.stack .s { position: absolute; border-radius: 16px; padding: 14px; background: linear-gradient(160deg, #2A2630, #141118 70%); box-shadow: inset 0 0 0 1px rgba(242,239,234,.12), -20px 20px 44px rgba(0,0,0,.55); }
+.stack .s em { display: block; width: 36px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, #F2EFEA, #8C8794); }
+.stack .s .mark { position: absolute; left: 14px; bottom: 14px; }
+.stack .s .ln { position: absolute; left: 14px; height: 7px; border-radius: 4px; background: rgba(242,239,234,.1); }
+.stack .a { right: 3%; top: 4%; width: 60%; height: 80%; background: radial-gradient(ellipse 70% 60% at 85% 0%, rgba(151,71,255,.5), transparent 60%), linear-gradient(160deg, #2A2630, #141118 70%); }
+.stack .b { right: 31%; top: 22%; width: 32%; height: 70%; }
+.stack .c { right: 54%; top: 38%; width: 22%; height: 62%; border-radius: 14px; }
+
+/* ---------- split: text + overlapping panels ---------- */
+.split { display: grid; grid-template-columns: .9fr 1.2fr; gap: clamp(30px, 5vw, 70px); align-items: center; }
+.split h2 { margin-top: 18px; font-size: clamp(34px, 4.2vw, 52px); line-height: 1.05; }
+.split p { margin: 18px 0 30px; color: var(--muted); max-width: 44ch; }
+.panels { position: relative; min-height: 470px; }
+.pane { position: absolute; border-radius: 22px; background: linear-gradient(180deg, #16121B, #0D0B10); box-shadow: inset 0 0 0 1px var(--rule2), 0 40px 80px rgba(0,0,0,.55); }
+.pane.big { right: -60px; top: 0; width: calc(100% + 20px); padding: 22px 24px; }
+.pane .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pane h3 { font-size: 17px; letter-spacing: -.02em; }
+.seg { display: flex; gap: 4px; padding: 4px; border-radius: 11px; background: rgba(242,239,234,.04); box-shadow: inset 0 0 0 1px var(--rule); font-size: 12px; }
+.seg span { padding: 6px 10px; border-radius: 8px; color: var(--muted); } .seg span.on { background: var(--text); color: var(--scene); font-weight: 600; }
+.pane.big .val { margin-top: 16px; font: 500 34px/1 var(--display); letter-spacing: -.03em; }
+.pane.big .val i { font: 500 12px/1 var(--body); font-style: normal; color: var(--soft); margin-left: 8px; letter-spacing: 0; }
+.pane.big svg { display: block; width: 100%; height: 210px; margin-top: 18px; }
+.days { display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; color: var(--dim); }
+.pane.small { left: 6%; bottom: 0; width: min(330px, 70%); padding: 18px; z-index: 2; background: linear-gradient(180deg, #1A1520, #0F0D12); }
+.pane.small .row small { color: var(--dim); font-size: 18px; letter-spacing: 2px; }
+.route { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin-top: 16px; padding: 16px 12px; border-radius: 14px; background: rgba(242,239,234,.03); box-shadow: inset 0 0 0 1px var(--rule); text-align: center; font-size: 12px; }
+.route span { display: grid; justify-items: center; gap: 6px; } .route small { display: block; font-size: 10px; color: var(--dim); }
+.route .ib { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: var(--text); color: var(--scene); }
+.route .ib.v { background: var(--accent); color: #fff; }
+.route .dash { width: 54px; border-top: 1.5px dashed rgba(242,239,234,.3); position: relative; }
+.route .dash::after { content: ""; position: absolute; right: -2px; top: -4.5px; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.fields span { padding: 9px 10px; border-radius: 10px; font-size: 11px; color: var(--muted); background: rgba(242,239,234,.03); box-shadow: inset 0 0 0 1px var(--rule); }
+.prog { margin-top: 14px; display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); } .prog b { color: var(--text); font-weight: 600; }
+.bar { margin-top: 8px; height: 6px; border-radius: 6px; background: rgba(242,239,234,.08); overflow: hidden; } .bar i { display: block; width: 72%; height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--field), var(--soft)); }
+
+/* ---------- table ---------- */
+.tbl { margin-top: clamp(44px, 5vw, 60px); border-radius: 22px; overflow: hidden; background: linear-gradient(180deg, #131017, #0C0A0F); box-shadow: inset 0 0 0 1px var(--rule); }
+.tbl .r { display: grid; grid-template-columns: 70px 1.1fr 1.7fr 170px; gap: 20px; align-items: center; padding: 22px 26px; border-top: 1px solid var(--rule); transition: background .3s; }
+.tbl .r:not(.th):hover { background: rgba(151,71,255,.05); }
+.tbl .th { border-top: 0; padding-block: 15px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+.tbl .n { font: 500 15px/1 var(--display); color: var(--soft); }
+.tbl h3 { font-size: 18px; letter-spacing: -.02em; }
+.tbl p { font-size: 14px; color: var(--muted); }
+.tag { justify-self: start; display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border-radius: 999px; font-size: 12px; color: #DCD6E2; background: rgba(242,239,234,.05); box-shadow: inset 0 0 0 1px var(--rule); }
+.tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+.tag.v { color: #fff; background: rgba(151,71,255,.2); box-shadow: inset 0 0 0 1px rgba(151,71,255,.5); } .tag.v::before { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+
+/* ---------- cta + footer ---------- */
+.cta { position: relative; overflow: hidden; text-align: center; padding: clamp(90px, 12vw, 150px) 0; }
+.cta::before { content: ""; position: absolute; z-index: -1; left: -35%; right: -35%; bottom: -1250px; height: 1400px; border-radius: 50%; background: #0B0A0E; box-shadow: 0 -1px 0 rgba(201,162,255,.5), 0 -40px 120px rgba(109,40,217,.35); }
+.cta { isolation: isolate; }
+.cta h2 { margin: 18px auto 0; max-width: 16ch; font-size: clamp(36px, 5.2vw, 66px); line-height: 1.04; }
+.cta p { margin: 18px auto 32px; max-width: 46ch; color: var(--muted); }
+footer { background: #0B0A0E; border-top: 1px solid var(--rule); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; padding: 32px 0 44px; font-size: 12.5px; color: var(--dim); }
+
+@media (max-width: 900px) {
+  .nav { flex-wrap: wrap; }
+  .nav nav { order: 3; width: 100%; flex-direction: column; gap: 0; }
+  .nav:not(.open) nav { display: none; }
+  .nav nav a { padding: 13px 4px; font-size: 16px; color: var(--text); border-top: 1px solid var(--rule); }
+  .nav .btn { margin-left: auto; }
+  .menu { display: block; }
+  .nav.open .menu i:first-child { transform: translateY(2.8px) rotate(45deg); } .nav.open .menu i:last-child { transform: translateY(-2.8px) rotate(-45deg); }
+  .areas { grid-template-columns: repeat(3, 1fr); }
+  .bento, .bento + .bento, .split { grid-template-columns: 1fr; }
+  .pane.big { right: 0; width: 100%; }
+  .tbl .r { grid-template-columns: 34px 1fr; gap: 6px 14px; } .tbl .r > :nth-child(n+3) { grid-column: 2; } .tbl .th { display: none; } .tag { margin-top: 6px; }
+}
+@media (max-width: 560px) {
+  .areas { grid-template-columns: repeat(2, 1fr); } .areas span { height: 64px; font-size: 14px; }
+  .minis { grid-template-columns: 1fr; } .mini + .mini { display: none; }
+  .panels { min-height: 520px; } .pane.big svg { height: 170px; } .pane.small { left: 0; width: 86%; }
+  .nav .btn span { display: none; } .nav .btn { padding: 11px 14px; }
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="stars" aria-hidden="true"></div>
+  <header class="nav wrap">
+    <a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a>
+    <nav><a href="index.html" aria-current="page">Home</a><a href="#approccio">Servizi</a><a href="#metodo">Come lavoriamo</a><a href="#">Chi siamo</a><a href="#">Contattaci</a></nav>
+    <a class="btn ghost" href="#contatti"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Prenota un appuntamento</span></a>
+    <button class="menu" type="button" aria-label="Apri il menu" aria-expanded="false"><i></i><i></i></button>
+  </header>
+
+  <section class="hero wrap">
+    <span class="pill"><b></b>Software house in Puglia</span>
+    <h1>Software gestionale <em>su misura</em> per la tua azienda</h1>
+    <p>Mettiamo in ordine i dati della tua azienda. Vedi tutto in un colpo d'occhio e decidi prima, con più sicurezza.</p>
+    <div class="ctas"><a class="btn" href="#contatti">Prenota un appuntamento</a><a class="btn ghost" href="#metodo">Come lavoriamo</a></div>
+  </section>
+
+  <section class="planet">
+    <div class="wrap">
+      <span class="pill">Ogni reparto</span>
+      <h2>Un unico gestionale per tutta l'azienda</h2>
+      <div class="areas">
+        <span class="on"><svg class="i" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM9 9h6M9 13h6M9 17h3"/></svg>Ordini</span>
+        <span><svg class="i" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12L4 7.5M12 12v9"/></svg>Magazzino</span>
+        <span><svg class="i" viewBox="0 0 24 24"><path d="M3 21V10l6 4V10l6 4V6l6 4v11z"/></svg>Produzione</span>
+        <span><svg class="i" viewBox="0 0 24 24"><path d="M4 7h16v13H4zM9 7V4h6v3"/></svg>Commesse</span>
+        <span><svg class="i" viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Consegne</span>
+        <span><svg class="i" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM15 3v4h4M9 12h7M9 16h5"/></svg>Fatture</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="sec wrap" id="approccio">
+  <div class="head"><span class="pill">Il nostro approccio</span><h2>Dati chiari, decisioni migliori</h2><p>Gestionali personalizzati per ogni reparto: più controllo su ogni area dell'azienda, dagli ordini alla produzione.</p></div>
+  <div class="bento">
+    <article class="card">
+      <div class="hd"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 5-6"/></svg></span><h3>Gestionale su misura</h3><p>Un ERP personalizzato che riunisce ordini, magazzino, produzione e commesse e ti dà la visione completa dell'azienda.</p></div>
+      <div class="vis"><div class="minis">
+        <div class="mini"><span class="t1"><span><svg class="i" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM9 9h6M9 13h6"/></svg></span>Ordini evasi</span><small>ultimi 30 giorni</small><b>3.216<i>↑ 18%</i></b>
+          <svg class="ch" viewBox="0 0 200 90" preserveAspectRatio="none"><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9747FF" stop-opacity=".45"/><stop offset="1" stop-color="#9747FF" stop-opacity="0"/></linearGradient></defs><path d="M0,72 L22,58 L42,64 L66,34 L88,50 L112,40 L136,60 L162,24 L184,30 L200,10 L200,90 L0,90Z" fill="url(#g1)"/><path d="M0,72 L22,58 L42,64 L66,34 L88,50 L112,40 L136,60 L162,24 L184,30 L200,10" fill="none" stroke="#C9A2FF" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg></div>
+        <div class="mini"><span class="t1"><span><svg class="i" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/></svg></span>Magazzino</span><small>articoli disponibili</small><b>1.480<i>↑ 6%</i></b>
+          <svg class="ch" viewBox="0 0 200 90" preserveAspectRatio="none"><defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2EFEA" stop-opacity=".18"/><stop offset="1" stop-color="#F2EFEA" stop-opacity="0"/></linearGradient></defs><path d="M0,44 L28,54 L54,36 L80,58 L108,42 L134,52 L160,34 L200,26 L200,90 L0,90Z" fill="url(#g2)"/><path d="M0,44 L28,54 L54,36 L80,58 L108,42 L134,52 L160,34 L200,26" fill="none" stroke="#A7A2AE" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg></div>
+      </div></div>
+    </article>
+    <article class="card">
+      <div class="hd"><span class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span><h3>Analisi dei processi</h3><p>Una fotografia chiara di come lavori oggi e delle priorità per crescere.</p></div>
+      <div class="vis"><div class="focus">
+        <svg class="ln" viewBox="0 0 400 240" preserveAspectRatio="none" fill="none" stroke="rgba(242,239,234,.12)"><path d="M0 120H110M290 120H400M200 0V30M200 210V240M50 240L130 180M350 240L270 180M50 0L130 60M350 0L270 60"/></svg>
+        <div class="sq"><div class="core"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></div></div>
+      </div></div>
+    </article>
+  </div>
+  <div class="bento">
+    <article class="card">
+      <div class="hd"><span class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c.8-3.5 3.2-5.5 6-5.5s5.2 2 6 5.5M15 14.5c2.6 0 4.6 1.6 5.4 4.5"/></svg></span><h3>Assistenza ed evoluzione</h3><p>Il gestionale cresce con la tua azienda, seguito dallo stesso team.</p></div>
+      <div class="vis"><div class="orbit">
+        <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+        <span class="node" style="left:9%;top:30%"><i></i>Analisi</span>
+        <span class="node v" style="left:33%;top:20%"><i></i>Sviluppo</span>
+        <span class="node" style="left:67%;top:20%"><i></i>Rilasci</span>
+        <span class="node v" style="left:91%;top:30%"><i></i>Assistenza</span>
+        <span class="ctr"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span></span>
+      </div></div>
+    </article>
+    <article class="card">
+      <div class="hd"><span class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="13" height="10" rx="2"/><rect x="15" y="9" width="6" height="11" rx="1.5"/><path d="M7 18h5"/></svg></span><h3>App per magazzino e consegne</h3><p>I dati del magazzino e delle consegne, subito visibili in ufficio: dal telefono al computer.</p></div>
+      <div class="vis"><div class="stack" aria-hidden="true">
+        <div class="s a"><em></em><span class="ln" style="top:56px;width:46%"></span><span class="ln" style="top:72px;width:30%"></span><span class="mark w"><i></i><i></i><i></i><i></i><i></i></span></div>
+        <div class="s b"><em></em><span class="mark w"><i></i><i></i><i></i><i></i><i></i></span></div>
+        <div class="s c"><em></em><span class="mark"><i></i><i></i><i></i><i></i><i></i></span></div>
+      </div></div>
+    </article>
+  </div>
+</section>
+
+<section class="sec wrap">
+  <div class="split">
+    <div>
+      <span class="pill">La piattaforma</span>
+      <h2>Tutta l'azienda in un colpo d'occhio</h2>
+      <p>Ordini, magazzino e consegne in un'unica schermata, aggiornata mentre lavori. Ogni dato si scrive una volta sola e arriva subito a chi serve.</p>
+      <a class="btn" href="#contatti">Prenota un appuntamento</a>
+    </div>
+    <div class="panels" aria-hidden="true">
+      <div class="pane big">
+        <div class="row"><h3>Ordini evasi</h3><div class="seg"><span>1G</span><span class="on">7G</span><span>30G</span></div></div>
+        <div class="val">486<i>↑ 12% sulla settimana scorsa</i></div>
+        <svg viewBox="0 0 400 200" preserveAspectRatio="none"><defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9747FF" stop-opacity=".4"/><stop offset="1" stop-color="#9747FF" stop-opacity="0"/></linearGradient></defs>
+          <g stroke="rgba(242,239,234,.06)"><path d="M0 50H400M0 100H400M0 150H400"/></g>
+          <path d="M0,150 C30,140 45,110 70,118 S110,160 140,130 S185,70 210,90 S250,140 280,100 S320,30 345,48 S385,90 400,70 L400,200 L0,200Z" fill="url(#g3)"/>
+          <path d="M0,150 C30,140 45,110 70,118 S110,160 140,130 S185,70 210,90 S250,140 280,100 S320,30 345,48 S385,90 400,70" fill="none" stroke="#C9A2FF" stroke-width="2" vector-effect="non-scaling-stroke"/>
+          <circle cx="345" cy="48" r="5" fill="#9747FF" stroke="#F2EFEA" stroke-width="2"/></svg>
+        <div class="days"><span>Lun</span><span>Mar</span><span>Mer</span><span>Gio</span><span>Ven</span><span>Sab</span><span>Dom</span></div>
+      </div>
+      <div class="pane small">
+        <div class="row"><h3>Consegna in corso</h3><small>···</small></div>
+        <div class="route">
+          <span><b class="ib"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/></svg></b><span><small>Da</small>Magazzino</span></span>
+          <i class="dash"></i>
+          <span><b class="ib v"><svg class="i" viewBox="0 0 24 24"><path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9h16"/></svg></b><span><small>A</small>Cliente Rossi</span></span>
+        </div>
+        <div class="fields"><span>Ordine n. 1284</span><span>12 colli</span></div>
+        <div class="prog"><span>Avanzamento</span><b>In viaggio</b></div>
+        <div class="bar"><i></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" id="metodo">
+  <div class="head"><span class="pill">Come lavoriamo</span><h2>Quattro fasi per un gestionale che usi ogni giorno</h2><p>Dal primo incontro al gestionale in uso, ti segue sempre lo stesso team.</p></div>
+  <div class="tbl">
+    <div class="r th"><span>Fase</span><span>Cosa facciamo</span><span>Come</span><span>Risultato</span></div>
+    <div class="r"><span class="n">01</span><h3>Capiamo come lavori</h3><p>Studiamo i tuoi processi e troviamo dove si può guadagnare tempo.</p><span class="tag">Analisi chiara</span></div>
+    <div class="r"><span class="n">02</span><h3>Partiamo da basi solide</h3><p>Moduli già collaudati per partire veloci e investire dove serve davvero.</p><span class="tag">Avvio rapido</span></div>
+    <div class="r"><span class="n">03</span><h3>Costruiamo le parti su misura</h3><p>Le funzioni specifiche della tua azienda, rilasciate una alla volta.</p><span class="tag">Rilasci graduali</span></div>
+    <div class="r"><span class="n">04</span><h3>Rendiamo i dati leggibili</h3><p>Schermate chiare che mostrano subito quello che conta.</p><span class="tag v">Decisioni migliori</span></div>
+  </div>
+</section>
+
+<section class="cta" id="contatti">
+  <div class="wrap">
+    <span class="pill">Primo incontro</span>
+    <h2>Scopri cosa può cambiare nella tua azienda</h2>
+    <p>Ci vediamo in azienda, guardiamo insieme come lavorate e ti mostriamo cosa può cambiare.</p>
+    <a class="btn" href="#">Prenota un appuntamento</a>
+  </div>
+</section>
+<footer><div class="wrap">
+  <a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a>
+  <span>Merkorn S.r.l.s. · P.IVA 03494760733 · Mottola (TA)</span>
+  <span>Privacy policy · Cookie policy</span>
+</div></footer>
+<script>document.querySelector(".menu").addEventListener("click",e=>{const n=e.currentTarget.closest(".nav");const o=n.classList.toggle("open");e.currentTarget.setAttribute("aria-expanded",o);});</script>
+</body>
+</html>
