@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merkorn · Proposte</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="prove.css">
+<style>
+main { width: min(1100px, 100% - 32px); margin: 0 auto; padding: 120px 0 80px; }
+h1 { font-size: clamp(40px, 6vw, 80px); line-height: 1; }
+main > p { margin-top: 16px; color: var(--muted); max-width: 52ch; }
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 50px; }
+.grid a { position: relative; display: flex; flex-direction: column; min-height: 240px; padding: 26px; border-radius: 22px; background: linear-gradient(180deg, #16121B, #0C0A0F); box-shadow: inset 0 0 0 1px var(--rule); overflow: hidden; transition: transform .3s, box-shadow .3s; }
+.grid a::after { content: ""; position: absolute; right: -60px; top: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(151,71,255,.35), transparent 70%); transition: transform .5s; }
+.grid a:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(151,71,255,.5); } .grid a:hover::after { transform: scale(1.4); }
+.grid b { font: 300 46px/1 var(--display); color: var(--soft); }
+.grid h2 { margin-top: auto; font-size: 28px; line-height: 1.1; }
+.grid p { margin-top: 8px; color: var(--muted); font-size: 14px; max-width: 42ch; }
+.grid span { margin-top: 16px; font-size: 12.5px; font-weight: 600; color: var(--text); }
+@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="topbar"><a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a><span class="tag">Proposte di stile</span></header>
+<main>
+  <h1>Quattro idee, <span class="vio">da provare.</span></h1>
+  <p>Ogni proposta è un prototipo navigabile della home. Aprile da computer e da telefono: scorri, tocca, trascina.</p>
+  <div class="grid">
+    <a href="1-ordine.html"><b>01</b><h2>Dal disordine all'ordine</h2><p>Scorrendo, migliaia di particelle sparse si radunano nel logo e poi si dividono nei reparti.</p><span>Apri la proposta →</span></a>
+    <a href="2-menu.html"><b>02</b><h2>Il logo è il menu</h2><p>Nessuno scorrimento: tocchi un cubo, ci entri dentro e trovi la pagina.</p><span>Apri la proposta →</span></a>
+    <a href="3-forme.html"><b>03</b><h2>Particelle che cambiano forma</h2><p>Un'unica nuvola di punti diventa logo, grafico, linea del tempo, Puglia e modulo contatti.</p><span>Apri la proposta →</span></a>
+    <a href="4-gestionale.html"><b>04</b><h2>Il sito si usa come un gestionale</h2><p>Finestre da spostare, numeri dal vivo e una barra dove chiedi quello che cerchi.</p><span>Apri la proposta →</span></a>
+  </div>
+</main>
+</body>
+</html>

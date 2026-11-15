@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta 2 · Il logo è il menu</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="prove.css">
+<style>
+html, body { height: 100%; overflow: hidden; }
+#scene { position: fixed; inset: 0; }
+.intro { position: fixed; z-index: 2; left: 0; right: 0; bottom: 8vh; text-align: center; padding: 0 20px; pointer-events: none; transition: opacity .5s, translate .5s; }
+.intro h1 { font-size: clamp(34px, 5vw, 64px); line-height: 1.02; }
+.intro p { margin-top: 12px; color: var(--muted); }
+.tip { position: fixed; z-index: 3; padding: 8px 14px; border-radius: 999px; background: var(--text); color: var(--ink); font: 600 13px/1 var(--body); pointer-events: none; translate: -50% -140%; opacity: 0; transition: opacity .2s; white-space: nowrap; }
+.tip.on { opacity: 1; }
+.panel { position: fixed; z-index: 4; inset: 0; display: grid; place-items: center; padding: 90px 20px 30px; opacity: 0; pointer-events: none; transition: opacity .6s .35s; }
+.panel.on { opacity: 1; pointer-events: auto; }
+.panel .in { width: min(760px, 100%); }
+.panel .cap { display: block; }
+.panel h2 { margin-top: 14px; font-size: clamp(38px, 5.6vw, 76px); line-height: 1.02; }
+.panel p { margin-top: 18px; color: #D9D3E0; max-width: 52ch; font-size: 16px; }
+.panel .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 28px; }
+.panel .grid div { padding: 16px 18px; border-radius: 16px; background: rgba(23,20,27,.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: inset 0 0 0 1px var(--rule); }
+.panel .grid b { display: block; font: 500 16px/1.3 var(--display); } .panel .grid span { display: block; margin-top: 4px; font-size: 13px; color: var(--muted); }
+.close { position: fixed; z-index: 5; left: 50%; bottom: 26px; translate: -50% 0; padding: 12px 20px; border-radius: 999px; border: 0; cursor: pointer; font: 600 13px/1 var(--body); background: rgba(242,239,234,.1); color: var(--text); box-shadow: inset 0 0 0 1px var(--rule); opacity: 0; pointer-events: none; transition: opacity .4s; }
+.close.on { opacity: 1; pointer-events: auto; }
+.close:hover { background: var(--text); color: var(--ink); }
+@media (max-width: 640px) { .panel .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="topbar"><a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a><span class="tag">Proposta 2 · Il logo è il menu</span><a class="back" href="index.html">Tutte le proposte</a></header>
+<div id="scene"></div>
+<div class="intro" id="intro"><h1>Dati chiari. <span class="vio">Decisioni migliori.</span></h1><p>Tocca un blocco per entrare.</p></div>
+<div class="tip" id="tip"></div>
+<div class="panel" id="panel"><div class="in" id="content"></div></div>
+<button class="close" id="close" type="button">← Torna al logo</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const PAGES = [
+  { name: 'Home', cap: 'Merkorn', h: 'Software gestionale su misura per le PMI.', p: "Mettiamo in ordine i dati della tua azienda. Vedi tutto in un colpo d'occhio e decidi prima, con più sicurezza.", g: [['Dati chiari', 'Tutta l\'azienda in una schermata'], ['Su misura', 'Costruito attorno a come lavori']] },
+  { name: 'Servizi', cap: 'Servizi', h: 'Quattro servizi, un solo progetto.', p: "Dall'analisi all'assistenza, sempre le stesse persone.", g: [['Gestionale su misura', 'Ordini, magazzino, produzione e commesse'], ['Analisi dei processi', 'Una fotografia chiara di come lavori oggi'], ['App per magazzino e consegne', 'I dati subito visibili in ufficio'], ['Assistenza ed evoluzione', 'Il gestionale cresce con la tua azienda']] },
+  { name: 'Come lavoriamo', cap: 'Come lavoriamo', h: 'Quattro fasi per un gestionale che usi ogni giorno.', p: 'Ogni fase si chiude con un risultato concreto da verificare.', g: [['01 · Capiamo come lavori', 'Priorità chiare fin da subito'], ['02 · Partiamo da basi solide', 'La base del gestionale con i tuoi dati'], ['03 · Costruiamo su misura', 'Un passo avanti a ogni rilascio'], ['04 · Rendiamo i dati leggibili', 'Decisioni più rapide, ogni giorno']] },
+  { name: 'Chi siamo', cap: 'Chi siamo', h: 'Una software house in Puglia che prima viene a vedere.', p: 'Siamo a Mottola, in provincia di Taranto. Un team interno, dal primo incontro all\'assistenza.', g: [['Tempi e costi definiti', 'Concordati prima di iniziare'], ['Lo stesso team nel tempo', 'Chi scrive il software lo segue anche dopo']] },
+  { name: 'Contattaci', cap: 'Contattaci', h: 'Parliamo della tua azienda.', p: 'Scrivici per un appuntamento o un preventivo. Ti rispondiamo personalmente.', g: [['Email', 'merkornsh@gmail.com'], ['Sede', 'Via Carlo Alberto della Chiesa 12, Mottola (TA)']] },
+];
+(() => {
+  const box = document.getElementById('scene');
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); box.appendChild(renderer.domElement);
+  const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(36, 1, .05, 100);
+  const HOME = new THREE.Vector3(0, .3, 12); camera.position.copy(HOME);
+  const spr = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, '#fff'); gr.addColorStop(.3, 'rgba(255,255,255,.8)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+  const cells = [[2, 0], [1, 1], [3, 1], [0, 2], [4, 2]];
+  const group = new THREE.Group(); scene.add(group);
+  const cubes = [], hits = [];
+  cells.forEach(([cx, cy], k) => {
+    const cube = new THREE.Group(); cube.position.set((cx - 2) * 1.12, (1 - cy) * 1.14 + .3, 0);
+    const n = 3000, pos = new Float32Array(n * 3), base = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) { const p = [Math.random() - .5, Math.random() - .5, Math.random() - .5]; if (Math.random() < .6) { const a = i % 3; p[a] = p[a] < 0 ? -.5 : .5; } base.set(p, i * 3); pos.set(p, i * 3); }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const mat = new THREE.PointsMaterial({ size: .05, map: spr, color: k === 0 ? '#C9A2FF' : '#F2EFEA', transparent: true, opacity: .9, depthWrite: false, blending: THREE.AdditiveBlending });
+    const pts = new THREE.Points(g, mat); cube.add(pts);
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1, 1)), new THREE.LineBasicMaterial({ color: k === 0 ? '#9747FF' : '#F2EFEA', transparent: true, opacity: .35 }));
+    cube.add(edges);
+    const hit = new THREE.Mesh(new THREE.BoxGeometry(1.05, 1.05, 1.05), new THREE.MeshBasicMaterial({ visible: false })); hit.userData.k = k; cube.add(hit); hits.push(hit);
+    cube.userData = { k, pts, mat, edges, base, pos, g, spread: 0, hover: 0 };
+    group.add(cube); cubes.push(cube);
+  });
+  const size = () => { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.position.z = innerWidth < 640 ? 21 : 12; HOME.z = camera.position.z; camera.updateProjectionMatrix(); };
+  size(); addEventListener('resize', size);
+
+  const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(-9, -9), tip = document.getElementById('tip');
+  let hover = -1, open = -1;
+  addEventListener('pointermove', e => { mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); tip.style.left = e.clientX + 'px'; tip.style.top = e.clientY + 'px'; });
+  const pick = () => { ray.setFromCamera(mouse, camera); const h = ray.intersectObjects(hits); return h.length ? h[0].object.userData.k : -1; };
+  const panel = document.getElementById('panel'), content = document.getElementById('content'), close = document.getElementById('close'), intro = document.getElementById('intro');
+  const enter = k => {
+    open = k; const P = PAGES[k];
+    content.innerHTML = `<span class="cap">${P.cap}</span><h2>${P.h}</h2><p>${P.p}</p><div class="grid">${P.g.map(([a, b]) => `<div><b>${a}</b><span>${b}</span></div>`).join('')}</div>`;
+    panel.classList.add('on'); close.classList.add('on'); intro.style.opacity = 0; tip.classList.remove('on'); document.body.style.cursor = '';
+  };
+  const leave = () => { open = -1; panel.classList.remove('on'); close.classList.remove('on'); intro.style.opacity = 1; };
+  addEventListener('click', e => { if (open >= 0 || e.target.closest('.topbar,.close')) return; mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); const k = pick(); if (k >= 0) enter(k); });
+  close.addEventListener('click', leave); addEventListener('keydown', e => { if (e.key === 'Escape') leave(); });
+
+  const target = new THREE.Vector3(), look = new THREE.Vector3(0, .3, 0), lookTo = new THREE.Vector3(), wp = new THREE.Vector3();
+  const t0 = performance.now();
+  const frame = now => {
+    const t = (now - t0) / 1000;
+    if (open < 0) {
+      const k = pick(); if (k !== hover) { hover = k; tip.textContent = k >= 0 ? PAGES[k].name : ''; tip.classList.toggle('on', k >= 0); document.body.style.cursor = k >= 0 ? 'pointer' : ''; }
+      group.rotation.y += ((Math.sin(t * .35) * .5 + mouse.x * .25 * (mouse.x > -2)) - group.rotation.y) * .04;
+      group.rotation.x += ((Math.sin(t * .25) * .12 - .05) - group.rotation.x) * .04;
+      target.copy(HOME); lookTo.set(0, .3, 0);
+    } else {
+      cubes[open].getWorldPosition(wp); target.set(wp.x, wp.y, wp.z + 1.6); lookTo.copy(wp);
+    }
+    camera.position.lerp(target, .06); look.lerp(lookTo, .08); camera.lookAt(look);
+    cubes.forEach(c => {
+      const u = c.userData, isOpen = open === u.k, isHover = hover === u.k && open < 0;
+      u.spread += ((isOpen ? 1 : 0) - u.spread) * .05; u.hover += ((isHover ? 1 : 0) - u.hover) * .12;
+      const s = 1 + u.spread * 5, j = u.hover * .15;
+      for (let i = 0; i < u.base.length; i += 3) { const n = Math.sin(t * 2 + i) * j; u.pos[i] = u.base[i] * s + n; u.pos[i + 1] = u.base[i + 1] * s + n; u.pos[i + 2] = u.base[i + 2] * s; }
+      u.g.attributes.position.needsUpdate = true;
+      u.mat.opacity = open >= 0 && !isOpen ? .15 : .9 - u.spread * .5;
+      u.edges.material.opacity = (open >= 0 ? 0 : .35 + u.hover * .5);
+      c.scale.setScalar(1 + u.hover * .08);
+      c.position.z = Math.sin(t * .9 + u.k * 1.3) * .15;
+    });
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
