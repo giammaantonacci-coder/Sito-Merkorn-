@@ -190,9 +190,9 @@ footer .logo { display: flex; align-items: center; gap: 9px; color: #fff; font: 
 .nav-cta .s { display: none; }
 @media (max-width: 900px) { .nav-cta .l { display: none; } .nav-cta .s { display: inline; } .nav .logo { margin-right: auto; } .nav .btn.w { margin-left: 0; } .nav { gap: 8px; } }
 
-/* photographic dunes: the sky fades into the grey, the dunes swallow the laptop */
-.dunes { position: relative; z-index: 2; height: clamp(380px, 46vw, 680px); margin-top: clamp(-300px, -21vw, -170px); overflow: hidden; }
-.dunes img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 4%;
-  -webkit-mask-image: linear-gradient(transparent 0, rgba(0,0,0,.6) 14%, #000 26%); mask-image: linear-gradient(transparent 0, rgba(0,0,0,.6) 14%, #000 26%); }
-.dunes::after { content: ""; position: absolute; inset: auto 0 0; height: 30%; background: linear-gradient(transparent, #050505); }
-@media (max-width: 700px) { .dunes { height: 120vw; margin-top: -48vw; } .dunes img { object-position: 50% 20%; } }
+/* mountains cut out of the photo, in front of the screens, crisp edge */
+.dunes { position: relative; z-index: 2; margin-top: -19vw; pointer-events: none; }
+.dunes img { display: block; width: 100%; height: auto; }
+.dunes picture { display: block; }
+.dunes::after { content: ""; position: absolute; inset: auto 0 0; height: 14%; background: linear-gradient(transparent, #050505); }
+@media (max-width: 700px) { .dunes { margin-top: -46vw; } .dunes img { width: 190%; max-width: none; margin-left: -45%; } }
