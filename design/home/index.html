@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merkorn · Software gestionale su misura</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; font-display: swap; src: url(../../assets/fonts/dm-sans.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 100 900; font-display: swap; src: url(../../assets/fonts/inter.woff2) format("woff2"); }
+:root {
+  --scene: #08070B; --ink: #100E13; --card: #17141B; --card2: #1E1A23;
+  --text: #F2EFEA; --muted: #A7A2AE; --dim: #6F6977;
+  --paper: #E9E5EE; --paper-ink: #100E13; --paper-muted: #5E5866;
+  --accent: #9747FF; --field: #6D28D9; --soft: #C9A2FF;
+  --rule: rgba(242,239,234,.1);
+  --display: "DM Sans", system-ui, sans-serif; --body: "Inter", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; overflow-x: clip; }
+body { background: var(--scene); color: var(--text); font: 400 15px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 400; letter-spacing: -.035em; text-wrap: balance; }
+p { margin: 0; }
+.page { width: min(1240px, 100% - 24px); margin: 0 auto; }
+.mark { position: relative; display: inline-block; width: 22px; height: 14px; flex: none; }
+.mark i { position: absolute; width: 18%; height: 30%; border-radius: 22%; background: var(--accent); }
+.mark i:nth-child(1){left:41%;top:0}.mark i:nth-child(2){left:20.5%;top:35%}.mark i:nth-child(3){left:61.5%;top:35%}.mark i:nth-child(4){left:0;top:70%}.mark i:nth-child(5){left:82%;top:70%}
+.pill { display: inline-flex; align-items: center; padding: 8px 14px; border-radius: 999px; font: 500 12px/1 var(--body); background: rgba(242,239,234,.08); color: var(--text); box-shadow: inset 0 0 0 1px var(--rule); transition: background .25s, color .25s; }
+.pill:hover { background: var(--text); color: var(--ink); }
+.pill.v { background: var(--accent); color: #fff; box-shadow: 0 8px 22px rgba(151,71,255,.35); } .pill.v:hover { background: #a55eff; }
+.pill.k { background: var(--paper-ink); color: var(--text); box-shadow: none; } .pill.k:hover { background: #2a2430; }
+
+/* ---------- hero ---------- */
+.hero { position: relative; min-height: min(860px, 100svh); padding: 20px clamp(20px, 3vw, 36px) clamp(28px, 4vw, 46px); display: grid; grid-template-rows: auto auto 1fr auto; overflow: hidden; }
+.strip { display: flex; justify-content: space-between; gap: 20px; font-size: 11px; color: var(--muted); position: relative; z-index: 2; }
+.head { display: flex; justify-content: space-between; align-items: flex-start; margin-top: clamp(28px, 4vw, 44px); position: relative; z-index: 3; }
+.logo { display: flex; align-items: center; gap: 10px; font: 600 15px/1 var(--display); letter-spacing: .14em; text-transform: uppercase; }
+.vnav { display: grid; justify-items: end; gap: 3px; font-size: 12.5px; color: var(--muted); }
+.vnav a:hover, .vnav a[aria-current] { color: var(--text); }
+.vnav a[aria-current]::before { content: ""; display: inline-block; width: 5px; height: 5px; margin-right: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); vertical-align: middle; }
+.hero h1 { position: relative; z-index: 2; margin-top: clamp(30px, 4vw, 50px); max-width: 10ch; font-size: clamp(44px, 6vw, 80px); line-height: 1.02; }
+.hero h1 em { font-style: normal; color: var(--soft); }
+.hero .lead { position: relative; z-index: 2; align-self: end; display: grid; gap: 22px; max-width: 34ch; }
+.hero .lead p { color: #D9D3E0; font-size: 14px; }
+.hero .lead div { display: flex; gap: 8px; flex-wrap: wrap; }
+#sphere { position: absolute; z-index: 1; left: 50%; top: 50%; width: min(760px, 70vw); aspect-ratio: 1; translate: -38% -46%; }
+
+/* ---------- three cards ---------- */
+.trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; border-radius: 22px; overflow: hidden; }
+.tc { display: flex; flex-direction: column; min-height: 420px; padding: 28px 26px 24px; background: var(--card); transition: background .3s; }
+.tc:hover { background: var(--card2); }
+.tc h3 { font-size: 20px; line-height: 1.25; letter-spacing: -.02em; max-width: 18ch; }
+.tc svg { width: 190px; height: 165px; margin: 40px 0 auto; overflow: visible; }
+.tc p { margin-top: 40px; font-size: 12.5px; color: var(--muted); max-width: 36ch; }
+.tc .acts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+.ln { fill: none; stroke: var(--text); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.ln.thin { stroke-width: 1; opacity: .5; }
+.fillg { fill: rgba(242,239,234,.08); }
+.dot { fill: var(--text); } .dot.v { fill: var(--accent); filter: drop-shadow(0 0 6px rgba(151,71,255,.9)); }
+.tc:hover .spin { animation: spin 6s linear infinite; transform-origin: 75px 65px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- light cards ---------- */
+.lc { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 20px; margin-top: 8px; padding: clamp(30px, 4vw, 48px) clamp(26px, 3vw, 40px); min-height: 330px; border-radius: 22px; background: var(--paper); color: var(--paper-ink); overflow: hidden; }
+.lc h2 { font-size: clamp(30px, 3.6vw, 46px); line-height: 1.06; max-width: 16ch; }
+.lc p { margin: 18px 0 26px; max-width: 40ch; font-size: 14px; color: var(--paper-muted); }
+.lc .cap { display: inline-block; margin-bottom: 16px; font: 600 10px/1.4 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--field); }
+.lc svg { width: 100%; max-width: 460px; height: auto; justify-self: end; overflow: visible; }
+.lc .ink { fill: none; stroke: var(--paper-ink); stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; }
+.lc .ink.l { stroke-width: 1; opacity: .35; }
+.lc .face { fill: #F7F5F9; } .lc .face2 { fill: #DCD6E3; } .lc .face3 { fill: #CFC8D8; }
+.lc .vio { fill: var(--accent); }
+.lc.dark { background: var(--card); color: var(--text); }
+.lc.dark p { color: var(--muted); } .lc.dark .cap { color: var(--soft); }
+
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 8px; border-radius: 22px; overflow: hidden; }
+.steps div { padding: 26px 24px 28px; background: var(--card); }
+.steps b { font: 500 13px/1 var(--display); color: var(--soft); }
+.steps h3 { margin-top: 44px; font-size: 19px; line-height: 1.25; letter-spacing: -.02em; }
+.steps p { margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+
+.final { margin-top: 8px; padding: clamp(60px, 9vw, 120px) clamp(26px, 3vw, 40px); border-radius: 22px; text-align: center; background: radial-gradient(ellipse 55% 70% at 50% 110%, rgba(151,71,255,.55), transparent 70%), var(--card); }
+.final h2 { margin: 0 auto; max-width: 15ch; font-size: clamp(36px, 5vw, 66px); line-height: 1.04; }
+.final p { margin: 18px auto 28px; max-width: 46ch; color: var(--muted); }
+.final .pill { padding: 13px 22px; font-size: 14px; }
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; padding: 34px clamp(20px, 3vw, 36px) 44px; font-size: 11.5px; color: var(--dim); }
+
+@media (max-width: 900px) {
+  .trio, .steps { grid-template-columns: 1fr; }
+  .tc { min-height: 0; } .tc svg { margin: 30px 0 0; } .tc p { margin-top: 30px; }
+  .lc { grid-template-columns: 1fr; } .lc svg { justify-self: center; max-width: 360px; }
+  .steps h3 { margin-top: 20px; }
+  #sphere { width: 110vw; translate: -50% -40%; opacity: .75; }
+}
+@media (max-width: 560px) {
+  .strip span:last-child { display: none; }
+  .hero { min-height: 760px; }
+  .vnav { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .tc:hover .spin { animation: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <section class="hero">
+    <div class="strip"><span>Software gestionale su misura per le PMI</span><span>Software house a Mottola, in Puglia</span></div>
+    <div class="head">
+      <a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a>
+      <nav class="vnav"><a href="index.html" aria-current="page">Home</a><a href="#servizi">Servizi</a><a href="#metodo">Come lavoriamo</a><a href="#">Chi siamo</a><a href="#contatti">Contattaci</a></nav>
+    </div>
+    <h1>Dati chiari. <em>Decisioni migliori.</em></h1>
+    <canvas id="sphere" aria-hidden="true"></canvas>
+    <div class="lead">
+      <p>Mettiamo in ordine i dati della tua azienda. Vedi tutto in un colpo d'occhio e decidi prima, con più sicurezza.</p>
+      <div><a class="pill v" href="#contatti">Prenota un appuntamento</a><a class="pill" href="#metodo">Come lavoriamo</a></div>
+    </div>
+  </section>
+
+  <section class="trio" id="servizi">
+    <article class="tc">
+      <h3>Gestionale su misura per ogni reparto</h3>
+      <svg viewBox="0 0 150 130" aria-hidden="true">
+        <path class="ln thin" d="M75 18V112"/>
+        <path class="fillg" d="M75 92l52 14-52 14-52-14z"/><path class="ln" d="M75 92l52 14-52 14-52-14z"/>
+        <path class="ln" d="M75 66l44 12-44 12-44-12z"/>
+        <path class="ln" d="M75 42l34 9-34 9-34-9z"/>
+        <circle class="dot v" cx="75" cy="18" r="6"/>
+      </svg>
+      <p>Un ERP personalizzato che riunisce ordini, magazzino, produzione e commesse e ti dà la visione completa dell'azienda.</p>
+      <div class="acts"><a class="pill" href="#">Scopri il gestionale</a><a class="pill" href="#contatti">Chiedi una demo</a></div>
+    </article>
+    <article class="tc">
+      <h3>Analisi dei processi aziendali</h3>
+      <svg viewBox="0 0 150 130" aria-hidden="true">
+        <path class="ln thin" d="M75 4V126"/>
+        <ellipse class="ln" cx="75" cy="34" rx="56" ry="17"/>
+        <ellipse class="fillg" cx="75" cy="56" rx="40" ry="12"/><ellipse class="ln thin" cx="75" cy="56" rx="40" ry="12"/>
+        <ellipse class="fillg" cx="75" cy="74" rx="26" ry="8"/><ellipse class="ln thin" cx="75" cy="74" rx="26" ry="8"/>
+        <path class="ln" d="M19 34C26 70 60 88 75 104C90 88 124 70 131 34"/>
+        <circle class="dot v" cx="75" cy="104" r="6"/>
+      </svg>
+      <p>Una fotografia chiara di come lavori oggi e delle priorità per crescere.</p>
+      <div class="acts"><a class="pill" href="#metodo">Come lavoriamo</a></div>
+    </article>
+    <article class="tc">
+      <h3>App per magazzino e consegne</h3>
+      <svg viewBox="0 0 150 130" aria-hidden="true">
+        <path class="ln thin" d="M0 65H150"/>
+        <g class="spin">
+          <ellipse class="fillg" cx="75" cy="65" rx="58" ry="24" transform="rotate(-48 75 65)"/>
+          <ellipse class="ln" cx="75" cy="65" rx="58" ry="24" transform="rotate(-48 75 65)"/>
+          <circle class="dot" cx="113" cy="23" r="3.5"/>
+        </g>
+        <circle class="dot v" cx="75" cy="65" r="6"/>
+      </svg>
+      <p>I dati del magazzino e delle consegne, subito visibili in ufficio. Carichi, scarichi e firma del cliente dal telefono.</p>
+      <div class="acts"><a class="pill" href="#">Scopri l'app</a></div>
+    </article>
+  </section>
+
+  <section class="lc" id="metodo">
+    <div>
+      <span class="cap">Come lavoriamo</span>
+      <h2>Quattro fasi per un gestionale che usi ogni giorno</h2>
+      <p>Moduli collaudati alla base, componenti su misura sopra, le tue schermate in cima. Ogni fase si chiude con un risultato concreto da verificare.</p>
+      <a class="pill v" href="#fasi">Scopri le fasi</a>
+    </div>
+    <svg viewBox="0 0 460 300" aria-hidden="true">
+      <!-- isometric blocks arranged like the Merkorn mark -->
+      <g transform="translate(230 34)">
+        <path class="vio" d="M0 0l46 24-46 24-46-24z"/><path class="face2" d="M-46 24l46 24v46l-46-24z"/><path class="face3" d="M46 24l-46 24v46l46-24z"/>
+        <path class="ink" d="M0 0l46 24-46 24-46-24zM-46 24v46l46 24 46-24V24M0 48v46"/>
+      </g>
+      <g transform="translate(150 96)">
+        <path class="face" d="M0 0l46 24-46 24-46-24z"/><path class="face2" d="M-46 24l46 24v46l-46-24z"/><path class="face3" d="M46 24l-46 24v46l46-24z"/>
+        <path class="ink" d="M0 0l46 24-46 24-46-24zM-46 24v46l46 24 46-24V24M0 48v46"/>
+      </g>
+      <g transform="translate(310 96)">
+        <path class="face" d="M0 0l46 24-46 24-46-24z"/><path class="face2" d="M-46 24l46 24v46l-46-24z"/><path class="face3" d="M46 24l-46 24v46l46-24z"/>
+        <path class="ink" d="M0 0l46 24-46 24-46-24zM-46 24v46l46 24 46-24V24M0 48v46"/>
+      </g>
+      <g transform="translate(70 158)">
+        <path class="face" d="M0 0l46 24-46 24-46-24z"/><path class="face2" d="M-46 24l46 24v46l-46-24z"/><path class="face3" d="M46 24l-46 24v46l46-24z"/>
+        <path class="ink" d="M0 0l46 24-46 24-46-24zM-46 24v46l46 24 46-24V24M0 48v46"/>
+      </g>
+      <g transform="translate(390 158)">
+        <path class="face" d="M0 0l46 24-46 24-46-24z"/><path class="face2" d="M-46 24l46 24v46l-46-24z"/><path class="face3" d="M46 24l-46 24v46l46-24z"/>
+        <path class="ink" d="M0 0l46 24-46 24-46-24zM-46 24v46l46 24 46-24V24M0 48v46"/>
+      </g>
+      <path class="ink l" d="M230 128V290M150 190V290M310 190V290" stroke-dasharray="3 5"/>
+    </svg>
+  </section>
+
+  <section class="steps" id="fasi">
+    <div><b>01</b><h3>Capiamo come lavori</h3><p>Studiamo i tuoi processi e troviamo dove si può guadagnare tempo.</p></div>
+    <div><b>02</b><h3>Partiamo da basi solide</h3><p>Moduli già collaudati per partire veloci e investire dove serve davvero.</p></div>
+    <div><b>03</b><h3>Costruiamo le parti su misura</h3><p>Le funzioni specifiche della tua azienda, rilasciate una alla volta.</p></div>
+    <div><b>04</b><h3>Rendiamo i dati leggibili</h3><p>Schermate chiare che mostrano subito quello che conta.</p></div>
+  </section>
+
+  <section class="lc">
+    <div>
+      <span class="cap">Assistenza ed evoluzione</span>
+      <h2>Lo stesso team, dal primo incontro in poi</h2>
+      <p>Il gestionale cresce con la tua azienda. Chi scrive il software lo segue anche dopo, con assistenza, aggiornamenti e nuove funzioni.</p>
+      <a class="pill k" href="#">Conosci il team</a>
+    </div>
+    <svg viewBox="0 0 460 300" aria-hidden="true">
+      <!-- devices in perspective: computer, tablet, phone -->
+      <g transform="translate(150 20) skewY(8)">
+        <rect class="face2" x="0" y="0" width="230" height="160" rx="12"/><rect class="ink" x="0" y="0" width="230" height="160" rx="12"/>
+        <rect class="face" x="10" y="10" width="210" height="140" rx="6"/><path class="ink l" d="M24 40h90M24 54h60M24 96h182M24 112h140"/>
+        <rect class="vio" x="150" y="28" width="56" height="34" rx="6"/>
+        <circle class="ink" cx="216" cy="176" r="0"/>
+      </g>
+      <g transform="translate(70 92) skewY(8)">
+        <rect class="face2" x="0" y="0" width="130" height="170" rx="12"/><rect class="ink" x="0" y="0" width="130" height="170" rx="12"/>
+        <rect class="face" x="9" y="9" width="112" height="152" rx="6"/>
+        <g transform="translate(43 66) scale(2)"><rect class="vio" x="9" y="0" width="4" height="4" rx="1"/><rect class="vio" x="4.5" y="5" width="4" height="4" rx="1"/><rect class="vio" x="13.5" y="5" width="4" height="4" rx="1"/><rect class="vio" x="0" y="10" width="4" height="4" rx="1"/><rect class="vio" x="18" y="10" width="4" height="4" rx="1"/></g>
+      </g>
+      <g transform="translate(330 120) skewY(8)">
+        <rect class="face2" x="0" y="0" width="74" height="146" rx="14"/><rect class="ink" x="0" y="0" width="74" height="146" rx="14"/>
+        <rect class="face" x="7" y="7" width="60" height="132" rx="9"/><path class="ink l" d="M16 30h36M16 42h24"/>
+        <rect class="vio" x="16" y="104" width="42" height="18" rx="9"/>
+      </g>
+    </svg>
+  </section>
+
+  <section class="final" id="contatti">
+    <h2>Scopri cosa può cambiare nella tua azienda</h2>
+    <p>Ci vediamo in azienda, guardiamo insieme come lavorate e ti mostriamo cosa può cambiare.</p>
+    <a class="pill v" href="#">Prenota un appuntamento</a>
+  </section>
+
+  <footer>
+    <span>Merkorn S.r.l.s. · P.IVA 03494760733 · Via Carlo Alberto della Chiesa 12, 74017 Mottola (TA)</span>
+    <span>merkornsh@gmail.com · Privacy policy · Cookie policy</span>
+  </footer>
+</div>
+
+<script>
+/* particle sphere: points on a sphere, denser toward the lower rim, slow rotation */
+(() => {
+  const c = document.getElementById('sphere'); if (!c) return;
+  const x = c.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const N = 5200, pts = [];
+  for (let i = 0; i < N; i++) {
+    const u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2, r = Math.sqrt(1 - u * u), k = .94 + Math.random() * .06;
+    pts.push([Math.cos(th) * r * k, u * k, Math.sin(th) * r * k, Math.random()]);
+  }
+  let w, h, dpr;
+  const size = () => { dpr = Math.min(devicePixelRatio || 1, 2); w = c.clientWidth; h = c.clientHeight; c.width = w * dpr; c.height = h * dpr; };
+  size(); addEventListener('resize', size);
+  const tilt = -.35, ct = Math.cos(tilt), st = Math.sin(tilt);
+  const draw = t => {
+    x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, w, h);
+    const a = t * .00006, ca = Math.cos(a), sa = Math.sin(a), R = w * .42, cx = w / 2, cy = h / 2;
+    for (const [px, py, pz, rnd] of pts) {
+      const X = px * ca + pz * sa, Z0 = -px * sa + pz * ca;
+      const Y = py * ct - Z0 * st, Z = py * st + Z0 * ct;
+      if (Z < -.15 && rnd > .25) continue;
+      const rim = 1 - Math.abs(Z);
+      const lower = Math.max(0, Y * .8 + X * .35);
+      if (rnd > .2 + lower * 1.1 + rim * rim * .5) continue;
+      const al = Math.min(1, .25 + rim * .5 + lower * .8) * (Z < 0 ? .4 : 1);
+      const s = (.9 + rnd * 1.3) * (Z > 0 ? 1 : .7);
+      x.fillStyle = rnd > .97 ? `rgba(201,162,255,${al})` : `rgba(242,239,234,${al})`;
+      x.fillRect(cx + X * R, cy + Y * R, s, s);
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  };
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
