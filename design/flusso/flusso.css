@@ -196,3 +196,31 @@ footer .logo { display: flex; align-items: center; gap: 9px; color: #fff; font: 
 .dunes picture { display: block; }
 .dunes::after { content: ""; position: absolute; inset: auto 0 0; height: 14%; background: linear-gradient(transparent, #050505); }
 @media (max-width: 700px) { .dunes { margin-top: -46vw; } .dunes img { width: 190%; max-width: none; margin-left: -45%; } }
+
+/* ---------- home: floating laptop + phone, no mountains ---------- */
+.top:has(.stage) { background: radial-gradient(ellipse 70% 55% at 50% 28%, #c4c4c8, #9a9a9f 50%, #6c6c71 75%, #2a2a2d 92%, #050505); }
+.stage { position: relative; width: min(1000px, 96%); margin: clamp(46px, 6vw, 70px) auto 0; padding-bottom: clamp(70px, 9vw, 120px); }
+.stage .device.lap { width: 88%; margin: 0; padding-bottom: 12px; border-radius: 22px; animation: fl-float 7s ease-in-out infinite; }
+.stage .device.lap .scr { padding-bottom: 22px; border-radius: 12px; }
+.stage .lap-base { width: 96%; height: 14px; margin: -2px 0 0 -4%; border-radius: 0 0 18px 18px; background: linear-gradient(180deg, #2b2b2e, #111113); box-shadow: 0 30px 50px rgba(0,0,0,.35); animation: fl-float 7s ease-in-out infinite; }
+.phone { position: absolute; right: 0; bottom: clamp(40px, 6vw, 80px); z-index: 3; width: clamp(170px, 22%, 230px); aspect-ratio: 9 / 19; padding: 8px; border-radius: 34px; background: #0d0d0e; box-shadow: 0 0 0 1.5px #2a2a2d inset, 0 50px 80px rgba(0,0,0,.45), -20px 20px 60px rgba(0,0,0,.25); animation: fl-float 6s ease-in-out -2.5s infinite; text-align: left; }
+.ph-scr { height: 100%; border-radius: 27px; overflow: hidden; padding: 14px 12px; display: flex; flex-direction: column; gap: 9px;
+  background: radial-gradient(ellipse 90% 50% at 100% 0%, rgba(151,71,255,.55), transparent 60%), linear-gradient(170deg, #161618 45%, #2b1a45); color: #fff; }
+.ph-top { display: flex; align-items: center; gap: 8px; font-size: 10px; color: #c9c9ce; }
+.ph-top .logo .mark { width: 14px; height: 9px; color: #fff; } .ph-time { margin-left: auto; } .ph-av { width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, #ddd, #888); }
+.ph-hi { font: 500 13px/1.2 var(--display); margin-top: 4px; }
+.ph-kpi { border-radius: 14px; padding: 10px; background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); display: flex; flex-direction: column; }
+.ph-kpi small, .ph-glow small { font-size: 9px; color: #b4b4b9; } .ph-kpi b { font: 400 24px/1.15 var(--display); letter-spacing: -.03em; margin-top: 4px; } .ph-kpi .up { font-size: 8.5px; color: #c9c9ce; }
+.ph-kpi .dots { height: 14px; margin-top: 8px; background-image: radial-gradient(rgba(255,255,255,.4) 1px, transparent 1.3px); background-size: 5px 5px; }
+.ph-glow { border-radius: 14px; padding: 10px; min-height: 70px; display: flex; flex-direction: column; background: radial-gradient(circle at 40% 30%, #d7b6ff, #9747FF 45%, #4b1e9a 85%); }
+.ph-glow small { color: rgba(255,255,255,.85); } .ph-glow p { margin: auto 0 0; font-size: 10.5px; line-height: 1.3; }
+.ph-list { display: grid; gap: 6px; } .ph-list span { display: flex; align-items: center; gap: 7px; padding: 7px 8px; border-radius: 10px; background: rgba(255,255,255,.05); font-size: 9.5px; }
+.ph-list i { width: 6px; height: 6px; border-radius: 50%; background: #8e8e94; flex: none; } .ph-list i.v { background: #9747FF; box-shadow: 0 0 6px #9747FF; }
+.ph-list em { margin-left: auto; font-style: normal; color: #a9a9ae; }
+.ph-nav { margin-top: auto; display: flex; justify-content: space-around; padding: 8px 6px; border-radius: 14px; background: rgba(255,255,255,.06); } .ph-nav i { width: 16px; height: 16px; border-radius: 5px; background: rgba(255,255,255,.18); } .ph-nav i.on { background: #fff; }
+@keyframes fl-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
+@media (max-width: 700px) {
+  .stage .device.lap { width: 100%; } .stage .lap-base { width: 106%; margin-left: -3%; }
+  .phone { width: 42%; right: -2%; bottom: 10px; border-radius: 26px; } .ph-scr { border-radius: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { .stage .device.lap, .stage .lap-base, .phone { animation: none; } }
