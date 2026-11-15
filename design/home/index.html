@@ -31,15 +31,35 @@ p { margin: 0; }
 .pill.v { background: var(--accent); color: #fff; box-shadow: 0 8px 22px rgba(151,71,255,.35); } .pill.v:hover { background: #a55eff; }
 .pill.k { background: var(--paper-ink); color: var(--text); box-shadow: none; } .pill.k:hover { background: #2a2430; }
 
+/* ---------- pill menu ---------- */
+.nav { position: sticky; top: 12px; z-index: 30; display: flex; align-items: center; gap: 20px; margin-top: 12px; padding: 8px 8px 8px 22px; border-radius: 999px; background: #050407; box-shadow: inset 0 0 0 1px rgba(242,239,234,.1), 0 14px 40px rgba(0,0,0,.45); }
+.nav .logo { margin-right: auto; letter-spacing: -.01em; text-transform: none; font-size: 16px; }
+.nav nav { display: flex; gap: 26px; margin-right: auto; font-size: 13px; color: var(--muted); }
+.nav nav a:hover { color: var(--text); }
+.nbtn { display: inline-flex; align-items: center; padding: 11px 18px; border-radius: 999px; font: 600 13px/1 var(--body); background: var(--text); color: var(--ink); transition: background .25s, color .25s; }
+.nbtn:hover { background: var(--accent); color: #fff; }
+.nbtn .s { display: none; }
+.menu { display: none; width: 40px; height: 40px; border: 0; padding: 0; border-radius: 50%; background: #1E1A23; cursor: pointer; }
+.menu i { display: block; width: 16px; height: 1.6px; margin: 4px auto; border-radius: 2px; background: var(--text); transition: transform .3s; }
+@media (max-width: 900px) {
+  .nav { flex-wrap: wrap; gap: 8px; border-radius: 24px; padding-left: 18px; }
+  .nav nav { order: 3; width: 100%; margin: 0; flex-direction: column; gap: 0; padding: 4px 4px 8px; }
+  .nav:not(.open) nav { display: none; }
+  .nav nav a { padding: 13px 4px; font-size: 16px; color: var(--text); border-top: 1px solid var(--rule); }
+  .nbtn .l { display: none; } .nbtn .s { display: inline; }
+  .menu { display: block; }
+  .nav.open .menu i:first-child { transform: translateY(2.8px) rotate(45deg); } .nav.open .menu i:last-child { transform: translateY(-2.8px) rotate(-45deg); }
+}
+
 /* ---------- hero ---------- */
-.hero { position: relative; min-height: min(860px, 100svh); padding: 20px clamp(20px, 3vw, 36px) clamp(28px, 4vw, 46px); display: grid; grid-template-rows: auto auto 1fr auto; overflow: hidden; }
+.hero { position: relative; min-height: min(800px, calc(100svh - 70px)); padding: 0 clamp(20px, 3vw, 36px) clamp(28px, 4vw, 46px); display: grid; grid-template-rows: auto 1fr auto; overflow: hidden; }
 .strip { display: flex; justify-content: space-between; gap: 20px; font-size: 11px; color: var(--muted); position: relative; z-index: 2; }
 .head { display: flex; justify-content: space-between; align-items: flex-start; margin-top: clamp(28px, 4vw, 44px); position: relative; z-index: 3; }
 .logo { display: flex; align-items: center; gap: 10px; font: 600 15px/1 var(--display); letter-spacing: .14em; text-transform: uppercase; }
 .vnav { display: grid; justify-items: end; gap: 3px; font-size: 12.5px; color: var(--muted); }
 .vnav a:hover, .vnav a[aria-current] { color: var(--text); }
 .vnav a[aria-current]::before { content: ""; display: inline-block; width: 5px; height: 5px; margin-right: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); vertical-align: middle; }
-.hero h1 { position: relative; z-index: 2; margin-top: clamp(30px, 4vw, 50px); max-width: 10ch; font-size: clamp(44px, 6vw, 80px); line-height: 1.02; }
+.hero h1 { position: relative; z-index: 2; margin-top: clamp(56px, 7vw, 96px); max-width: 10ch; font-size: clamp(44px, 6vw, 80px); line-height: 1.02; }
 .hero h1 em { font-style: normal; color: var(--soft); }
 .hero .lead { position: relative; z-index: 2; align-self: end; display: grid; gap: 22px; max-width: 34ch; }
 .hero .lead p { color: #D9D3E0; font-size: 14px; }
@@ -103,12 +123,13 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14
 </head>
 <body>
 <div class="page">
+  <header class="nav">
+    <a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a>
+    <nav><a href="#servizi">Servizi</a><a href="#metodo">Come lavoriamo</a><a href="#">Chi siamo</a><a href="#contatti">Contattaci</a></nav>
+    <a class="nbtn" href="#contatti"><span class="l">Prenota un appuntamento</span><span class="s">Contattaci</span></a>
+    <button class="menu" type="button" aria-label="Apri il menu" aria-expanded="false"><i></i><i></i></button>
+  </header>
   <section class="hero">
-    <div class="strip"><span>Software gestionale su misura per le PMI</span><span>Software house a Mottola, in Puglia</span></div>
-    <div class="head">
-      <a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a>
-      <nav class="vnav"><a href="index.html" aria-current="page">Home</a><a href="#servizi">Servizi</a><a href="#metodo">Come lavoriamo</a><a href="#">Chi siamo</a><a href="#contatti">Contattaci</a></nav>
-    </div>
     <h1>Dati chiari. <em>Decisioni migliori.</em></h1>
     <canvas id="sphere" aria-hidden="true"></canvas>
     <div class="lead">
@@ -239,6 +260,7 @@ footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14
   </footer>
 </div>
 
+<script>document.querySelector(".menu").addEventListener("click",e=>{const n=e.currentTarget.closest(".nav");const o=n.classList.toggle("open");e.currentTarget.setAttribute("aria-expanded",o);});</script>
 <script>
 /* particle sphere: points on a sphere, denser toward the lower rim, slow rotation */
 (() => {
