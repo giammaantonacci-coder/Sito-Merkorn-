@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contattaci · Merkorn</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<div class="top">
+  <header class="nav">
+    <a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a>
+    <nav><a href="servizi.html">Servizi</a><a href="metodo.html">Come lavoriamo</a><a href="chi-siamo.html">Chi siamo</a></nav>
+    <a class="btn light" href="contattaci.html"><span class="l">Prenota un appuntamento</span><span class="s">Contattaci</span></a>
+    <button class="menu" type="button" aria-label="Apri il menu" aria-expanded="false"><i></i><i></i></button>
+  </header>
+  <section class="hero short wrap">
+    <span class="cap">Contattaci</span>
+    <h1>Parliamo della tua azienda</h1>
+    <p>Scrivici per un appuntamento o un preventivo. Ti rispondiamo personalmente.</p>
+  </section>
+</div>
+
+<section class="sec wrap">
+  <div class="contact">
+    <div class="info">
+      <span class="cap" style="color:var(--dim)">01 / Scrivici</span>
+      <div><small>Email</small><a href="mailto:merkornsh@gmail.com">merkornsh@gmail.com</a></div>
+      <div><small>Sede</small><a href="https://maps.app.goo.gl/npZnGgNFNNix1mri9" target="_blank" rel="noopener">Via Carlo Alberto della Chiesa 12<br>74017 Mottola (TA)</a></div>
+      <div><small>Dove lavoriamo</small><b>Soprattutto in Puglia. Per il resto d'Italia il primo incontro si fa online.</b></div>
+    </div>
+    <form class="form" onsubmit="event.preventDefault()">
+      <label><span>Nome e cognome</span><input type="text" autocomplete="name" required></label>
+      <label><span>Azienda <i>facoltativo</i></span><input type="text" autocomplete="organization"></label>
+      <label><span>Email</span><input type="email" autocomplete="email" required></label>
+      <label><span>Telefono <i>facoltativo</i></span><input type="tel" autocomplete="tel"></label>
+      <label class="full"><span>Argomento</span><select><option>Nuovo gestionale su misura</option><option>Analisi dei processi</option><option>App per reparto e consegne</option><option>Assistenza su un software esistente</option><option>Altro</option></select></label>
+      <label class="full"><span>Messaggio</span><textarea placeholder="Raccontaci in due righe di cosa ti occupi"></textarea></label>
+      <label class="chk"><input type="checkbox" required><span>Ho letto l'<a href="../../privacy.html">informativa sulla privacy</a></span></label>
+      <button class="btn light" type="submit">Invia la richiesta</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a>
+  <nav><a href="servizi.html">Servizi</a><a href="metodo.html">Come lavoriamo</a><a href="chi-siamo.html">Chi siamo</a><a href="contattaci.html">Contattaci</a></nav>
+  <span>Merkorn S.r.l.s. · P.IVA 03494760733 · Mottola (TA)</span>
+  <nav><a href="../../privacy.html">Privacy policy</a><a href="../../cookie.html">Cookie policy</a></nav>
+</footer>
+<script>document.querySelector(".menu").addEventListener("click",e=>{const n=e.currentTarget.closest(".nav");const o=n.classList.toggle("open");e.currentTarget.setAttribute("aria-expanded",o);});</script>
+</body>
+</html>

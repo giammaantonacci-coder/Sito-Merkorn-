@@ -5,177 +5,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Merkorn · Software gestionale su misura</title>
 <meta name="robots" content="noindex">
-<style>
-@font-face { font-family: "DM Sans"; font-weight: 100 1000; font-display: swap; src: url(../../assets/fonts/dm-sans.woff2) format("woff2"); }
-@font-face { font-family: "Inter"; font-weight: 100 900; font-display: swap; src: url(../../assets/fonts/inter.woff2) format("woff2"); }
-:root {
-  --scene: #08070B; --ink: #100E13; --lift: #17141B;
-  --text: #F2EFEA; --muted: #A7A2AE; --dim: #6F6977;
-  --accent: #9747FF; --soft: #C9A2FF;
-  --rule: rgba(242,239,234,.14);
-  --display: "DM Sans", system-ui, sans-serif; --body: "Inter", system-ui, sans-serif;
-}
-* { box-sizing: border-box; }
-html, body { margin: 0; overflow-x: clip; }
-body { background: var(--scene); color: var(--text); font: 400 15px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
-a { color: inherit; text-decoration: none; }
-h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 400; letter-spacing: -.035em; text-wrap: balance; }
-p { margin: 0; }
-.wrap { width: min(1180px, 100% - 32px); margin-inline: auto; position: relative; }
-.cap { font: 600 10px/1.5 var(--body); letter-spacing: .2em; text-transform: uppercase; }
-.mark { position: relative; display: inline-block; width: 22px; height: 14px; flex: none; }
-.mark i { position: absolute; width: 18%; height: 30%; border-radius: 22%; background: var(--accent); }
-.mark i:nth-child(1){left:41%;top:0}.mark i:nth-child(2){left:20.5%;top:35%}.mark i:nth-child(3){left:61.5%;top:35%}.mark i:nth-child(4){left:0;top:70%}.mark i:nth-child(5){left:82%;top:70%}
-.btn { display: inline-flex; align-items: center; padding: 14px 24px; border-radius: 999px; font: 600 14px/1 var(--body); background: var(--ink); color: var(--text); transition: transform .3s, background .3s; }
-.btn:hover { transform: translateY(-2px); background: #221d28; }
-.btn.light { background: var(--text); color: var(--ink); } .btn.light:hover { background: #fff; }
-
-/* ---------- top: soft studio light in Merkorn tones ---------- */
-.top { position: relative; color: #fff; background: radial-gradient(ellipse 75% 60% at 50% 30%, #CEC7D7, #A49CAE 50%, #7B7385 78%, #2A2530 94%, var(--scene)); }
-.nav { position: sticky; top: 12px; z-index: 20; display: flex; align-items: center; gap: 20px; width: min(1180px, 100% - 24px); margin: 0 auto; padding: 8px 8px 8px 22px; border-radius: 999px; background: var(--ink); box-shadow: 0 12px 34px rgba(16,14,19,.3); }
-.top > .nav { margin-top: 12px; }
-.logo { display: flex; align-items: center; gap: 10px; margin-right: auto; font: 600 16px/1 var(--display); letter-spacing: -.01em; }
-.nav nav { display: flex; gap: 26px; margin-right: auto; font-size: 13px; color: var(--muted); }
-.nav nav a:hover, .nav nav a[aria-current] { color: var(--text); }
-.nav .btn { padding: 11px 18px; font-size: 13px; }
-.nav .btn .s { display: none; }
-.menu { display: none; width: 40px; height: 40px; border: 0; border-radius: 50%; background: #221d28; cursor: pointer; padding: 0; }
-.menu i { display: block; width: 16px; height: 1.6px; margin: 4px auto; background: var(--text); border-radius: 2px; transition: transform .3s; }
-
-.hero { text-align: center; padding: clamp(64px, 9vw, 112px) 0 0; }
-.hero .cap { color: rgba(255,255,255,.85); }
-.hero h1 { margin: 22px auto 0; max-width: 15ch; font-size: clamp(42px, 6.6vw, 86px); line-height: 1.02; color: #fff; }
-.hero p { margin: 18px auto 30px; max-width: 52ch; color: rgba(255,255,255,.9); font-size: clamp(14px, 1.4vw, 16px); }
-
-/* reserved area for the screen that will be added later */
-.slot { width: min(900px, 94%); aspect-ratio: 16 / 7.5; margin: clamp(50px, 6vw, 72px) auto 0; border-radius: 22px; display: grid; place-items: center; border: 1.5px dashed rgba(255,255,255,.4); color: rgba(255,255,255,.75); }
-.slot.dark { width: 100%; margin: 0; aspect-ratio: 16 / 6.5; border-radius: 0; border-left: 0; border-right: 0; border-color: var(--rule); color: var(--dim); background: var(--ink); }
-.top .spacer { height: clamp(90px, 12vw, 160px); }
-
-/* ---------- 01 platform ---------- */
-.plat { padding: clamp(60px, 8vw, 110px) 0 clamp(80px, 10vw, 130px); }
-.row1 { display: grid; grid-template-columns: 1fr 1.4fr; gap: 30px; }
-.row1 > .cap { color: var(--dim); padding-top: 14px; }
-.plat h2 { font-size: clamp(30px, 3.6vw, 48px); line-height: 1.1; }
-.plat .note { margin: 36px 0 0 auto; max-width: 40ch; font-size: 14px; color: var(--muted); }
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: clamp(70px, 9vw, 120px); }
-.stats div { padding-left: 20px; border-left: 1px solid var(--rule); }
-.stats .cap { color: var(--dim); }
-.stats b { display: block; margin-top: 18px; font: 300 clamp(56px, 7vw, 96px)/1 var(--display); letter-spacing: -.05em; }
-
-/* ---------- 03 services ---------- */
-.serv { padding: clamp(90px, 11vw, 140px) 0; }
-.serv .row1 { margin-bottom: 54px; }
-.serv h2 { font-size: clamp(30px, 3.6vw, 48px); line-height: 1.1; }
-.item { display: grid; grid-template-columns: 1fr 1.4fr; gap: 30px; padding: 28px 0; border-top: 1px solid var(--rule); }
-.item:last-child { border-bottom: 1px solid var(--rule); }
-.item .n { font: 300 15px/1 var(--display); color: var(--soft); padding-top: 8px; }
-.item h3 { font-size: clamp(22px, 2.4vw, 30px); }
-.item p { margin-top: 8px; max-width: 48ch; color: var(--muted); font-size: 14px; }
-
-/* ---------- 04 method ---------- */
-.met { padding: 0 0 clamp(90px, 11vw, 140px); }
-.met h2 { font-size: clamp(30px, 3.6vw, 48px); line-height: 1.1; }
-.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 54px; }
-.steps div { padding: 22px 20px 0 20px; border-left: 1px solid var(--rule); }
-.steps .cap { color: var(--soft); }
-.steps h3 { margin-top: 40px; font-size: 21px; line-height: 1.2; }
-.steps p { margin-top: 10px; font-size: 13.5px; color: var(--muted); }
-
-/* ---------- cta + footer ---------- */
-.cta { text-align: center; padding: clamp(100px, 13vw, 160px) 0 clamp(80px, 10vw, 120px); background: radial-gradient(ellipse 70% 70% at 50% 100%, #A49CAE, #4E4756 45%, var(--scene) 82%); }
-.cta .cap { color: var(--muted); }
-.cta h2 { margin: 20px auto 0; max-width: 15ch; font-size: clamp(38px, 5.6vw, 72px); line-height: 1.03; }
-.cta p { margin: 18px auto 30px; max-width: 46ch; color: #DCD6E2; }
-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding: 30px max(16px, calc((100% - 1180px) / 2)) 42px; border-top: 1px solid var(--rule); font-size: 12.5px; color: var(--dim); }
-footer .logo { margin: 0; color: var(--text); font-size: 15px; }
-
-@media (max-width: 900px) {
-  .nav { flex-wrap: wrap; border-radius: 24px; gap: 8px; }
-  .nav nav { order: 3; width: 100%; margin: 0; flex-direction: column; gap: 0; padding: 4px 4px 8px; }
-  .nav:not(.open) nav { display: none; }
-  .nav nav a { padding: 13px 6px; font-size: 16px; color: var(--text); border-top: 1px solid rgba(242,239,234,.08); }
-  .nav .btn .l { display: none; } .nav .btn .s { display: inline; }
-  .menu { display: block; }
-  .nav.open .menu i:first-child { transform: translateY(2.8px) rotate(45deg); } .nav.open .menu i:last-child { transform: translateY(-2.8px) rotate(-45deg); }
-  .row1, .item { grid-template-columns: 1fr; gap: 14px; }
-  .row1 > .cap { padding-top: 0; }
-  .steps { grid-template-columns: 1fr 1fr; row-gap: 40px; }
-  .slot { aspect-ratio: 4 / 3; } .slot.dark { aspect-ratio: 4 / 3; }
-}
-@media (max-width: 560px) {
-  .stats { grid-template-columns: 1fr; gap: 36px; }
-  .steps { grid-template-columns: 1fr; }
-  .steps h3 { margin-top: 18px; }
-}
-</style>
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
 <div class="top">
   <header class="nav">
     <a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a>
-    <nav><a href="#piattaforma">La piattaforma</a><a href="#servizi">Servizi</a><a href="#metodo">Come lavoriamo</a><a href="#">Chi siamo</a></nav>
-    <a class="btn light" href="#contatti"><span class="l">Prenota un appuntamento</span><span class="s">Contattaci</span></a>
+    <nav><a href="servizi.html">Servizi</a><a href="metodo.html">Come lavoriamo</a><a href="chi-siamo.html">Chi siamo</a></nav>
+    <a class="btn light" href="contattaci.html"><span class="l">Prenota un appuntamento</span><span class="s">Contattaci</span></a>
     <button class="menu" type="button" aria-label="Apri il menu" aria-expanded="false"><i></i><i></i></button>
   </header>
-
   <section class="hero wrap">
     <span class="cap">Software house in Puglia</span>
     <h1>Dati chiari. Decisioni migliori.</h1>
     <p>Mettiamo in ordine i dati della tua azienda. Vedi tutto in un colpo d'occhio e decidi prima, con più sicurezza.</p>
-    <a class="btn" href="#contatti">Prenota un appuntamento</a>
+    <a class="btn" href="contattaci.html">Prenota un appuntamento</a>
     <div class="slot"><span class="cap">Spazio per la schermata</span></div>
   </section>
   <div class="spacer"></div>
 </div>
 
-<section class="plat wrap" id="piattaforma">
-  <div class="row1">
-    <span class="cap">01 / La piattaforma</span>
-    <div>
-      <h2>Un buon gestionale si nota poco. Merkorn porta ordini, magazzino e produzione in un unico flusso.</h2>
-      <p class="note">Meno passaggi tra programmi diversi, dati sempre aggiornati. Un modo collegato di gestire l'azienda, con il tuo team al comando.</p>
-    </div>
-  </div>
-  <div class="stats">
-    <div><span class="cap">Un sistema per tutta l'azienda</span><b>01</b></div>
-    <div><span class="cap">Fasi di lavoro chiare</span><b>04</b></div>
-    <div><span class="cap">Costruito sui tuoi processi</span><b>100%</b></div>
-  </div>
+<section class="sec wrap">
+  <div class="row1"><span class="cap">01 / La piattaforma</span><div><h2>Un buon gestionale si nota poco. Merkorn porta ordini, magazzino e produzione in un unico flusso.</h2><p class="note">Meno passaggi tra programmi diversi, dati sempre aggiornati. Un modo collegato di gestire l'azienda, con il tuo team al comando.</p></div></div>
+  <div class="cols" style="--c:3"><div><span class="cap">Un sistema per tutta l'azienda</span><b>01</b></div><div><span class="cap">Fasi di lavoro chiare</span><b>04</b></div><div><span class="cap">Costruito sui tuoi processi</span><b>100%</b></div></div>
 </section>
 
-<div class="slot dark"><span class="cap">02 / Spazio per l'immagine</span></div>
+<section class="sec"><div class="slot dark"><span class="cap">02 / Spazio per l'immagine</span></div></section>
 
-<section class="serv wrap" id="servizi">
-  <div class="row1"><span class="cap">03 / Servizi</span><h2>Gestionali personalizzati per ogni reparto.</h2></div>
+<section class="sec wrap">
+  <div class="row1"><span class="cap">03 / Servizi</span><div><h2>Gestionali personalizzati per ogni reparto.</h2></div></div>
+  <div class="list">
   <div class="item"><span class="n">01</span><div><h3>Gestionale su misura</h3><p>Un ERP personalizzato che riunisce ordini, magazzino, produzione e commesse e ti dà la visione completa dell'azienda.</p></div></div>
   <div class="item"><span class="n">02</span><div><h3>Analisi dei processi aziendali</h3><p>Una fotografia chiara di come lavori oggi e delle priorità per crescere.</p></div></div>
   <div class="item"><span class="n">03</span><div><h3>App per magazzino e consegne</h3><p>I dati del magazzino e delle consegne, subito visibili in ufficio.</p></div></div>
   <div class="item"><span class="n">04</span><div><h3>Assistenza ed evoluzione del software</h3><p>Il gestionale cresce con la tua azienda, seguito dallo stesso team.</p></div></div>
+</div>
 </section>
 
-<section class="met wrap" id="metodo">
-  <div class="row1"><span class="cap">04 / Come lavoriamo</span><h2>Quattro fasi per un gestionale che usi ogni giorno.</h2></div>
-  <div class="steps">
-    <div><span class="cap">Fase 01</span><h3>Capiamo come lavori</h3><p>Studiamo i tuoi processi e troviamo dove si può guadagnare tempo.</p></div>
-    <div><span class="cap">Fase 02</span><h3>Partiamo da basi solide</h3><p>Moduli già collaudati per partire veloci e investire dove serve davvero.</p></div>
-    <div><span class="cap">Fase 03</span><h3>Costruiamo le parti su misura</h3><p>Le funzioni specifiche della tua azienda, rilasciate una alla volta.</p></div>
-    <div><span class="cap">Fase 04</span><h3>Rendiamo i dati leggibili</h3><p>Schermate chiare che mostrano subito quello che conta.</p></div>
-  </div>
+<section class="sec wrap">
+  <div class="row1"><span class="cap">04 / Come lavoriamo</span><div><h2>Quattro fasi per un gestionale che usi ogni giorno.</h2></div></div>
+  <div class="cols" style="--c:4"><div><span class="cap">Fase 01</span><h3>Capiamo come lavori</h3><p>Studiamo i tuoi processi e troviamo dove si può guadagnare tempo.</p></div><div><span class="cap">Fase 02</span><h3>Partiamo da basi solide</h3><p>Moduli già collaudati per partire veloci e investire dove serve davvero.</p></div><div><span class="cap">Fase 03</span><h3>Costruiamo le parti su misura</h3><p>Le funzioni specifiche della tua azienda, rilasciate una alla volta.</p></div><div><span class="cap">Fase 04</span><h3>Rendiamo i dati leggibili</h3><p>Schermate chiare che mostrano subito quello che conta.</p></div></div>
 </section>
 
-<section class="cta" id="contatti">
+<section class="sec wrap">
+  <div class="row1"><span class="cap">05 / Domande frequenti</span><div><h2>Software gestionale su misura, le domande più comuni.</h2></div></div>
+  <div class="faq"><details><summary>Cos'è un software gestionale su misura?</summary><p>È un gestionale progettato sui processi di una sola azienda. Segue il tuo modo di lavorare e riunisce tutti i dati in un unico posto.</p></details><details><summary>Cosa cambia con un gestionale su misura?</summary><p>Vedi i dati di tutta l'azienda in un colpo d'occhio, risparmi tempo sulle operazioni ripetitive e prendi decisioni basate su numeri aggiornati.</p></details><details><summary>Quando conviene un gestionale personalizzato rispetto a uno pronto?</summary><p>Quando accanto al gestionale torna fuori il foglio Excel. Se ti basta un programma pronto, te lo diciamo.</p></details><details><summary>Quanto costa un gestionale su misura?</summary><p>Dipende da quante aree deve seguire. Dopo l'analisi ricevi un preventivo diviso per fasi, con tempi e costi chiari.</p></details><details><summary>Quanto tempo serve per sviluppare un gestionale personalizzato?</summary><p>Lavoriamo per rilasci, quindi le prime parti le usi già durante il progetto. La durata la fissiamo dopo l'analisi.</p></details><details><summary>Il gestionale si collega alla fatturazione elettronica e alla contabilità?</summary><p>Sì, ai programmi che usi già. Ogni dato si scrive una volta sola.</p></details><details><summary>Lavorate solo in Puglia?</summary><p>Siamo a Mottola, in provincia di Taranto, e lavoriamo soprattutto in Puglia. Per il resto d'Italia il primo incontro si fa online.</p></details></div>
+</section>
+<section class="cta">
   <div class="wrap">
     <span class="cap">Primo incontro</span>
     <h2>Scopri cosa può cambiare nella tua azienda.</h2>
     <p>Ci vediamo in azienda, guardiamo insieme come lavorate e ti mostriamo cosa può cambiare.</p>
-    <a class="btn light" href="#">Prenota un appuntamento</a>
+    <a class="btn light" href="contattaci.html">Prenota un appuntamento</a>
   </div>
 </section>
 <footer>
-  <span class="logo"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</span>
+  <a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a>
+  <nav><a href="servizi.html">Servizi</a><a href="metodo.html">Come lavoriamo</a><a href="chi-siamo.html">Chi siamo</a><a href="contattaci.html">Contattaci</a></nav>
   <span>Merkorn S.r.l.s. · P.IVA 03494760733 · Mottola (TA)</span>
-  <span>Privacy policy · Cookie policy</span>
+  <nav><a href="../../privacy.html">Privacy policy</a><a href="../../cookie.html">Cookie policy</a></nav>
 </footer>
 <script>document.querySelector(".menu").addEventListener("click",e=>{const n=e.currentTarget.closest(".nav");const o=n.classList.toggle("open");e.currentTarget.setAttribute("aria-expanded",o);});</script>
 </body>
