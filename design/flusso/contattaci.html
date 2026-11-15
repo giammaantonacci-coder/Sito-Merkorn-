@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="top">
-  <header class="nav"><a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a><nav><a href="metodo.html">Come lavoriamo</a><a href="servizi.html">Servizi</a><a href="chi-siamo.html">Chi siamo</a></nav><a class="btn w" href="contattaci.html">Prenota un appuntamento</a></header>
+  <header class="nav"><a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a><nav><a href="metodo.html">Come lavoriamo</a><a href="servizi.html">Servizi</a><a href="chi-siamo.html">Chi siamo</a></nav><a class="btn w nav-cta" href="contattaci.html"><span class="l">Prenota un appuntamento</span><span class="s">Contattaci</span></a><button class="menu-btn" type="button" aria-label="Apri il menu" aria-expanded="false"><i></i><i></i></button></header>
   <section class="hero wrap short"><span class="cap">Contattaci</span><h1>Parliamo del tuo gestionale.</h1><p>Raccontaci in due righe di cosa ti occupi. Ti ricontattiamo per fissare un appuntamento.</p><div class="tile" aria-hidden="true"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span></div><div class="spacer"></div></section>
   <svg class="dunes" viewBox="0 0 1440 420" preserveAspectRatio="none" aria-hidden="true">
     <defs>
@@ -42,5 +42,6 @@
 </div></section>
 <section class="cta"><div class="wrap"><span class="cap">Primo incontro</span><h2>Scopri cosa può cambiare per te.</h2><p>Ci vediamo in azienda, guardiamo insieme come lavorate e ti mostriamo cosa può cambiare.</p><a class="btn w" href="contattaci.html">Prenota un appuntamento</a></div></section>
 <footer><span class="logo"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</span><span>Software house · Mottola (TA), Puglia</span><span>Privacy policy · Cookie policy</span></footer>
+<script>document.querySelectorAll(".menu-btn").forEach(b=>b.addEventListener("click",()=>{const n=b.closest(".nav");const o=n.classList.toggle("open");b.setAttribute("aria-expanded",o);}));</script>
 </body>
 </html>
