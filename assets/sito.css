@@ -38,8 +38,9 @@ p { margin: 0; }
 .sh { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; align-items: end; padding-bottom: 30px; border-bottom: 1px solid var(--line); }
 .sh h2 { font-size: clamp(34px, 4.4vw, 62px); line-height: 1; font-weight: 500; max-width: 16ch; }
 .four { display: grid; grid-template-columns: repeat(4, 1fr); }
-.four > div { padding: 30px 24px 10px 0; border-right: 1px solid var(--line); margin-right: 24px; }
-.four > div:last-child { border-right: 0; margin-right: 0; }
+.four > div, .three > div, .team > div { padding: 30px 24px 10px; border-left: 1px solid var(--line); }
+.four > div:first-child, .three > div:first-child, .team > div:first-child { padding-left: 0; border-left: 0; }
+.four > div:last-child, .three > div:last-child, .team > div:last-child { padding-right: 0; }
 .ico { width: 64px; height: 64px; }
 .four h3 { margin-top: 30px; font-size: 21px; font-weight: 500; letter-spacing: -.02em; }
 .four p { margin-top: 10px; font-size: 13.5px; color: var(--muted); max-width: 26ch; }
@@ -67,7 +68,7 @@ p { margin: 0; }
   .top nav { display: none; }
   .hero, .split, .who, .end, .sh { grid-template-columns: 1fr; }
   .panel { justify-self: center; width: 100%; max-width: 420px; }
-  .four { grid-template-columns: 1fr 1fr; row-gap: 20px; } .four > div:nth-child(2) { border-right: 0; margin-right: 0; }
+  .four { grid-template-columns: 1fr 1fr; row-gap: 20px; } .four > div:nth-child(odd) { padding-left: 0; padding-right: 20px; border-left: 0; } .four > div:nth-child(even) { padding-left: 20px; padding-right: 0; }
   .sticky { top: 0; height: 46vh; z-index: 2; background: var(--bg); padding: 12px 0; }
   .steps > div { min-height: 48vh; }
   .caption .hide-m { display: none; }
@@ -98,8 +99,6 @@ p { margin: 0; }
 .row .res b { color: var(--accent); font-weight: 500; }
 .row .g { width: 110px; height: 110px; }
 .three { display: grid; grid-template-columns: repeat(3, 1fr); }
-.three > div { padding: 30px 24px 10px 0; border-right: 1px solid var(--line); margin-right: 24px; }
-.three > div:last-child { border-right: 0; margin-right: 0; }
 .three h3 { margin-top: 26px; font-size: 21px; font-weight: 500; letter-spacing: -.02em; }
 .three p { margin-top: 10px; font-size: 13.5px; color: var(--muted); max-width: 30ch; }
 .faq { border-top: 1px solid var(--line); }
@@ -114,8 +113,6 @@ p { margin: 0; }
 .integ div.box { padding: 26px; border-radius: 20px; background: var(--bg2); font: 500 20px/1.2 var(--display); letter-spacing: -.02em; text-align: center; }
 .integ .g { height: 140px; }
 .team { display: grid; grid-template-columns: repeat(4, 1fr); }
-.team > div { padding: 30px 24px 10px 0; border-right: 1px solid var(--line); margin-right: 24px; }
-.team > div:last-child { border-right: 0; margin-right: 0; }
 .team .g { width: 72px; height: 72px; }
 .team h3 { margin-top: 24px; font-size: 20px; font-weight: 500; letter-spacing: -.02em; }
 .team p { margin-top: 10px; font-size: 13.5px; color: var(--muted); }
@@ -150,7 +147,7 @@ p { margin: 0; }
   .top.open nav a { padding: 14px 0; border-top: 1px solid var(--line); }
   .phero, .contact, .form, .integ { grid-template-columns: 1fr; }
   .row { grid-template-columns: 40px 1fr; gap: 12px 16px; } .row > :nth-child(n+3) { grid-column: 2; } .row .g { width: 80px; height: 80px; }
-  .three, .team { grid-template-columns: 1fr; } .three > div, .team > div { border-right: 0; margin-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 26px; }
+  .three, .team { grid-template-columns: 1fr; } .three > div, .team > div { border-left: 0; padding-left: 0; padding-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 26px; }
   .faq summary { grid-template-columns: 1fr 30px; } .faq summary span:first-child { display: none; } .faq details p { margin-left: 0; }
   .layers > div { grid-template-columns: 1fr; gap: 10px; } .layers .g { width: 160px; }
   .integ .g { height: 90px; }
