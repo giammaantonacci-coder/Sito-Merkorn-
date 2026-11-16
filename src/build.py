@@ -392,6 +392,13 @@ CASE = f"""{phero('Kuelle Sports Center: <span>campi, partite e saldi</span> in 
   <section class="sec">
     {sh('04 / La soluzione', 'Tre schermate, una per ogni problema da risolvere.')}
     <div class="case-screens">{case_screens()}</div>
+    <div class="case-devices">
+      <div class="txt"><span class="caps">Su ogni dispositivo</span><h3>Dalla reception al telefono, lo stesso gestionale.</h3><p>Le schermate si adattano a computer, tablet e telefono. In reception si lavora sul computer; a bordo campo o al bar, chi è in turno controlla i campi, chiude una partita e vede chi deve saldare direttamente dal telefono.</p></div>
+      <div class="devices">
+        <figure class="frame desk"><img src="assets/case/kuelle-1.webp" alt="Gestionale di Kuelle Sports Center da computer" width="1800" loading="lazy"></figure>
+        <figure class="phone"><img src="assets/case/kuelle-mobile.webp" alt="Gestionale di Kuelle Sports Center da telefono" width="780" loading="lazy"></figure>
+      </div>
+    </div>
     <p class="case-note">Nelle schermate nomi, cifre e orari sono dimostrativi: i dati reali dei giocatori restano riservati.</p>
   </section>
 {end('Il prossimo è il tuo')}"""

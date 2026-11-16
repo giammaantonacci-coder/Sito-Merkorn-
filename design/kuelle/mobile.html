@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kuelle Sports Center · Gestionale da telefono (demo Merkorn)</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; src: url(../../assets/fonts/dm-sans.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 100 900; src: url(../../assets/fonts/inter.woff2) format("woff2"); }
+:root { --bg: #0B0C0A; --card: #161815; --card2: #1D201B; --line: rgba(255,255,255,.08); --text: #F4F5F1; --muted: #9EA29A; --dim: #6B7066;
+  --lime: #92C22E; --lime2: #B6E04F; --limebg: rgba(146,194,46,.14); --red: #FF6B5E; --redbg: rgba(255,107,94,.13); --amber: #F2B544; --amberbg: rgba(242,181,68,.14);
+  --display: "DM Sans", system-ui, sans-serif; --body: "Inter", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--text); font: 400 13px/1.4 var(--body); -webkit-font-smoothing: antialiased; min-height: 100vh; padding: 14px 16px 96px; }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 500; letter-spacing: -.02em; }
+p { margin: 0; }
+.status { display: flex; justify-content: space-between; padding: 2px 6px 14px; font: 600 14px/1 var(--body); }
+.status span:last-child { letter-spacing: 2px; }
+.top { display: flex; align-items: center; gap: 12px; }
+.top img { width: 42px; height: 42px; border-radius: 50%; box-shadow: 0 0 0 2px #24271F; }
+.top b { display: block; font: 600 15px/1.2 var(--display); } .top small { color: var(--muted); font-size: 12px; }
+.top .bell { margin-left: auto; position: relative; width: 40px; height: 40px; border-radius: 12px; background: var(--card); display: grid; place-items: center; }
+.top .bell svg { width: 18px; height: 18px; fill: none; stroke: var(--text); stroke-width: 1.8; }
+.top .bell i { position: absolute; top: 9px; right: 10px; width: 8px; height: 8px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 2px var(--card); }
+.kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+.kpi { padding: 14px; border-radius: 16px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); }
+.kpi small { display: block; color: var(--muted); font-size: 11.5px; }
+.kpi b { display: block; margin-top: 6px; font: 500 26px/1 var(--display); letter-spacing: -.03em; }
+.kpi em { display: inline-block; margin-top: 8px; padding: 3px 8px; border-radius: 999px; font-style: normal; font-size: 10.5px; background: var(--limebg); color: var(--lime2); }
+.kpi em.wa { background: var(--amberbg); color: var(--amber); } .kpi em.dn { background: var(--redbg); color: var(--red); }
+.kpi.hl { background: var(--lime); color: #0B0C0A; box-shadow: none; } .kpi.hl small { color: rgba(11,12,10,.7); } .kpi.hl em { background: rgba(11,12,10,.14); color: #0B0C0A; }
+.sh { display: flex; justify-content: space-between; align-items: baseline; margin: 22px 2px 10px; }
+.sh h2 { font-size: 17px; } .sh a { color: var(--lime); font-size: 12px; text-decoration: none; }
+.fields { display: grid; gap: 8px; }
+.field { padding: 12px; border-radius: 14px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); }
+.field .r { display: flex; justify-content: space-between; align-items: baseline; } .field b { font-size: 13px; font-weight: 600; } .field small { color: var(--dim); font-size: 11px; }
+.bar { display: flex; gap: 3px; margin-top: 10px; height: 10px; }
+.bar i { flex: 1; border-radius: 3px; background: var(--card2); } .bar i.ok { background: var(--lime); } .bar i.wa { background: var(--amber); } .bar i.ko { background: transparent; box-shadow: inset 0 0 0 1.5px var(--red); }
+.match { padding: 14px; border-radius: 16px; background: var(--card2); box-shadow: inset 0 0 0 1.5px var(--lime); }
+.match .r { display: flex; align-items: center; gap: 8px; } .match b { font: 600 14px/1.2 var(--display); } .match small { color: var(--muted); font-size: 11.5px; }
+.pill { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 999px; font-size: 11px; font-weight: 500; background: var(--amberbg); color: var(--amber); white-space: nowrap; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.seats { display: flex; gap: 6px; margin-top: 12px; }
+.av { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font: 600 11px/1 var(--display); color: #0B0C0A; background: linear-gradient(135deg, #E8EBE2, #9EA29A); }
+.av.l { background: linear-gradient(135deg, var(--lime2), #5E8414); } .av.a { background: linear-gradient(135deg, #FFD88A, var(--amber)); }
+.av.free { background: var(--amberbg); color: var(--amber); box-shadow: inset 0 0 0 1.5px rgba(242,181,68,.5); font-size: 16px; }
+.sug { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 10px; border-radius: 12px; background: var(--card); }
+.sug b { display: block; font: 600 12.5px/1.2 var(--body); } .sug small { color: var(--muted); font-size: 11px; }
+.sug .m { margin-left: auto; color: var(--lime2); font-size: 11px; font-weight: 600; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; padding: 13px; border-radius: 12px; background: var(--lime); color: #0B0C0A; font: 600 13.5px/1 var(--body); }
+.btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+.rows { display: grid; gap: 8px; }
+.row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--card); }
+.row b { display: block; font-size: 13px; font-weight: 600; } .row small { color: var(--muted); font-size: 11px; }
+.row .v { margin-left: auto; font-weight: 600; font-size: 13px; } .neg { color: var(--red); } .pos { color: var(--lime2); }
+.tabs { position: fixed; left: 12px; right: 12px; bottom: 14px; display: flex; justify-content: space-around; padding: 10px 8px; border-radius: 22px; background: rgba(22,24,21,.96); box-shadow: inset 0 0 0 1px var(--line), 0 10px 30px rgba(0,0,0,.5); }
+.tabs span { display: grid; justify-items: center; gap: 4px; color: var(--dim); font-size: 10.5px; }
+.tabs svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tabs span.on { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="status"><span>9:41</span><span>●●● ▮</span></div>
+<header class="top"><img src="logo.png" alt="Kuelle Sports Center"><div><b>Ciao, Davide</b><small>Sabato 21 novembre · reception</small></div><span class="bell"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg><i></i></span></header>
+<div class="kpis">
+  <div class="kpi hl"><small>Occupazione</small><b>78%</b><em>↑ 9% su sabato</em></div>
+  <div class="kpi"><small>Incasso di oggi</small><b>€ 1.240</b><em>↑ 14%</em></div>
+  <div class="kpi"><small>Da completare</small><b>5</b><em class="wa">partite</em></div>
+  <div class="kpi"><small>Conti aperti</small><b>€ 685</b><em class="dn">12 giocatori</em></div>
+</div>
+<div class="sh"><h2>Partita da chiudere</h2><a href="#">Tutte (5) →</a></div>
+<div class="match">
+  <div class="r"><div><b>Padel 2 · 14:30</b><br><small>90' · livello 3.0</small></div><span class="pill">Mancano 2</span></div>
+  <div class="seats"><span class="av l">AL</span><span class="av">MD</span><span class="av free">+</span><span class="av free">+</span></div>
+  <div class="sug"><span class="av l">NP</span><div><b>Nicola Pace</b><small>Livello 3.0 · libero oggi</small></div><span class="m">98% adatto</span></div>
+  <div class="btn"><svg viewBox="0 0 24 24"><path d="M4 20l1.4-4A8 8 0 1 1 8 18.6z"/></svg>Invita su WhatsApp</div>
+</div>
+<div class="sh"><h2>Campi di oggi</h2><a href="#">Calendario →</a></div>
+<div class="fields">
+  <div class="field"><div class="r"><b>Padel 1</b><small>9 prenotazioni · 1 da completare</small></div><div class="bar"><i class="ok"></i><i class="ok"></i><i></i><i class="ok"></i><i></i><i class="ok"></i><i class="ok"></i><i class="wa"></i><i class="ok"></i><i class="ok"></i></div></div>
+  <div class="field"><div class="r"><b>Padel 2</b><small>7 prenotazioni · 2 da completare</small></div><div class="bar"><i></i><i class="ok"></i><i></i><i class="wa"></i><i></i><i class="ok"></i><i></i><i class="wa"></i><i class="ko"></i><i></i></div></div>
+  <div class="field"><div class="r"><b>Calcio a 5/6</b><small>6 prenotazioni · 1 da completare</small></div><div class="bar"><i></i><i></i><i></i><i class="ok"></i><i></i><i></i><i class="ok"></i><i class="wa"></i><i class="ok"></i><i class="ok"></i></div></div>
+</div>
+<div class="sh"><h2>Da saldare</h2><a href="#">Saldi →</a></div>
+<div class="rows">
+  <div class="row"><span class="av a">FS</span><div><b>Francesco Semeraro</b><small>da 48 giorni</small></div><span class="v neg">− € 120</span></div>
+  <div class="row"><span class="av">LP</span><div><b>Luca Palmisano</b><small>partita di oggi</small></div><span class="v neg">− € 10</span></div>
+</div>
+<nav class="tabs"><span class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>Oggi</span><span><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Prenotazioni</span><span><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.8-3.6 3.2-5.6 6-5.6s5.2 2 6 5.6"/></svg>Giocatori</span><span><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Messaggi</span></nav>
+</body>
+</html>

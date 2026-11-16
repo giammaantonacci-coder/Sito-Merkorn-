@@ -248,6 +248,15 @@ p { margin: 0; }
 .case-screen li { display: flex; gap: 10px; align-items: baseline; font-size: 14px; }
 .case-screen li::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 2.5px; background: var(--accent); translate: 0 -1px; }
 .solves { display: inline-block; margin-top: 22px; padding: 7px 12px; border-radius: 10px; background: var(--bg2); font-size: 12px; font-weight: 500; }
+.case-devices { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: center; margin-top: clamp(60px, 8vw, 110px); }
+.case-devices .caps { color: var(--accent); }
+.case-devices h3 { margin-top: 14px; font-size: clamp(26px, 2.8vw, 38px); line-height: 1.05; font-weight: 500; }
+.case-devices p { margin-top: 14px; color: var(--muted); }
+.devices { position: relative; padding: 0 6% 8% 0; }
+.devices .desk { width: 100%; }
+.devices .phone { position: absolute; right: 0; bottom: 0; width: 26%; margin: 0; padding: 6px; border-radius: 28px; background: #0B0C0A; box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 30px 60px rgba(13,12,16,.35); }
+.devices .phone img { display: block; width: 100%; height: auto; border-radius: 22px; }
+@media (max-width: 860px) { .case-devices { grid-template-columns: 1fr; gap: 24px; } .devices .phone { width: 34%; border-radius: 20px; padding: 4px; } .devices .phone img { border-radius: 16px; } }
 .case-note { margin-top: 50px; font-size: 13px; color: var(--muted); }
 @media (max-width: 860px) {
   .case-teaser, .case-client, .case-screen { grid-template-columns: 1fr; gap: 24px; }
