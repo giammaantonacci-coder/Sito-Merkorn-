@@ -141,6 +141,172 @@ METHOD_JS = """<script>
 })();
 </script>"""
 
+# ---------------------------------------------------------------- case study
+
+# each case: page, name, sector line, hero, client text, facts, problems, process, screens, devices text, teaser, logo
+CASES = [
+    dict(
+        page="case-study-kuelle.html", name="Kuelle Sports Center", slug="kuelle", sector="Centro sportivo · Mottola (TA)",
+        hero=("Kuelle Sports Center: <span>campi, partite e saldi</span> in un unico gestionale",
+              "Un centro sportivo polifunzionale a Mottola, con due campi da padel coperti, beach volley, tennis e soccer e un campo da calcio a 5/6."),
+        teaser="Prenotazioni, partite da completare, saldi dei giocatori e turni in un'unica schermata.",
+        client_title="Un centro sportivo che cresce ogni stagione.",
+        client=("Kuelle è un centro sportivo polifunzionale a Mottola, in provincia di Taranto.",
+                "Ogni giorno passano decine di giocatori tra padel, beach e calcio, con lezioni, tornei e una scuola calcio."),
+        facts=[("2", "campi da padel coperti"), ("1", "campo beach per volley, tennis e soccer"), ("1", "campo da calcio a 5/6")],
+        problems_title="Cinque cose che rubavano tempo ogni giorno.",
+        problems=[
+            ("L'andamento dei campi non si vedeva", "Quanto erano pieni i campi, quali fasce restavano vuote e quanto rendeva ogni attività si scopriva solo a fine mese, mettendo insieme appunti diversi."),
+            ("Prenotazioni sparse", "Le richieste arrivavano per telefono, in chat e di persona. Tenere un calendario unico per padel, beach e calcio voleva dire ricontrollare tutto più volte al giorno."),
+            ("Partite da chiudere, un giocatore alla volta", "Quando a una partita mancava qualcuno, la reception cercava i giocatori uno per uno, senza sapere chi aveva il livello giusto ed era libero."),
+            ("Saldi e crediti difficili da seguire", "Conti aperti, quote parziali delle squadre e crediti ricaricati erano su supporti diversi: capire chi doveva saldare, e da quando, richiedeva tempo."),
+            ("Turni dei dipendenti", "Reception, maestri, bar e manutenzione: chi era in turno e chi registrava gli incassi non era scritto in un posto solo."),
+        ],
+        steps=[
+            ("Capiamo come lavori", "Siamo stati al centro una giornata intera: dalla reception al bar, abbiamo seguito come nasce una prenotazione, come si chiude una partita e come si incassa."),
+            ("Partiamo da basi solide", "Anagrafica dei giocatori, campi, listini e cassa sono partiti dai nostri moduli già collaudati, con i dati del centro importati e ripuliti."),
+            ("Costruiamo le parti su misura", "Calendario dei campi, partite da completare con l'invito su WhatsApp e credito dei giocatori sono stati costruiti attorno al modo di lavorare di Kuelle."),
+            ("Rendiamo i dati leggibili", "Tre schermate, pensate per chi sta in reception: quello che richiede attenzione si vede subito, in verde e giallo come i colori del centro."),
+        ],
+        screens=[
+            ("Andamento campi", "Tutti i campi della giornata, in un colpo d'occhio",
+             "Una riga per campo, dalle 9 alle 23. In verde le partite confermate, in giallo quelle a cui mancano giocatori, in rosso le fasce serali ancora libere. Sotto, l'occupazione media di ogni campo e l'incasso diviso per attività.",
+             ["Occupazione e incasso di oggi in alto", "Partite incomplete evidenziate", "Fasce libere da proporre"], (1, 2)),
+            ("Partite da chiudere", "Il giocatore giusto, con un messaggio",
+             "Per ogni partita incompleta il gestionale propone chi invitare: livello compatibile, libero in quell'orario, abituato a giocare in quella fascia. Il messaggio WhatsApp è già pronto e chi risponde per primo entra in partita.",
+             ["Giocatori suggeriti per livello e disponibilità", "Invito su WhatsApp in un tocco", "Risposte e conferme registrate"], (3,)),
+            ("Giocatori, saldi e dipendenti", "Chi deve saldare, chi ha credito, chi è in turno",
+             "La tabella dei saldi mette in cima chi deve pagare da più tempo, con il sollecito pronto. Le ricariche di credito pagano le partite in automatico e ogni movimento registra chi l'ha fatto. A fianco, i turni del giorno.",
+             ["Conti aperti ordinati per anzianità", "Credito ricaricato e scalato a ogni partita", "Turni e movimenti di cassa per dipendente"], (4, 5)),
+        ],
+        devices=("Dalla reception al telefono, lo stesso gestionale.",
+                 "In reception si lavora sul computer; a bordo campo o al bar, chi è in turno controlla i campi, chiude una partita e vede chi deve saldare direttamente dal telefono."),
+        note="Nelle schermate nomi, cifre e orari sono dimostrativi: i dati reali dei giocatori restano riservati.",
+        pattern="mosaic",
+    ),
+    dict(
+        page="case-study-mongelli.html", name="Autoscuola Centrale Mongelli", slug="mongelli", sector="Autoscuola · Mottola (TA)",
+        hero=("Autoscuola Centrale Mongelli: <span>lezioni, esami e allievi</span> sotto controllo",
+              "Un'autoscuola a Mottola, in via Boito, che prepara allievi per le patenti AM, A2, B, C e CQC, con lezioni di teoria in aula e guide con due istruttori."),
+        teaser="Calendario delle guide, gruppi d'esame da quattro e andamento degli allievi in un'unica schermata.",
+        client_title="Una nuova autoscuola, organizzata fin dal primo giorno.",
+        client=("L'Autoscuola Centrale Mongelli ha aperto a Mottola, in provincia di Taranto.",
+                "Due istruttori seguono le guide di auto, moto e mezzi pesanti, mentre in aula si preparano gli allievi all'esame di teoria."),
+        facts=[("5", "tipi di patente, da AM a CQC"), ("2", "istruttori per guide e aula"), ("4", "allievi per ogni gruppo d'esame")],
+        problems_title="Quattro cose da tenere sempre in ordine.",
+        problems=[
+            ("Guide e aula su calendari diversi", "Guide con due istruttori, lezioni di teoria e veicoli da condividere: ogni spostamento andava ricontrollato a mano, e le disdette dell'ultimo momento si perdevano."),
+            ("Allievi pronti per l'esame, ma quali?", "Capire chi aveva fatto tutte le guide obbligatorie e chi superava i quiz di prova voleva dire scorrere ogni scheda, una per una."),
+            ("Gruppi d'esame da comporre", "Gli esami si fanno in gruppi da quattro, per tipo di patente: riempire ogni sessione, senza lasciare posti vuoti, era un incastro da rifare ogni volta."),
+            ("Andamento e scadenze poco visibili", "Quanti iscritti, quanti esami superati e quanti da rifare, e quali fogli rosa stavano per scadere, si sapeva solo mettendo insieme dati sparsi."),
+        ],
+        steps=[
+            ("Capiamo come lavori", "Abbiamo seguito una settimana tipo: dalla segreteria che iscrive un allievo all'istruttore che chiude una guida, fino alla prenotazione dell'esame."),
+            ("Partiamo da basi solide", "Anagrafica degli allievi, patenti, veicoli e pagamenti sono partiti dai nostri moduli già collaudati."),
+            ("Costruiamo le parti su misura", "Calendario di guide e aula, controllo delle guide obbligatorie e composizione dei gruppi d'esame da quattro sono costruiti sulle regole dell'autoscuola."),
+            ("Rendiamo i dati leggibili", "Tre schermate per segreteria e istruttori, nei colori del marchio: nero per Cosimo, rosso per Carmen, rosso per quello che richiede attenzione."),
+        ],
+        screens=[
+            ("Panoramica", "Iscritti, esami superati e da rifare",
+             "In alto gli iscritti attivi, gli esami sostenuti, quelli superati e quelli da rifare. Il grafico mostra mese per mese superati e da rifare, a fianco l'esito di teoria e pratica, sotto gli iscritti per patente e le scadenze da controllare.",
+             ["Esami superati e da rifare, mese per mese", "Iscritti per tipo di patente", "Fogli rosa e documenti in scadenza"], (4,)),
+            ("Calendario lezioni", "Guide e aula nella stessa settimana",
+             "Le guide sono colorate per istruttore, le lezioni di teoria e gli esami sono in evidenza. Sotto il calendario le note della settimana, a fianco le ore di ogni istruttore, le lezioni di oggi e le guide disdette da recuperare.",
+             ["Un colore per ogni istruttore", "Note della settimana sotto il calendario", "Guide disdette da riprogrammare"], (1,)),
+            ("Esami", "Gruppi da quattro, già composti",
+             "Gli allievi pronti sono divisi in gruppi da quattro per sessione e per patente. Per la pratica si vedono le guide obbligatorie fatte, per la teoria gli errori al quiz di prova. I posti liberi propongono chi è quasi pronto.",
+             ["Guide obbligatorie e quiz di prova per allievo", "Posti liberi con gli allievi da proporre", "Elenco di chi deve rifare l'esame"], (2, 3)),
+        ],
+        devices=("Dalla segreteria all'auto, lo stesso gestionale.",
+                 "In segreteria si lavora sul computer; l'istruttore, dal telefono, vede le guide del giorno, il prossimo esame con il suo gruppo e avvisa gli allievi con un tocco."),
+        note="Nelle schermate i nomi degli allievi e le cifre sono dimostrativi: i dati reali restano riservati.",
+        pattern="drops",
+    ),
+]
+
+
+def case_screens(c):
+    out = ""
+    for i, (cap, title, text, points, solves) in enumerate(c["screens"], 1):
+        pts = "".join(f"<li>{p}</li>" for p in points)
+        sv = " e ".join(f"0{n}" for n in solves)
+        out += f"""<article class="case-screen">
+      <div class="txt"><span class="caps">Schermata 0{i} · {cap}</span><h3>{title}</h3><p>{text}</p><ul>{pts}</ul><span class="solves">Risolve {"il problema" if len(solves) == 1 else "i problemi"} {sv}</span></div>
+      <figure class="frame"><img src="assets/case/{c['slug']}-{i}.webp" alt="Gestionale di {c['name']}, schermata {cap.lower()}" width="1800" loading="lazy"></figure>
+    </article>"""
+    return out
+
+
+def case_page(c, other):
+    n = len(c["problems"])
+    return f"""{phero(c['hero'][0], c['hero'][1], c['pattern'])}
+{caption('Case study', c['name'], 'Mottola (TA)', 'Gestionale su misura')}
+  <div class="back"><a class="u" href="case-study.html">← Tutti i case study</a></div>
+  <section class="sec">
+    {sh('01 / Il cliente', c['client_title'])}
+    <div class="case-client">
+      <img src="assets/case/{c['slug']}-logo.png" alt="Logo di {c['name']}" width="160" height="160">
+      <div><p class="big">{c['client'][0]} <span>{c['client'][1]}</span></p>
+        <ul class="facts">{''.join(f'<li><b>{a}</b>{b}</li>' for a, b in c['facts'])}</ul></div>
+    </div>
+  </section>
+  <section class="sec">
+    {sh('02 / I problemi', c['problems_title'])}
+    <div class="list">{''.join(f'<div class="item"><span class="n">0{i}</span><div><h3>{t}</h3><p>{d}</p></div></div>' for i, (t, d) in enumerate(c['problems'], 1))}</div>
+  </section>
+  <div class="strip" data-goo="wave" data-cols="28" data-rows="1" data-cursor="1" aria-hidden="true"></div>
+  <section class="sec" style="padding-top:clamp(60px,8vw,100px)">
+    {sh('03 / Il processo', 'Le quattro fasi del nostro metodo, applicate al progetto.')}
+    <div class="cols" style="--c:4">{''.join(f'<div><span class="caps">Fase 0{i}</span><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate(c['steps'], 1))}</div>
+  </section>
+  <section class="sec">
+    {sh('04 / La soluzione', 'Tre schermate, costruite sui problemi da risolvere.')}
+    <div class="case-screens">{case_screens(c)}</div>
+    <div class="case-devices">
+      <div class="txt"><span class="caps">Su ogni dispositivo</span><h3>{c['devices'][0]}</h3><p>Le schermate si adattano a computer, tablet e telefono. {c['devices'][1]}</p></div>
+      <div class="devices">
+        <figure class="frame desk"><img src="assets/case/{c['slug']}-1.webp" alt="Gestionale di {c['name']} da computer" width="1800" loading="lazy"></figure>
+        <figure class="phone"><img src="assets/case/{c['slug']}-mobile.webp" alt="Gestionale di {c['name']} da telefono" width="780" loading="lazy"></figure>
+      </div>
+    </div>
+    <p class="case-note">{c['note']}</p>
+  </section>
+  <section class="sec">
+    {sh('Altro case study', other['name'])}
+    {case_teaser(other)}
+  </section>
+{end('Il prossimo è il tuo')}"""
+
+
+def case_teaser(c, n=None):
+    num = f'<span class="caps">Case study {n:02d} · {c["sector"]}</span>' if n else f'<span class="caps">{c["sector"]}</span>'
+    return f"""<a class="case-teaser" href="{c['page']}">
+      <figure class="frame"><img src="assets/case/{c['slug']}-1.webp" alt="Gestionale di {c['name']}" width="1800" loading="lazy"></figure>
+      <div>{num}<h3>{c['name']}</h3><p>{c['teaser']}</p><ul class="mini-probs">{''.join(f'<li>{t}</li>' for t, _ in c['problems'])}</ul><span class="u">Leggi il case study</span></div>
+    </a>"""
+
+
+CASE_HERO = phero('Case study: <span>come lavoriamo</span>, progetto dopo progetto', "Ogni gestionale parte da come lavora davvero un'azienda. Qui raccontiamo due progetti: i problemi da cui siamo partiti, il metodo e le schermate che li risolvono.", 'logo', 5, 3)
+CASE_HUB = f"""{CASE_HERO}
+{caption('Case study', 'Progetti reali', 'Mottola (TA)', 'Gestionali su misura')}
+  <section class="sec">
+    {sh('01 / Il nostro approccio', 'Stesso metodo, soluzioni diverse.')}
+    <div class="who"><span></span><p class="big">Un centro sportivo e un'autoscuola hanno poco in comune. <span>Eppure il lavoro parte sempre dallo stesso punto: vedere come si lavora ogni giorno, capire dove si perde tempo e costruire solo quello che serve.</span></p></div>
+    <div class="cols" style="--c:4">
+      <div><span class="caps">Fase 01</span><h3>Capiamo come lavori</h3><p>Passiamo del tempo con chi usa il gestionale: reception, segreteria, istruttori.</p></div>
+      <div><span class="caps">Fase 02</span><h3>Partiamo da basi solide</h3><p>Anagrafiche, listini, cassa e calendari partono dai nostri moduli collaudati.</p></div>
+      <div><span class="caps">Fase 03</span><h3>Costruiamo su misura</h3><p>Le parti che fanno la differenza seguono le regole di quel lavoro: partite da completare, gruppi d'esame.</p></div>
+      <div><span class="caps">Fase 04</span><h3>Rendiamo i dati leggibili</h3><p>Poche schermate, nei colori del cliente, che mostrano subito cosa richiede attenzione.</p></div>
+    </div>
+  </section>
+  <section class="sec">
+    {sh('02 / I progetti', 'Due aziende di Mottola, due gestionali su misura.')}
+    <div class="case-list">{''.join(case_teaser(c, i) for i, c in enumerate(CASES, 1))}</div>
+  </section>
+{end('Il prossimo è il tuo')}"""
+
+CASE_PAGES = [case_page(CASES[0], CASES[1]), case_page(CASES[1], CASES[0])]
+
 # ---------------------------------------------------------------- home
 
 HOME_FOUR = "".join(f'<div>{grid(p, 3, 3, cls="ico", extra=" data-speed=.8")}<h3>{t}</h3><p>{d}</p></div>' for t, d, p in HOME_SERVICES)
@@ -170,11 +336,9 @@ HOME = f"""  <section class="hero">
       <div style="margin-top:30px"><a class="u" href="chi-siamo.html">Conosci il team</a></div></div></div>
   </section>
   <section class="sec">
-    {sh('04 / Case study', 'Kuelle Sports Center: campi, partite e saldi in un unico gestionale.')}
-    <a class="case-teaser" href="case-study.html">
-      <figure class="frame"><img src="assets/case/kuelle-1.webp" alt="Gestionale di Kuelle Sports Center: andamento dei campi di oggi" width="1800" height="1131" loading="lazy"></figure>
-      <div><span class="caps">Centro sportivo · Mottola (TA)</span><p>Due campi da padel coperti, beach e calcio a 5/6. Prenotazioni, partite da completare, saldi dei giocatori e turni in un'unica schermata.</p><span class="u">Leggi il case study</span></div>
-    </a>
+    {sh('04 / Case study', 'Due gestionali su misura, nati a Mottola.')}
+    <div class="case-list">{''.join(case_teaser(c, i) for i, c in enumerate(CASES, 1))}</div>
+    <div style="margin-top:30px"><a class="u" href="case-study.html">Come lavoriamo nei case study</a></div>
   </section>
   <section class="sec">
     {sh('05 / Domande', 'Software gestionale su misura, le domande più comuni.')}
@@ -331,78 +495,6 @@ CONTATTI = f"""{phero('Parliamo della <span>tua azienda</span>', 'Scrivici per u
   </section>
   <div class="strip" data-goo="wave" data-cols="28" data-rows="1" data-cursor="1" aria-hidden="true" style="margin:clamp(80px,10vw,130px) 0 40px"></div>"""
 
-# ---------------------------------------------------------------- case study
-
-CASE_PROBLEMS = [
-    ("L'andamento dei campi non si vedeva", "Quanto erano pieni i campi, quali fasce restavano vuote e quanto rendeva ogni attività si scopriva solo a fine mese, mettendo insieme appunti diversi."),
-    ("Prenotazioni sparse", "Le richieste arrivavano per telefono, in chat e di persona. Tenere un calendario unico per padel, beach e calcio voleva dire ricontrollare tutto più volte al giorno."),
-    ("Partite da chiudere, un giocatore alla volta", "Quando a una partita mancava qualcuno, la reception cercava i giocatori uno per uno, senza sapere chi aveva il livello giusto ed era libero."),
-    ("Saldi e crediti difficili da seguire", "Conti aperti, quote parziali delle squadre e crediti ricaricati erano su supporti diversi: capire chi doveva saldare, e da quando, richiedeva tempo."),
-    ("Turni dei dipendenti", "Reception, maestri, bar e manutenzione: chi era in turno e chi registrava gli incassi non era scritto in un posto solo."),
-]
-CASE_STEPS = [
-    ("Capiamo come lavori", "Siamo stati al centro una giornata intera: dalla reception al bar, abbiamo seguito come nasce una prenotazione, come si chiude una partita e come si incassa."),
-    ("Partiamo da basi solide", "Anagrafica dei giocatori, campi, listini e cassa sono partiti dai nostri moduli già collaudati, con i dati del centro importati e ripuliti."),
-    ("Costruiamo le parti su misura", "Calendario dei campi, partite da completare con l'invito su WhatsApp e credito dei giocatori sono stati costruiti attorno al modo di lavorare di Kuelle."),
-    ("Rendiamo i dati leggibili", "Tre schermate, pensate per chi sta in reception: quello che richiede attenzione si vede subito, in verde e giallo come i colori del centro."),
-]
-CASE_SCREENS = [
-    ("kuelle-1", "Andamento campi", "Tutti i campi della giornata, in un colpo d'occhio",
-     "Una riga per campo, dalle 9 alle 23. In verde le partite confermate, in giallo quelle a cui mancano giocatori, in rosso le fasce serali ancora libere. Sotto, l'occupazione media di ogni campo e l'incasso diviso per attività.",
-     ["Occupazione e incasso di oggi in alto", "Partite incomplete evidenziate", "Fasce libere da proporre"], 1, 2),
-    ("kuelle-2", "Partite da chiudere", "Il giocatore giusto, con un messaggio",
-     "Per ogni partita incompleta il gestionale propone chi invitare: livello compatibile, libero in quell'orario, abituato a giocare in quella fascia. Il messaggio WhatsApp è già pronto e chi risponde per primo entra in partita.",
-     ["Giocatori suggeriti per livello e disponibilità", "Invito su WhatsApp in un tocco", "Risposte e conferme registrate"], 3, 3),
-    ("kuelle-3", "Giocatori, saldi e dipendenti", "Chi deve saldare, chi ha credito, chi è in turno",
-     "La tabella dei saldi mette in cima chi deve pagare da più tempo, con il sollecito pronto. Le ricariche di credito pagano le partite in automatico e ogni movimento registra chi l'ha fatto. A fianco, i turni del giorno.",
-     ["Conti aperti ordinati per anzianità", "Credito ricaricato e scalato a ogni partita", "Turni e movimenti di cassa per dipendente"], 4, 5),
-]
-
-
-def case_screens():
-    out = ""
-    for i, (img, cap, title, text, points, a, b) in enumerate(CASE_SCREENS, 1):
-        pts = "".join(f"<li>{p}</li>" for p in points)
-        out += f"""<article class="case-screen">
-      <div class="txt"><span class="caps">Schermata 0{i} · {cap}</span><h3>{title}</h3><p>{text}</p><ul>{pts}</ul><span class="solves">Risolve i problemi 0{a}{'' if a == b else ' e 0' + str(b)}</span></div>
-      <figure class="frame"><img src="assets/case/{img}.webp" alt="Gestionale di Kuelle Sports Center, schermata {cap.lower()}" width="1800" loading="lazy"></figure>
-    </article>"""
-    return out
-
-
-CASE = f"""{phero('Kuelle Sports Center: <span>campi, partite e saldi</span> in un unico gestionale', 'Un centro sportivo polifunzionale a Mottola, con due campi da padel coperti, beach volley, tennis e soccer e un campo da calcio a 5/6.', 'mosaic')}
-{caption('Case study', 'Kuelle Sports Center', 'Mottola (TA)', 'Gestionale su misura')}
-  <section class="sec">
-    {sh('01 / Il cliente', 'Un centro sportivo che cresce ogni stagione.')}
-    <div class="case-client">
-      <img src="assets/case/kuelle-logo.png" alt="Logo di Kuelle Sports Center" width="160" height="160">
-      <div><p class="big">Kuelle è un centro sportivo polifunzionale a Mottola, in provincia di Taranto. <span>Ogni giorno passano decine di giocatori tra padel, beach e calcio, con lezioni, tornei e una scuola calcio.</span></p>
-        <ul class="facts"><li><b>2</b>campi da padel coperti</li><li><b>1</b>campo beach per volley, tennis e soccer</li><li><b>1</b>campo da calcio a 5/6</li></ul></div>
-    </div>
-  </section>
-  <section class="sec">
-    {sh('02 / I problemi', 'Cinque cose che rubavano tempo ogni giorno.')}
-    <div class="list">{''.join(f'<div class="item"><span class="n">0{i}</span><div><h3>{t}</h3><p>{d}</p></div></div>' for i, (t, d) in enumerate(CASE_PROBLEMS, 1))}</div>
-  </section>
-  <div class="strip" data-goo="wave" data-cols="28" data-rows="1" data-cursor="1" aria-hidden="true"></div>
-  <section class="sec" style="padding-top:clamp(60px,8vw,100px)">
-    {sh('03 / Il processo', 'Le quattro fasi del nostro metodo, applicate al centro.')}
-    <div class="cols" style="--c:4">{''.join(f'<div><span class="caps">Fase 0{i}</span><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate(CASE_STEPS, 1))}</div>
-  </section>
-  <section class="sec">
-    {sh('04 / La soluzione', 'Tre schermate, una per ogni problema da risolvere.')}
-    <div class="case-screens">{case_screens()}</div>
-    <div class="case-devices">
-      <div class="txt"><span class="caps">Su ogni dispositivo</span><h3>Dalla reception al telefono, lo stesso gestionale.</h3><p>Le schermate si adattano a computer, tablet e telefono. In reception si lavora sul computer; a bordo campo o al bar, chi è in turno controlla i campi, chiude una partita e vede chi deve saldare direttamente dal telefono.</p></div>
-      <div class="devices">
-        <figure class="frame desk"><img src="assets/case/kuelle-1.webp" alt="Gestionale di Kuelle Sports Center da computer" width="1800" loading="lazy"></figure>
-        <figure class="phone"><img src="assets/case/kuelle-mobile.webp" alt="Gestionale di Kuelle Sports Center da telefono" width="780" loading="lazy"></figure>
-      </div>
-    </div>
-    <p class="case-note">Nelle schermate nomi, cifre e orari sono dimostrativi: i dati reali dei giocatori restano riservati.</p>
-  </section>
-{end('Il prossimo è il tuo')}"""
-
 # ---------------------------------------------------------------- legali e 404
 
 
@@ -448,9 +540,15 @@ PAGES = [
     ("chi-siamo.html", "Software house a Taranto e in Puglia per PMI | Merkorn",
      "Merkorn è una software house di Mottola (Taranto): sales manager, project manager, product designer e developer che sviluppano gestionali su misura per PMI.",
      CHI, "", []),
-    ("case-study.html", "Case study: gestionale per centro sportivo | Merkorn",
+    ("case-study.html", "Case study: gestionali su misura realizzati | Merkorn",
+     "I progetti di Merkorn: il gestionale di Kuelle Sports Center e quello dell'Autoscuola Centrale Mongelli, dai problemi di partenza alle schermate.",
+     CASE_HUB, "", []),
+    ("case-study-kuelle.html", "Case study: gestionale per centro sportivo | Merkorn",
      "Come Merkorn ha costruito il gestionale di Kuelle Sports Center a Mottola: andamento dei campi, partite da completare con WhatsApp, saldi dei giocatori e turni.",
-     CASE, "", []),
+     CASE_PAGES[0], "", []),
+    ("case-study-mongelli.html", "Case study: gestionale per autoscuola | Merkorn",
+     "Come Merkorn ha costruito il gestionale dell'Autoscuola Centrale Mongelli a Mottola: calendario delle guide, gruppi d'esame da quattro e andamento degli allievi.",
+     CASE_PAGES[1], "", []),
     ("contattaci.html", "Preventivo gestionale su misura | Merkorn",
      "Contatta Merkorn per un appuntamento o un preventivo per un software gestionale su misura. Primo incontro in azienda o online, senza impegno.",
      CONTATTI, "", []),
