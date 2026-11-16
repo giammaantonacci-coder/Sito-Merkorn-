@@ -173,6 +173,17 @@ p { margin: 0; }
   .orbit .pill { position: static; translate: none; font-size: 14px; padding: 9px 13px; }
 }
 
+/* ---- partners ---- */
+.partners { border-top: 1px solid var(--line); }
+.partner { display: grid; grid-template-columns: 1fr 1.6fr 110px; gap: 30px; align-items: start; padding: 36px 0; border-bottom: 1px solid var(--line); }
+.partner .caps { color: var(--accent); }
+.partner h3 { margin-top: 12px; font-size: clamp(30px, 3.4vw, 48px); line-height: 1; font-weight: 500; }
+.partner p { color: var(--muted); max-width: 52ch; }
+.partner ul { list-style: none; padding: 0; margin: 16px 0 22px; display: flex; flex-wrap: wrap; gap: 6px; }
+.partner li { padding: 6px 12px; border-radius: 10px; font-size: 12px; background: var(--bg2); }
+.partner .g { width: 110px; height: 110px; }
+@media (max-width: 860px) { .partner { grid-template-columns: 1fr; gap: 14px; } .partner .g { width: 80px; height: 80px; } }
+
 /* ---- faq and contact details ---- */
 .faq summary h3 { margin: 0; font: inherit; letter-spacing: inherit; }
 .info output { display: block; margin-top: 8px; font: 500 20px/1.35 var(--display); letter-spacing: -.02em; }

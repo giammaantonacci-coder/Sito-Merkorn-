@@ -258,6 +258,19 @@ METODO = f"""{phero('Come sviluppiamo un gestionale <span>personalizzato</span>'
 
 # ---------------------------------------------------------------- chi siamo
 
+# partner studios: name, field, description, services, website
+PARTNERS = [
+    ("GA Studio", "Product design",
+     "GA Studio è lo studio di product design di Gianmarco Antonacci. Progetta app, siti web e brand identity, e usa l'intelligenza artificiale per creare foto, video e semplificare i processi. Un solo referente dalla prima call alla consegna, con aggiornamenti ogni settimana.",
+     ["App", "Siti web", "Brand identity", "Contenuti con l'AI"],
+     "https://gianmarcoantonaccidesigner.it"),
+]
+PARTNER_ROWS = "".join(
+    f'<article class="partner"><div><span class="caps">Studio partner · {field}</span><h3>{name}</h3></div>'
+    f'<div><p>{desc}</p><ul>{"".join(f"<li>{t}</li>" for t in tags)}</ul>'
+    f'<a class="u" href="{url}" target="_blank" rel="noopener">Visita il sito di {name}</a></div>{grid("rings", 3, 3)}</article>'
+    for name, field, desc, tags, url in PARTNERS)
+
 CHI = f"""{phero('Una software house che <span>prima viene a vedere</span>', 'Siamo a Mottola, in provincia di Taranto. Aiutiamo le PMI a lavorare meglio con i propri dati.', 'logo', 5, 3)}
 {caption('Chi siamo', 'Mottola', 'Taranto', 'Puglia')}
   <section class="sec">
@@ -288,6 +301,10 @@ CHI = f"""{phero('Una software house che <span>prima viene a vedere</span>', 'Si
       <div><h3>Tempi e costi definiti</h3><p>Durata e costo di ogni fase, concordati prima di iniziare.</p></div>
       <div><h3>Lo stesso team nel tempo</h3><p>Chi scrive il software lo segue anche dopo.</p></div>
     </div>
+  </section>
+  <section class="sec">
+    {sh('05 / Partner', 'Lavoriamo con studi di cui ci fidiamo.')}
+    <div class="partners">{PARTNER_ROWS}</div>
   </section>
 {end('Conosciamoci')}"""
 
