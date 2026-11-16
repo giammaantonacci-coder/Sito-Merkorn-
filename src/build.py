@@ -178,6 +178,31 @@ HOME_JS = "<script>Goo(document.getElementById('heroGoo'), { cols: 5, rows: 6, p
 
 # ---------------------------------------------------------------- servizi
 
+# programs placed around the logo: inner ring first (the core ones are highlighted), then outer ring
+INTEGRATIONS_INNER = ["Fatturazione elettronica", "Contabilità", "Fatture in Cloud", "TeamSystem", "Zucchetti", "WhatsApp Business", "Excel", "Google Workspace"]
+INTEGRATIONS_OUTER = ["Microsoft 365", "Teams", "Slack", "Notion", "Shopify", "WooCommerce", "Stripe", "HubSpot", "Zapier"]
+CORE = {"Fatturazione elettronica", "Contabilità"}
+
+
+def orbit():
+    import math
+    pills = []
+    for names, rx, ry, shift in ((INTEGRATIONS_INNER, 27, 31, 0), (INTEGRATIONS_OUTER, 45, 45, .5)):
+        n = len(names)
+        for i, name in enumerate(names):
+            a = math.radians(-90 + (i + shift) * 360 / n)
+            x, y = 50 + rx * math.cos(a), 50 + ry * math.sin(a)
+            cls = "pill core" if name in CORE else "pill"
+            pills.append(f'<li class="{cls}" style="left:{x:.1f}%;top:{y:.1f}%">{name}</li>')
+    return f"""<div class="orbit">
+      <span class="ring r1" aria-hidden="true"></span><span class="ring r2" aria-hidden="true"></span>
+      {grid('logo', 5, 3, cls='hub')}
+      <ul aria-label="Programmi che colleghiamo al gestionale">{''.join(pills)}</ul>
+    </div>"""
+
+
+ORBIT = orbit()
+
 SERV_PATTERNS = ["checker", "rings", "diag", "breathe"]
 SERV_ROWS = "".join(
     f'<div class="row"><span class="n">0{i}</span><h3>{t}</h3><div><p>{d}</p><ul>{"".join(f"<li>{x}</li>" for x in tags)}</ul></div>{grid(p, 3, 3)}</div>'
@@ -197,9 +222,9 @@ SERVIZI = f"""{phero('Software gestionale <span>su misura</span> per la tua azie
     </div>
   </section>
   <section class="sec">
-    {sh('03 / Integrazioni', 'Collegato ai programmi che usi già.')}
-    <div class="integ"><div class="box">Contabilità</div>{grid('logo', 5, 3)}<div class="box">Fatturazione elettronica</div></div>
-    <p style="color:var(--muted);max-width:52ch;margin-top:20px">Contabilità e fatturazione elettronica collegate al gestionale. Ogni dato si scrive una volta sola.</p>
+    {sh('03 / Integrazioni', 'Ci colleghiamo ai programmi che usi già.')}
+    {ORBIT}
+    <p style="color:var(--muted);max-width:56ch;margin-top:24px">Contabilità, fatturazione elettronica, messaggi, documenti e vendite online parlano con il gestionale. Ogni dato si scrive una volta sola.</p>
   </section>
   <section class="sec">
     {sh('04 / Domande', 'Domande sui nostri servizi.')}

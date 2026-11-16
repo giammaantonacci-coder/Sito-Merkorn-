@@ -156,6 +156,23 @@ p { margin: 0; }
   .integ .g { height: 90px; }
 }
 
+/* ---- integrations around the logo ---- */
+.orbit { position: relative; height: clamp(520px, 52vw, 680px); margin-top: 30px; }
+.orbit .ring { position: absolute; left: 50%; top: 50%; translate: -50% -50%; border: 1px dashed var(--line); border-radius: 50%; pointer-events: none; }
+.orbit .r1 { width: 54%; height: 62%; } .orbit .r2 { width: 90%; height: 90%; }
+.orbit .hub { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 20%; aspect-ratio: 5 / 3; }
+.orbit ul { list-style: none; margin: 0; padding: 0; }
+.orbit .pill { position: absolute; translate: -50% -50%; padding: 10px 16px; border-radius: 12px; background: var(--bg2); font: 500 15px/1.1 var(--display); letter-spacing: -.01em; white-space: nowrap; transition: background .25s, color .25s, scale .25s; }
+.orbit .pill:hover { background: var(--ink); color: var(--bg); scale: 1.06; }
+.orbit .pill.core { background: var(--ink); color: var(--bg); }
+@media (max-width: 860px) {
+  .orbit { height: auto; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .orbit .ring { display: none; }
+  .orbit .hub { position: relative; left: auto; top: auto; translate: none; width: 200px; }
+  .orbit ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .orbit .pill { position: static; translate: none; font-size: 14px; padding: 9px 13px; }
+}
+
 /* ---- faq and contact details ---- */
 .faq summary h3 { margin: 0; font: inherit; letter-spacing: inherit; }
 .info output { display: block; margin-top: 8px; font: 500 20px/1.35 var(--display); letter-spacing: -.02em; }
