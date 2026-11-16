@@ -57,14 +57,14 @@ main { padding: 24px 28px 34px; min-width: 0; }
 .av { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font: 600 11.5px/1 var(--display); color: var(--text); background: linear-gradient(135deg, #EDEDEA, #CFCFCA); }
 .av.r { background: linear-gradient(135deg, #FF8A8F, var(--red)); color: #fff; } .av.k { background: linear-gradient(135deg, #4A4A47, #141414); color: #fff; }
 /* overview charts */
-.mbars { display: flex; align-items: flex-end; gap: 14px; height: 190px; padding-top: 10px; }
+.mbars { display: flex; align-items: flex-end; gap: 14px; height: 190px; }
 .mbars div { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end; color: var(--dim); font-size: 11px; }
 .mbars .st { width: 100%; max-width: 46px; display: flex; flex-direction: column; justify-content: flex-end; border-radius: 8px; overflow: hidden; height: 100%; }
 .mbars .st i { display: block; } .mbars .st .p { background: var(--blk); } .mbars .st .f { background: var(--red); }
 .mbars div.cur { color: var(--text); font-weight: 600; }
 .legend { display: flex; gap: 16px; margin-top: 12px; color: var(--muted); font-size: 11.5px; } .legend span { display: flex; align-items: center; gap: 7px; } .legend i { width: 10px; height: 10px; border-radius: 3px; }
 .bars { display: grid; gap: 14px; }
-.bars div { display: grid; grid-template-columns: 120px 1fr 40px; align-items: center; gap: 12px; font-size: 12.5px; }
+.bars div { display: grid; grid-template-columns: 150px 1fr 40px; white-space: nowrap; align-items: center; gap: 12px; font-size: 12.5px; }
 .bars .t { height: 10px; border-radius: 6px; background: var(--card2); overflow: hidden; } .bars .t i { display: block; height: 100%; border-radius: 6px; background: var(--blk); } .bars .t i.r { background: var(--red); }
 .bars b { text-align: right; font-weight: 600; }
 .ring { display: flex; align-items: center; gap: 18px; } .ring svg { width: 116px; height: 116px; flex: none; }
@@ -85,7 +85,7 @@ main { padding: 24px 28px 34px; min-width: 0; }
 .ev.ex { background: var(--red); color: #fff; border-left-color: var(--blk); } .ev.ex small { color: rgba(255,255,255,.85); }
 .ev.h2 { height: calc(200% - 8px); } .ev.h3 { height: calc(300% - 8px); }
 .inst { display: grid; gap: 10px; }
-.inst div { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 14px; background: var(--card2); }
+.inst > div { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: var(--card2); }
 .inst b { display: block; font-size: 13px; } .inst small { color: var(--muted); font-size: 11.5px; } .inst div > div { min-width: 0; } .inst em { white-space: nowrap; }
 .inst em { margin-left: auto; font-style: normal; font: 600 18px/1 var(--display); }
 /* exam groups */
@@ -103,6 +103,30 @@ main { padding: 24px 28px 34px; min-width: 0; }
 .redo td { padding: 10px 8px; border-top: 1px solid var(--line); vertical-align: middle; } .redo { width: 100%; border-collapse: collapse; }
 .redo th { padding: 0 8px 8px; text-align: left; color: var(--dim); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
 .who { display: flex; align-items: center; gap: 10px; } .who b { display: block; font-size: 12.5px; } .who small { color: var(--muted); font-size: 11px; }
+
+.chart { display: grid; grid-template-columns: 28px 1fr; grid-template-rows: 200px auto; column-gap: 8px; margin-top: 6px; }
+.yax { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; color: var(--dim); font-size: 10.5px; margin: -6px 0; }
+.plot { position: relative; }
+.gl { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; }
+.gl i { display: block; height: 1px; background: var(--line); } .gl i:last-child { background: rgba(17,17,17,.25); }
+.chart .mbars { position: relative; height: 100%; padding: 0 6px; gap: 18px; }
+.chart .mbars div { justify-content: flex-end; }
+.chart .mbars .st { max-width: 52px; border-radius: 8px 8px 0 0; }
+.chart .mbars .st i { position: relative; } .chart .mbars .st em { position: absolute; left: 0; right: 0; top: 4px; text-align: center; font-style: normal; font-size: 10px; font-weight: 600; color: #fff; }
+.chart .mbars .st i.f em { top: 2px; font-size: 9.5px; }
+.xax { display: flex; gap: 18px; padding: 8px 6px 0; } .xax span { flex: 1; text-align: center; color: var(--dim); font-size: 11px; } .xax span.cur { color: var(--text); font-weight: 600; }
+.split3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.split3 div { padding: 10px 12px; border-radius: 12px; background: var(--card2); } .split3 small { display: block; color: var(--muted); font-size: 11px; } .split3 b { display: block; margin-top: 4px; font: 600 20px/1 var(--display); }
+.funnel { display: flex; height: 14px; border-radius: 8px; overflow: hidden; margin-bottom: 18px; } .funnel i { display: block; }
+.note2 { margin-top: 16px; padding: 10px 12px; border-radius: 12px; background: var(--redbg); color: var(--red); font-size: 12px; font-weight: 500; }
+.notes { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.notes h4 { font-size: 14px; margin-bottom: 10px; }
+.notes ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.notes li { display: flex; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--card2); font-size: 12px; line-height: 1.4; }
+.notes li b { display: block; font-size: 12.5px; } .notes li small { color: var(--muted); }
+.notes li i { flex: none; width: 4px; border-radius: 3px; background: var(--blk); } .notes li i.r { background: var(--red); } .notes li i.a { background: var(--amber); }
+.inst .nm { flex: 1; min-width: 0; } .inst .nm b { font-size: 14px; } .inst .nm small { display: block; margin-top: 2px; }
+.inst .hrs { text-align: right; } .inst .hrs b { display: block; font: 600 22px/1 var(--display); } .inst .hrs small { display: block; margin-top: 3px; font-size: 10.5px; color: var(--dim); }
 .screen { display: none; } .screen.on { display: block; }
 .demo { position: fixed; right: 16px; bottom: 16px; display: flex; gap: 4px; padding: 5px; border-radius: 999px; background: rgba(20,20,20,.92); font-size: 11.5px; z-index: 10; }
 .demo button { padding: 7px 12px; border: 0; border-radius: 999px; background: none; color: #bbb; cursor: pointer; font: inherit; } .demo button.on { background: var(--red); color: #fff; font-weight: 600; }
@@ -137,24 +161,23 @@ main { padding: 24px 28px 34px; min-width: 0; }
       </div>
       <div class="grid" style="grid-template-columns:1.5fr 1fr;margin-top:14px">
         <div class="card"><div class="ch"><div><h3>Esami per mese</h3><div class="sub">Superati e da rifare, teoria e pratica insieme</div></div><a href="#">Dettaglio →</a></div>
-          <div class="mbars">
-            <div><span class="st"><i class="f" style="height:12%"></i><i class="p" style="height:42%"></i></span>Giu</div>
-            <div><span class="st"><i class="f" style="height:10%"></i><i class="p" style="height:50%"></i></span>Lug</div>
-            <div><span class="st"><i class="f" style="height:6%"></i><i class="p" style="height:30%"></i></span>Ago</div>
-            <div><span class="st"><i class="f" style="height:14%"></i><i class="p" style="height:62%"></i></span>Set</div>
-            <div><span class="st"><i class="f" style="height:13%"></i><i class="p" style="height:70%"></i></span>Ott</div>
-            <div class="cur"><span class="st"><i class="f" style="height:15%"></i><i class="p" style="height:78%"></i></span>Nov</div>
+          <div class="chart">
+            <div class="yax"><span>50</span><span>40</span><span>30</span><span>20</span><span>10</span><span>0</span></div>
+            <div class="plot"><div class="gl"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="mbars"><div class=""><span class="st" title="21 superati, 6 da rifare"><i class="f" style="height:12%"><em>6</em></i><i class="p" style="height:42%"><em>21</em></i></span></div><div class=""><span class="st" title="25 superati, 5 da rifare"><i class="f" style="height:10%"><em>5</em></i><i class="p" style="height:50%"><em>25</em></i></span></div><div class=""><span class="st" title="15 superati, 3 da rifare"><i class="f" style="height:6%"><em>3</em></i><i class="p" style="height:30%"><em>15</em></i></span></div><div class=""><span class="st" title="31 superati, 7 da rifare"><i class="f" style="height:14%"><em>7</em></i><i class="p" style="height:62%"><em>31</em></i></span></div><div class=""><span class="st" title="35 superati, 6 da rifare"><i class="f" style="height:13%"><em>6</em></i><i class="p" style="height:70%"><em>35</em></i></span></div><div class="cur"><span class="st" title="39 superati, 8 da rifare"><i class="f" style="height:15%"><em>8</em></i><i class="p" style="height:78%"><em>39</em></i></span></div></div></div>
+            <span></span><div class="xax"><span class="">Giu</span><span class="">Lug</span><span class="">Ago</span><span class="">Set</span><span class="">Ott</span><span class="cur">Nov</span></div>
           </div>
           <div class="legend"><span><i style="background:var(--blk)"></i>Superati</span><span><i style="background:var(--red)"></i>Da rifare</span></div></div>
         <div class="card"><div class="ch"><div><h3>Esito degli esami</h3><div class="sub">Dall'inizio dell'anno</div></div></div>
           <div class="ring"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#F4F4F2" stroke-width="6"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#141414" stroke-width="6" stroke-dasharray="82 18" stroke-dashoffset="25"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#E3262F" stroke-width="6" stroke-dasharray="18 82" stroke-dashoffset="-57"/><text x="21" y="22" text-anchor="middle" font-size="7" font-family="DM Sans" font-weight="600" fill="#141414">82%</text><text x="21" y="27" text-anchor="middle" font-size="3" fill="#9C9C97">superati</text></svg>
-            <ul><li><b>Teoria</b>86% superati · 132 esami</li><li><b>Pratica</b>79% superati · 80 esami</li><li><b style="color:var(--red)">38 da rifare</b>14 già riprenotati</li></ul></div></div>
+            <ul><li><b>Teoria</b>86% superati · 132 esami</li><li><b>Pratica</b>79% superati · 80 esami</li><li><b style="color:var(--red)">38 da rifare</b>14 già riprenotati</li></ul></div>
+          <div class="split3"><div><small>A novembre</small><b>46</b></div><div><small>Superati</small><b>39</b></div><div><small>Da rifare</small><b style="color:var(--red)">7</b></div></div></div>
       </div>
       <div class="grid" style="grid-template-columns:1fr 1fr 1fr;margin-top:14px">
         <div class="card"><div class="ch"><div><h3>Iscritti per patente</h3><div class="sub">Allievi attivi</div></div></div>
-          <div class="bars"><div><span><span class="lic">B</span> Auto</span><span class="t"><i style="width:100%"></i></span><b>96</b></div><div><span><span class="lic">AM</span> Ciclomotore</span><span class="t"><i style="width:22%"></i></span><b>21</b></div><div><span><span class="lic">A2</span> Moto</span><span class="t"><i style="width:18%"></i></span><b>17</b></div><div><span><span class="lic">C</span> Camion</span><span class="t"><i class="r" style="width:9%"></i></span><b>9</b></div><div><span><span class="lic">CQC</span> Professionali</span><span class="t"><i class="r" style="width:5%"></i></span><b>5</b></div></div></div>
+          <div class="bars"><div><span><span class="lic">B</span> Auto</span><span class="t"><i style="width:100%"></i></span><b>96</b></div><div><span><span class="lic">AM</span> Ciclomotore</span><span class="t"><i style="width:22%"></i></span><b>21</b></div><div><span><span class="lic">A2</span> Moto</span><span class="t"><i style="width:18%"></i></span><b>17</b></div><div><span><span class="lic">C</span> Camion</span><span class="t"><i class="r" style="width:9%"></i></span><b>9</b></div><div><span><span class="lic">CQC</span> Professionale</span><span class="t"><i class="r" style="width:5%"></i></span><b>5</b></div></div></div>
         <div class="card"><div class="ch"><div><h3>Dove sono gli allievi</h3><div class="sub">Percorso dei 148 iscritti</div></div></div>
-          <div class="bars"><div><span>Studiano teoria</span><span class="t"><i style="width:44%"></i></span><b>65</b></div><div><span>Foglio rosa</span><span class="t"><i style="width:31%"></i></span><b>46</b></div><div><span>Pronti per l'esame</span><span class="t"><i class="r" style="width:16%"></i></span><b>24</b></div><div><span>Da rifare</span><span class="t"><i class="r" style="width:9%"></i></span><b>13</b></div></div></div>
+          <div class="funnel"><i style="width:44%;background:#141414"></i><i style="width:31%;background:#6E6E6A"></i><i style="width:16%;background:var(--red)"></i><i style="width:9%;background:#F29096"></i></div><div class="bars"><div><span>Studiano teoria</span><span class="t"><i style="width:44%"></i></span><b>65</b></div><div><span>Foglio rosa</span><span class="t"><i style="width:31%;background:#6E6E6A"></i></span><b>46</b></div><div><span>Pronti per l'esame</span><span class="t"><i class="r" style="width:16%"></i></span><b>24</b></div><div><span>Da rifare</span><span class="t"><i class="r" style="width:9%;background:#F29096"></i></span><b>13</b></div></div>
+          <div class="note2">24 allievi pronti: 6 gruppi da 4 per le prossime sessioni</div></div>
         <div class="card"><div class="ch"><div><h3>Da controllare</h3></div><a href="#">Tutto →</a></div>
           <div class="list"><div class="li"><span class="av r">GR</span><div><b>Foglio rosa in scadenza</b><small>Giulia Ruggieri · scade il 9 dicembre</small></div><span class="pill ko">13 giorni</span></div>
             <div class="li"><span class="av">MP</span><div><b>Guide obbligatorie mancanti</b><small>Marco Pastore · 4 di 6 fatte</small></div><span class="pill wa">2 guide</span></div>
@@ -180,10 +203,16 @@ main { padding: 24px 28px 34px; min-width: 0; }
             <div class="t">19:00</div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
           </div>
           <div class="legend"><span><i style="background:var(--blk)"></i>Guida con Cosimo</span><span><i style="background:var(--red)"></i>Guida con Carmen</span><span><i style="background:var(--blk);box-shadow:inset 0 0 0 2px var(--red)"></i>Teoria in aula</span><span><i style="background:var(--red)"></i>Esame</span></div>
+          <div class="notes"><h4>Note della settimana</h4><ul>
+            <li><i class="r"></i><div><b>Giovedì, esame pratica alle 9:00</b><small>Fiat Panda riservata dalle 8:30. Le guide delle 9 e delle 10 di Cosimo sono spostate.</small></div></li>
+            <li><i class="a"></i><div><b>Tagliando Fiat Panda</b><small>Sabato mattina in officina: guide auto solo con la Ypsilon.</small></div></li>
+            <li><i></i><div><b>Quiz di prova di giovedì sera</b><small>Per il gruppo 2, teoria B dell'1 dicembre. Aula aperta dalle 17:30.</small></div></li>
+            <li><i class="a"></i><div><b>Caforio da richiamare</b><small>Ha disdetto martedì: proporre venerdì alle 16 con Carmen.</small></div></li>
+          </ul></div>
         </div>
         <div class="grid" style="align-content:start">
           <div class="card"><div class="ch"><div><h3>Istruttori questa settimana</h3></div></div>
-            <div class="inst"><div><span class="av k">CO</span><div><b>Cosimo</b><small>Auto B, C · 2 veicoli</small></div><em>34 h</em></div><div><span class="av r">CA</span><div><b>Carmen</b><small>Auto B, moto AM, A2</small></div><em>30 h</em></div></div></div>
+            <div class="inst"><div><span class="av k">CO</span><div class="nm"><b>Cosimo</b><small>Patenti B, C · 2 veicoli</small></div><div class="hrs"><b>34 h</b><small>22 guide</small></div></div><div><span class="av r">CA</span><div class="nm"><b>Carmen</b><small>Patenti B, AM, A2</small></div><div class="hrs"><b>30 h</b><small>20 guide</small></div></div></div></div>
           <div class="card"><div class="ch"><div><h3>Oggi, giovedì 26</h3></div><a href="#">Giorno →</a></div>
             <div class="list"><div class="li"><span class="av">MP</span><div><b>Marco Pastore</b><small>8:00 · guida B · Cosimo</small></div><span class="pill ok">Confermata</span></div>
               <div class="li"><span class="av r">EX</span><div><b>Esame pratica, gruppo 1</b><small>9:00 · 4 allievi patente B</small></div><span class="pill ko">Esame</span></div>
