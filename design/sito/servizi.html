@@ -58,6 +58,11 @@
   .caption .hide-m { display: none; }
 }
 
+.split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
+.sticky { position: relative; top: auto; height: auto; aspect-ratio: 1 / 1.08; min-width: 0; }
+@media (max-width: 860px) { .split { grid-template-columns: minmax(0, 1fr); } }
+.steps > div { opacity: 1; min-height: 0; padding: 34px 0; }
+@media (max-width: 860px) { .sticky { height: auto; padding: 0; } .steps > div { min-height: 0; } }
 .end h2 { font-size: clamp(54px, 8.4vw, 140px); }
 .top nav a[aria-current] { color: var(--accent); }
 .burger { display: none; width: 40px; height: 40px; border: 0; border-radius: 12px; background: var(--ink); cursor: pointer; }
@@ -146,14 +151,14 @@
   <div class="caption caps"><span>Servizi</span><span>•</span><span>Quattro servizi</span><i></i><span>Un solo progetto</span></div>
   <section class="sec">
     <div class="sh"><span class="caps">01 / Cosa facciamo</span><h2>Dall'analisi all'assistenza, sempre le stesse persone.</h2></div>
-    <div class="rows" style="border-top:0"><div class="row"><span class="n">01</span><h3>Gestionale su misura</h3><div><p>Un ERP personalizzato che riunisce ordini, magazzino, produzione e commesse e ti dà la visione completa dell'azienda.</p><ul><li>Ordini e offerte</li><li>Magazzino</li><li>Produzione</li><li>Commesse</li><li>Documenti di trasporto</li></ul></div><div class="g" data-goo="checker" data-cols="3" data-rows="3" data-cursor="1" aria-hidden="true"></div></div><div class="row"><span class="n">02</span><h3>Analisi dei processi aziendali</h3><div><p>Una fotografia chiara di come lavori oggi e delle priorità per crescere.</p><ul><li>Mappa del processo</li><li>Punti critici</li><li>Priorità di intervento</li></ul></div><div class="g" data-goo="rings" data-cols="3" data-rows="3" data-cursor="1" aria-hidden="true"></div></div><div class="row"><span class="n">03</span><h3>App per magazzino e consegne</h3><div><p>I dati del magazzino e delle consegne, subito visibili in ufficio.</p><ul><li>Carico e scarico merce</li><li>Consegne</li><li>Firma del cliente</li></ul></div><div class="g" data-goo="diag" data-cols="3" data-rows="3" data-cursor="1" aria-hidden="true"></div></div><div class="row"><span class="n">04</span><h3>Assistenza ed evoluzione del software</h3><div><p>Il gestionale cresce con la tua azienda, seguito dallo stesso team.</p><ul><li>Assistenza agli utenti</li><li>Aggiornamenti</li><li>Nuove funzioni</li></ul></div><div class="g" data-goo="breathe" data-cols="3" data-rows="3" data-cursor="1" aria-hidden="true"></div></div></div>
+    <div class="rows" style="border-top:0"><div class="row"><span class="n">01</span><h3>Gestionale su misura</h3><div><p>Un ERP personalizzato che riunisce ordini, magazzino, produzione e commesse e ti dà la visione completa dell'azienda.</p><ul><li>Ordini e offerte</li><li>Magazzino</li><li>Produzione</li><li>Commesse</li><li>Documenti di trasporto</li></ul></div><div class="g" data-goo="checker" data-cols="3" data-rows="3" data-static="1" aria-hidden="true"></div></div><div class="row"><span class="n">02</span><h3>Analisi dei processi aziendali</h3><div><p>Una fotografia chiara di come lavori oggi e delle priorità per crescere.</p><ul><li>Mappa del processo</li><li>Punti critici</li><li>Priorità di intervento</li></ul></div><div class="g" data-goo="rings" data-cols="3" data-rows="3" data-static="1" aria-hidden="true"></div></div><div class="row"><span class="n">03</span><h3>App per magazzino e consegne</h3><div><p>I dati del magazzino e delle consegne, subito visibili in ufficio.</p><ul><li>Carico e scarico merce</li><li>Consegne</li><li>Firma del cliente</li></ul></div><div class="g" data-goo="diag" data-cols="3" data-rows="3" data-static="1" aria-hidden="true"></div></div><div class="row"><span class="n">04</span><h3>Assistenza ed evoluzione del software</h3><div><p>Il gestionale cresce con la tua azienda, seguito dallo stesso team.</p><ul><li>Assistenza agli utenti</li><li>Aggiornamenti</li><li>Nuove funzioni</li></ul></div><div class="g" data-goo="breathe" data-cols="3" data-rows="3" data-static="1" aria-hidden="true"></div></div></div>
   </section>
   <section class="sec">
     <div class="sh"><span class="caps">02 / Per chi lavoriamo</span><h2>Imprese che vogliono crescere con i propri dati.</h2></div>
     <div class="three">
-      <div><div class="ico" data-goo="drops" data-cols="3" data-rows="3" data-speed=".6"></div><h3>Agroalimentare e produzione</h3><p>Lotti, scadenze e commesse sempre tracciati.</p></div>
-      <div><div class="ico" data-goo="wave" data-cols="3" data-rows="3" data-speed=".6"></div><h3>Commercio e logistica</h3><p>Giacenze, ordini e consegne sempre aggiornati.</p></div>
-      <div><div class="ico" data-goo="mosaic" data-cols="3" data-rows="3" data-speed=".6"></div><h3>Squadre sul territorio</h3><p>Interventi e rapportini visibili subito in ufficio.</p></div>
+      <div><div class="ico" data-static="1" data-goo="drops" data-cols="3" data-rows="3" data-speed=".6"></div><h3>Agroalimentare e produzione</h3><p>Lotti, scadenze e commesse sempre tracciati.</p></div>
+      <div><div class="ico" data-static="1" data-goo="wave" data-cols="3" data-rows="3" data-speed=".6"></div><h3>Commercio e logistica</h3><p>Giacenze, ordini e consegne sempre aggiornati.</p></div>
+      <div><div class="ico" data-static="1" data-goo="mosaic" data-cols="3" data-rows="3" data-speed=".6"></div><h3>Squadre sul territorio</h3><p>Interventi e rapportini visibili subito in ufficio.</p></div>
     </div>
   </section>
   <section class="sec">

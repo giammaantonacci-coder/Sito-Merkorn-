@@ -58,6 +58,11 @@
   .caption .hide-m { display: none; }
 }
 
+.split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
+.sticky { position: relative; top: auto; height: auto; aspect-ratio: 1 / 1.08; min-width: 0; }
+@media (max-width: 860px) { .split { grid-template-columns: minmax(0, 1fr); } }
+.steps > div { opacity: 1; min-height: 0; padding: 34px 0; }
+@media (max-width: 860px) { .sticky { height: auto; padding: 0; } .steps > div { min-height: 0; } }
 .end h2 { font-size: clamp(54px, 8.4vw, 140px); }
 .top nav a[aria-current] { color: var(--accent); }
 .burger { display: none; width: 40px; height: 40px; border: 0; border-radius: 12px; background: var(--ink); cursor: pointer; }
@@ -151,18 +156,18 @@
   <section class="sec">
     <div class="sh"><span class="caps">02 / Il team</span><h2>Le persone che seguono il tuo progetto.</h2></div>
     <div class="team">
-      <div><div class="g" data-goo="breathe" data-cols="3" data-rows="3" data-cursor="1"></div><h3>Sales manager</h3><p>Il tuo primo contatto. Viene in azienda e prepara con te proposta, tempi e costi.</p></div>
-      <div><div class="g" data-goo="rings" data-cols="3" data-rows="3" data-cursor="1"></div><h3>Project manager e data analyst</h3><p>Trasforma le esigenze in requisiti chiari e segue l'avanzamento del progetto.</p></div>
-      <div><div class="g" data-goo="diag" data-cols="3" data-rows="3" data-cursor="1"></div><h3>Product designer</h3><p>Progetta le schermate e le prova con chi le userà.</p></div>
-      <div><div class="g" data-goo="checker" data-cols="3" data-rows="3" data-cursor="1"></div><h3>Developer</h3><p>Scrive il software, lo collega ai tuoi programmi e lo segue dopo il rilascio.</p></div>
+      <div><div class="g" data-goo="breathe" data-cols="3" data-rows="3" data-static="1"></div><h3>Sales manager</h3><p>Il tuo primo contatto. Viene in azienda e prepara con te proposta, tempi e costi.</p></div>
+      <div><div class="g" data-goo="rings" data-cols="3" data-rows="3" data-static="1"></div><h3>Project manager e data analyst</h3><p>Trasforma le esigenze in requisiti chiari e segue l'avanzamento del progetto.</p></div>
+      <div><div class="g" data-goo="diag" data-cols="3" data-rows="3" data-static="1"></div><h3>Product designer</h3><p>Progetta le schermate e le prova con chi le userà.</p></div>
+      <div><div class="g" data-goo="checker" data-cols="3" data-rows="3" data-static="1"></div><h3>Developer</h3><p>Scrive il software, lo collega ai tuoi programmi e lo segue dopo il rilascio.</p></div>
     </div>
   </section>
   <section class="sec">
     <div class="sh"><span class="caps">03 / Come costruiamo</span><h2>Fondamenta riusabili, superficie su misura.</h2></div>
     <div class="layers">
-      <div><b>Livello 03</b><div><strong>Le tue schermate</strong><span>Disegnate su come lavori.</span></div><div class="g" data-goo="logo" data-cols="5" data-rows="3"></div></div>
-      <div><b>Livello 02</b><div><strong>Componenti su misura</strong><span>Le funzioni specifiche della tua azienda.</span></div><div class="g" data-goo="wave" data-cols="8" data-rows="2"></div></div>
-      <div><b>Livello 01</b><div><strong>Moduli collaudati</strong><span>La base solida da cui partire.</span></div><div class="g" data-goo="checker" data-cols="8" data-rows="2"></div></div>
+      <div><b>Livello 03</b><div><strong>Le tue schermate</strong><span>Disegnate su come lavori.</span></div><div class="g" data-goo="logo" data-cols="5" data-rows="3" data-static="1"></div></div>
+      <div><b>Livello 02</b><div><strong>Componenti su misura</strong><span>Le funzioni specifiche della tua azienda.</span></div><div class="g" data-goo="wave" data-cols="8" data-rows="2" data-static="1"></div></div>
+      <div><b>Livello 01</b><div><strong>Moduli collaudati</strong><span>La base solida da cui partire.</span></div><div class="g" data-goo="checker" data-cols="8" data-rows="2" data-static="1"></div></div>
     </div>
   </section>
   <section class="sec">
