@@ -1,25 +1,26 @@
 /* Merkorn, blocchi che si fondono.
    A grid of rounded squares drawn on a canvas; an SVG "goo" filter (blur + alpha threshold)
    melts neighbouring blocks together with soft bridges when they grow.
-   Light on purpose: everything stops while the page is scrolling and starts again once it is still,
-   grids out of view do nothing, and frames are capped at 30 per second.
+   Light on purpose: grids out of view do nothing, frames are capped at 30 per second
+   and drop to 15 while the page is scrolling, so blocks keep moving without slowing the scroll down.
    Usage: Goo(element, { cols, rows, pattern, cursor, animate, accent: [[c, r]] }) */
 (() => {
   const NS = 'http://www.w3.org/2000/svg';
   const MARK = [[2, 0], [1, 1], [3, 1], [0, 2], [4, 2]];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const FRAME = 1000 / 30;
+  const FRAME = 1000 / 30, FRAME_SCROLLING = 1000 / 15;
   let uid = 0;
   const hash = (a, b, c) => { const x = Math.sin(a * 127.1 + b * 311.7 + c * 74.7) * 43758.5453; return x - Math.floor(x); };
 
   const PATTERNS = {
-    logo: (c, r, t, g) => g.inMark(c, r) ? 1.3 : .32 + .1 * Math.sin(t * 2 + c * .9 + r * .7),
+    logo: (c, r, t, g) => g.inMark(c, r) ? 1.26 + .05 * Math.sin(t * 2.4 + c) : .34 + .16 * Math.sin(t * 2 + c * .9 + r * .7),
     wave: (c, r, t) => .62 + .58 * Math.sin(c * .7 + r * .45 - t * 1.4),
     rings: (c, r, t, g) => { const d = Math.hypot(c - (g.cols - 1) / 2, r - (g.rows - 1) / 2); return .6 + .62 * Math.sin(d * 1.15 - t * 1.8); },
     diag: (c, r, t) => .52 + .66 * Math.sin((c - r) * .95 - t * 1.2),
     drops: (c, r, t, g) => { const d = (c + (g.rows - 1 - r)) / (g.cols + g.rows - 2); return 1.38 - d * 1.15 + .12 * Math.sin(t * 2 + c + r); },
-    mosaic: (c, r, t) => { const e = Math.floor(t / 2.2), h = hash(c, r, e); return h < .34 ? 1.24 : h < .7 ? .98 : .55; },
-    checker: (c, r, t) => ((c + r) % 2 ? 1.24 : .5) + .1 * Math.sin(t * 2.4 + c),
+    // every block changes size at its own moment, so the grid is always moving from the first frame
+    mosaic: (c, r, t) => { const e = Math.floor(t / 1.6 + hash(c, r, 0) * 1.6), h = hash(c, r, e); return (h < .34 ? 1.24 : h < .7 ? .98 : .55) + .06 * Math.sin(t * 2.2 + c + r); },
+    checker: (c, r, t) => ((c + r) % 2 ? 1.18 : .55) + .18 * Math.sin(t * 2.4 + c + r * .7),
     breathe: (c, r, t) => .8 + .3 * Math.sin(t * 1.6 + (c + r) * .5),
   };
   const CYCLE = ['mosaic', 'logo', 'wave', 'logo', 'diag', 'logo'];
@@ -28,9 +29,9 @@
   const all = [];
   let scrolling = false, stillTimer = 0, mx = -1e4, my = -1e4;
   addEventListener('scroll', () => {
-    if (!scrolling) { scrolling = true; all.forEach(i => i.pause()); }
+    scrolling = true; all.forEach(i => i.moved());
     clearTimeout(stillTimer);
-    stillTimer = setTimeout(() => { scrolling = false; all.forEach(i => i.resume()); }, 160);
+    stillTimer = setTimeout(() => { scrolling = false; }, 120);
   }, { passive: true });
   addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
 
@@ -88,7 +89,7 @@
         let target = fn(k.c, k.r, t, g);
         if (near) target += .5 * Math.exp(-((k.c - px) ** 2 + (k.r - py) ** 2) / 2.2);
         target = target < minS ? minS : target > 1.32 ? 1.32 : target;
-        k.s = snap ? target : k.s + (target - k.s) * .16;
+        k.s = snap ? target : k.s + (target - k.s) * .22;
         const side = g.cell * o.fill * k.s, cx = g.ox + (k.c + .5) * g.cell, cy = g.oy + (k.r + .5) * g.cell;
         if (isAccent(k.c, k.r, pat)) { x2.beginPath(); x2.roundRect ? x2.roundRect(cx - side / 2, cy - side / 2, side, side, side * o.radius) : x2.rect(cx - side / 2, cy - side / 2, side, side); x2.fill(); continue; }
         x.roundRect ? x.roundRect(cx - side / 2, cy - side / 2, side, side, side * o.radius) : x.rect(cx - side / 2, cy - side / 2, side, side);
@@ -101,13 +102,14 @@
     let visible = true, raf = 0, last = 0;
     const loop = now => {
       raf = 0;
-      if (!visible || (scrolling && !o.scroll)) return;
+      if (!visible) return;
       const dt = now - last;
-      if (dt >= FRAME) { if (last) clock += Math.min(dt, 100) / 1000 * o.speed; last = now; draw(clock); }
+      if (dt >= (scrolling && !o.scroll ? FRAME_SCROLLING : FRAME)) { if (last) clock += Math.min(dt, 100) / 1000 * o.speed; last = now; draw(clock); }
       raf = requestAnimationFrame(loop);
     };
     const inst = {
-      pause() { if (o.scroll && visible) { rect = null; return; } if (raf) cancelAnimationFrame(raf); raf = 0; last = 0; rect = null; },
+      moved() { rect = null; },
+      pause() { if (raf) cancelAnimationFrame(raf); raf = 0; last = 0; rect = null; },
       resume() { if (live && visible && !raf) raf = requestAnimationFrame(loop); },
     };
     all.push(inst);

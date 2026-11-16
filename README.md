@@ -18,7 +18,7 @@ Il form di contatto è nella pagina Contattaci; tutte le altre pagine si chiudon
 ## Struttura
 
 - `assets/sito.css` stili del sito: fondo chiaro, impaginazione editoriale, colori e font della brand identity
-- `assets/goo.js` i blocchi del logo che si fondono, reagiscono al cursore e cambiano disegno. Si fermano mentre la pagina scorre (tranne il riquadro delle fasi) e restano fermi se il dispositivo chiede meno animazioni
+- `assets/goo.js` i blocchi del logo che si fondono, reagiscono al cursore e cambiano disegno. Si muovono solo quando sono visibili, rallentano mentre la pagina scorre e restano fermi se il dispositivo chiede meno animazioni
 - `assets/sito.js` menu mobile, copia dell'indirizzo email, statistiche anonime, form di contatto
 - `assets/consent.js` banner dei cookie e caricamento di Google Tag Manager solo con il consenso
 - `src/partials.py` head (SEO, dati strutturati, consenso), menu, form e footer, uguali su tutte le pagine
