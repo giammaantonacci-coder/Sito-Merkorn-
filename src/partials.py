@@ -100,6 +100,10 @@ def jsonld(path, title, description, extra=()):
     return json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False)
 
 
+# link preview image per page (WhatsApp, social networks); the rest use the general one
+OG = {"case-study-kuelle.html": "assets/case/og-kuelle.png", "case-study-mongelli.html": "assets/case/og-mongelli.png"}
+
+
 def head(title, description, path, extra_ld=()):
     full = title if SITE in title else f"{title} | {SITE}"
     url = BASE + "/" + ("" if path == "index.html" else path)
@@ -119,7 +123,8 @@ def head(title, description, path, extra_ld=()):
 <meta property="og:description" content="{description}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{url}">
-<meta property="og:image" content="{BASE}/assets/og-image.png">
+<meta property="og:image" content="{BASE}/{asset(OG.get(path, "assets/og-image.png"))}">
+<meta name="twitter:image" content="{BASE}/{asset(OG.get(path, "assets/og-image.png"))}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="it_IT">
