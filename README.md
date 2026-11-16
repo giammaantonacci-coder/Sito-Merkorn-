@@ -13,15 +13,17 @@ Sito statico di Merkorn. Non serve un server applicativo: basta pubblicare la ca
 | `contattaci.html` | Contattaci |
 | `privacy.html` | Informativa privacy |
 
-Il form di contatto è presente in fondo a ogni pagina e occupa l'intera pagina Contattaci.
+Il form di contatto è nella pagina Contattaci; tutte le altre pagine si chiudono con un invito che porta lì.
 
 ## Struttura
 
-- `assets/style.css` stili condivisi, derivati dalla brand identity
-- `assets/nebula.js` sfondo animato (WebGL, nessuna libreria). Ogni pagina usa una zona diversa della nebula tramite `data-seed` sul `<body>`
-- `assets/site.js` menu mobile, transizione tra pagine, indicatore di sezione, form di contatto
-- `src/partials.py` header, footer e form, uguali su tutte le pagine
+- `assets/sito.css` stili del sito: fondo chiaro, impaginazione editoriale, colori e font della brand identity
+- `assets/goo.js` i blocchi del logo che si fondono, reagiscono al cursore e cambiano disegno. Si fermano mentre la pagina scorre (tranne il riquadro delle fasi) e restano fermi se il dispositivo chiede meno animazioni
+- `assets/sito.js` menu mobile, copia dell'indirizzo email, statistiche anonime, form di contatto
+- `assets/consent.js` banner dei cookie e caricamento di Google Tag Manager solo con il consenso
+- `src/partials.py` head (SEO, dati strutturati, consenso), menu, form e footer, uguali su tutte le pagine
 - `src/build.py` contenuti delle pagine
+- `src/legal.py` testi di privacy e cookie policy
 
 Le pagine HTML si generano con:
 
