@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kuelle Sports Center · Gestionale (demo Merkorn)</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; font-display: swap; src: url(../../assets/fonts/dm-sans.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 100 900; font-display: swap; src: url(../../assets/fonts/inter.woff2) format("woff2"); }
+:root { --bg: #0B0C0A; --side: #101210; --card: #161815; --card2: #1D201B; --line: rgba(255,255,255,.08); --text: #F4F5F1; --muted: #9EA29A; --dim: #6B7066;
+  --lime: #92C22E; --lime2: #B6E04F; --limebg: rgba(146,194,46,.14); --red: #FF6B5E; --redbg: rgba(255,107,94,.13); --amber: #F2B544; --amberbg: rgba(242,181,68,.14);
+  --display: "DM Sans", system-ui, sans-serif; --body: "Inter", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--text); font: 400 13px/1.45 var(--body); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { margin: 0; font-family: var(--display); letter-spacing: -.02em; font-weight: 500; }
+p { margin: 0; }
+.app { display: grid; grid-template-columns: 232px 1fr; min-height: 100vh; }
+/* sidebar */
+.side { background: var(--side); border-right: 1px solid var(--line); padding: 22px 14px; display: flex; flex-direction: column; gap: 4px; }
+.brand { display: flex; align-items: center; gap: 12px; padding: 0 8px 22px; }
+.brand img { width: 46px; height: 46px; border-radius: 50%; box-shadow: 0 0 0 2px #24271F; }
+.brand b { display: block; font: 600 14px/1.2 var(--display); } .brand small { color: var(--lime); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; }
+.side a { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; color: var(--muted); text-decoration: none; font-size: 13.5px; cursor: pointer; }
+.side a svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.side a:hover { color: var(--text); background: var(--card); }
+.side a.on { color: #0B0C0A; background: var(--lime); font-weight: 600; }
+.side a .n { margin-left: auto; min-width: 20px; padding: 2px 7px; border-radius: 999px; background: var(--redbg); color: var(--red); font-size: 11px; font-weight: 600; text-align: center; }
+.side a.on .n { background: rgba(11,12,10,.18); color: #0B0C0A; }
+.side .sep { height: 1px; background: var(--line); margin: 14px 8px; }
+.side .me { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 14px; background: var(--card); }
+.side .me i { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--lime2), #4C6B10); display: grid; place-items: center; font: 600 12px/1 var(--display); color: #0B0C0A; font-style: normal; }
+.side .me b { display: block; font-size: 12.5px; } .side .me small { color: var(--dim); font-size: 11px; }
+/* main */
+main { padding: 24px 28px 34px; min-width: 0; }
+.head { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.head h1 { font-size: 26px; }
+.head p { color: var(--muted); margin-top: 2px; }
+.head .r { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+.seg { display: flex; padding: 4px; border-radius: 12px; background: var(--card); } .seg span { padding: 7px 12px; border-radius: 9px; color: var(--muted); font-size: 12.5px; } .seg span.on { background: var(--card2); color: var(--text); box-shadow: inset 0 0 0 1px var(--line); }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 0; border-radius: 12px; background: var(--lime); color: #0B0C0A; font: 600 13px/1 var(--body); cursor: pointer; }
+.btn.ghost { background: var(--card); color: var(--text); box-shadow: inset 0 0 0 1px var(--line); }
+.btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.search { display: flex; align-items: center; gap: 8px; width: 280px; white-space: nowrap; padding: 10px 14px; border-radius: 12px; background: var(--card); color: var(--dim); }
+.search svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; }
+.grid { display: grid; gap: 14px; }
+.card { background: var(--card); border-radius: 18px; padding: 18px; box-shadow: inset 0 0 0 1px var(--line); min-width: 0; }
+.card h3 { font-size: 15px; } .card .sub { color: var(--dim); font-size: 11.5px; margin-top: 2px; }
+.ch { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.ch a { color: var(--lime); font-size: 12px; text-decoration: none; white-space: nowrap; }
+.kpis { grid-template-columns: repeat(4, 1fr); }
+.kpi small { display: block; color: var(--muted); font-size: 12px; }
+.kpi b { display: block; margin-top: 8px; font: 500 30px/1 var(--display); letter-spacing: -.03em; }
+.kpi em { display: inline-block; margin-top: 10px; font-style: normal; font-size: 11.5px; padding: 3px 8px; border-radius: 999px; background: var(--limebg); color: var(--lime2); }
+.kpi em.dn { background: var(--redbg); color: var(--red); } .kpi em.wa { background: var(--amberbg); color: var(--amber); }
+.kpi.hl { background: var(--lime); color: #0B0C0A; box-shadow: none; } .kpi.hl small { color: rgba(11,12,10,.7); } .kpi.hl em { background: rgba(11,12,10,.14); color: #0B0C0A; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 999px; font-size: 11px; font-weight: 500; white-space: nowrap; background: var(--card2); color: var(--muted); }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill.ok { background: var(--limebg); color: var(--lime2); } .pill.wa { background: var(--amberbg); color: var(--amber); } .pill.ko { background: var(--redbg); color: var(--red); }
+/* timeline */
+.tl { display: grid; grid-template-columns: 120px 1fr; row-gap: 10px; }
+.tl .hours { display: grid; grid-template-columns: repeat(14, 1fr); color: var(--dim); font-size: 10.5px; }
+.tl .lab b { display: block; font-size: 12.5px; font-weight: 600; } .tl .lab small { color: var(--dim); font-size: 11px; }
+.tl .row { position: relative; height: 46px; border-radius: 12px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px calc(100% / 14)); box-shadow: inset 0 0 0 1px var(--line); }
+.slot { position: absolute; top: 5px; bottom: 5px; border-radius: 9px; padding: 5px 8px; font-size: 10.5px; line-height: 1.25; overflow: hidden; background: var(--lime); color: #0B0C0A; font-weight: 600; }
+.slot small { display: block; font-weight: 500; opacity: .75; }
+.slot, .slot small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.slot.wa { background: var(--amber); } .slot.ko { background: transparent; color: var(--red); box-shadow: inset 0 0 0 1.5px var(--red); background-image: repeating-linear-gradient(135deg, rgba(255,107,94,.12) 0 6px, transparent 6px 12px); }
+.slot.lez { background: #E8EBE2; }
+.legend { display: flex; gap: 16px; margin-top: 14px; color: var(--muted); font-size: 11.5px; }
+.legend span { display: flex; align-items: center; gap: 7px; } .legend i { width: 10px; height: 10px; border-radius: 3px; }
+/* bars */
+.bars { display: grid; gap: 14px; }
+.bars div { display: grid; grid-template-columns: 110px 1fr 46px; align-items: center; gap: 12px; font-size: 12.5px; }
+.bars .t { height: 10px; border-radius: 6px; background: var(--card2); overflow: hidden; } .bars .t i { display: block; height: 100%; border-radius: 6px; background: var(--lime); }
+.bars b { text-align: right; font-weight: 600; }
+.wk { display: flex; align-items: flex-end; gap: 10px; height: 150px; margin-top: 6px; }
+.wk div { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end; color: var(--dim); font-size: 11px; }
+.wk span { width: 100%; border-radius: 8px 8px 4px 4px; background: linear-gradient(180deg, var(--lime2), var(--lime)); }
+.wk div.lo span { background: var(--card2); box-shadow: inset 0 0 0 1px var(--line); }
+.wk div.today { color: var(--text); font-weight: 600; }
+/* list */
+.list { display: grid; gap: 8px; }
+.li { display: grid; grid-template-columns: 38px 1fr auto; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--card2); }
+.av { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font: 600 12px/1 var(--display); color: #0B0C0A; background: linear-gradient(135deg, #E8EBE2, #9EA29A); }
+.av.l { background: linear-gradient(135deg, var(--lime2), #5E8414); }
+.av.a { background: linear-gradient(135deg, #FFD88A, var(--amber)); }
+.li b { display: block; font-size: 13px; font-weight: 600; } .li small { color: var(--muted); font-size: 11.5px; }
+/* matches to close */
+.match { padding: 16px; border-radius: 16px; background: var(--card2); box-shadow: inset 0 0 0 1px var(--line); }
+.match.sel { box-shadow: inset 0 0 0 1.5px var(--lime); }
+.match .top { display: flex; align-items: center; gap: 10px; }
+.match .top b { font: 600 14px/1.2 var(--display); }
+.match .top small { color: var(--muted); }
+.match .top .pill { margin-left: auto; }
+.seats { display: flex; gap: 8px; margin-top: 14px; }
+.seat { flex: 1; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 12px; background: var(--card); font-size: 11.5px; min-width: 0; }
+.seat .av { width: 28px; height: 28px; font-size: 10px; flex: none; }
+.seat.free { justify-content: center; color: var(--amber); box-shadow: inset 0 0 0 1.5px rgba(242,181,68,.5); border: 0; background: var(--amberbg); font-weight: 600; }
+.seat span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.match .acts { display: flex; gap: 8px; margin-top: 12px; }
+.lv { display: inline-block; padding: 2px 7px; border-radius: 6px; background: var(--card); color: var(--lime2); font-size: 10.5px; font-weight: 600; margin-left: 6px; }
+.wa-msg { margin-top: 12px; padding: 14px; border-radius: 16px 16px 16px 4px; background: #13261A; box-shadow: inset 0 0 0 1px rgba(146,194,46,.25); font-size: 12.5px; line-height: 1.5; }
+.wa-msg small { display: block; margin-top: 8px; color: var(--dim); font-size: 10.5px; text-align: right; }
+.cand { display: grid; grid-template-columns: 38px 1fr auto auto; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--card2); }
+.cand b { display: block; font-size: 13px; font-weight: 600; } .cand small { color: var(--muted); font-size: 11.5px; }
+.cand .m { color: var(--lime2); font-size: 11.5px; font-weight: 600; }
+.chk { width: 22px; height: 22px; border-radius: 7px; box-shadow: inset 0 0 0 1.5px var(--dim); display: grid; place-items: center; }
+.chk.on { background: var(--lime); box-shadow: none; } .chk.on::after { content: ""; width: 9px; height: 5px; border-left: 2px solid #0B0C0A; border-bottom: 2px solid #0B0C0A; rotate: -45deg; margin-top: -2px; }
+/* table */
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th { padding: 0 10px 10px; text-align: left; color: var(--dim); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+.tbl td { padding: 11px 10px; border-top: 1px solid var(--line); vertical-align: middle; }
+.tbl td.num { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; } .tbl th.num { text-align: right; }
+.tbl .who { display: flex; align-items: center; gap: 10px; } .tbl .who .av { width: 32px; height: 32px; font-size: 11px; }
+.tbl .who b { display: block; font-size: 13px; } .tbl .who small { color: var(--dim); font-size: 11px; }
+.pos { color: var(--lime2); } .neg { color: var(--red); }
+.mini { display: inline-flex; padding: 6px 10px; border-radius: 9px; background: var(--card2); color: var(--text); font-size: 11.5px; font-weight: 600; }
+.mini.l { background: var(--lime); color: #0B0C0A; }
+.shift { display: grid; grid-template-columns: 38px 1fr; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+.shift:first-child { border-top: 0; }
+.shift .bar { position: relative; height: 8px; margin-top: 8px; border-radius: 5px; background: var(--card2); }
+.shift .bar i { position: absolute; top: 0; bottom: 0; border-radius: 5px; background: var(--lime); }
+.shift .bar i.now { box-shadow: 0 0 0 2px rgba(146,194,46,.35); }
+.shift .top { display: flex; justify-content: space-between; gap: 8px; } .shift b { font-size: 13px; } .shift small { color: var(--muted); font-size: 11.5px; }
+.hours2 { display: flex; justify-content: space-between; margin: 8px 0 0 50px; color: var(--dim); font-size: 10.5px; }
+.donut { display: flex; align-items: center; gap: 18px; }
+.donut svg { width: 120px; height: 120px; flex: none; }
+.donut ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 12.5px; }
+.donut li { display: flex; align-items: center; gap: 8px; } .donut li i { width: 10px; height: 10px; border-radius: 3px; } .donut li b { margin-left: 6px; }
+/* screen switch */
+.screen { display: none; } .screen.on { display: block; }
+.demo { position: fixed; right: 16px; bottom: 16px; display: flex; gap: 4px; padding: 5px; border-radius: 999px; background: rgba(22,24,21,.92); box-shadow: inset 0 0 0 1px var(--line), 0 10px 30px rgba(0,0,0,.4); font-size: 11.5px; z-index: 10; }
+.demo button { padding: 7px 12px; border: 0; border-radius: 999px; background: none; color: var(--muted); cursor: pointer; font: inherit; } .demo button.on { background: var(--lime); color: #0B0C0A; font-weight: 600; }
+.demo span { padding: 7px 10px; color: var(--dim); }
+@media print { .demo { display: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><img src="logo.png" alt="Kuelle Sports Center"><div><b>Kuelle</b><small>Sports Center</small></div></div>
+    <a data-go="1" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>Andamento campi</a>
+    <a data-go="2"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Prenotazioni<span class="n">5</span></a>
+    <a data-go="3"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.8-3.6 3.2-5.6 6-5.6s5.2 2 6 5.6"/><path d="M16 4.5a3 3 0 0 1 0 6M18 14.6c1.8.6 3 2.4 3.5 5.4"/></svg>Giocatori e saldi</a>
+    <a data-go="3"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="2.5"/><path d="M9 7V5a3 3 0 0 1 6 0v2M4 12h16"/></svg>Dipendenti</a>
+    <div class="sep"></div>
+    <a><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 5-6"/></svg>Report</a>
+    <a><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Messaggi</a>
+    <a><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>Impostazioni</a>
+    <div class="me"><i>DL</i><div><b>Davide L.</b><small>Reception · in turno</small></div></div>
+  </aside>
+
+  <main>
+    <!-- ============ 1. ANDAMENTO CAMPI ============ -->
+    <section class="screen on" id="s1">
+      <div class="head">
+        <div><h1>Andamento campi</h1><p>Sabato 21 novembre · 4 campi attivi</p></div>
+        <div class="r"><div class="seg"><span class="on">Oggi</span><span>Settimana</span><span>Mese</span></div><button class="btn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nuova prenotazione</button></div>
+      </div>
+      <div class="grid kpis">
+        <div class="card kpi hl"><small>Occupazione di oggi</small><b>78%</b><em>↑ 9% rispetto a sabato scorso</em></div>
+        <div class="card kpi"><small>Incasso di oggi</small><b>€ 1.240</b><em>↑ 14% sulla media</em></div>
+        <div class="card kpi"><small>Prenotazioni</small><b>31</b><em class="wa">5 partite da completare</em></div>
+        <div class="card kpi"><small>Conti aperti</small><b>€ 685</b><em class="dn">12 giocatori da saldare</em></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="ch"><div><h3>Campi oggi</h3><div class="sub">Dalle 9:00 alle 23:00 · le partite incomplete sono in giallo, gli orari liberi in sera sono in rosso</div></div><a href="#">Apri calendario →</a></div>
+        <div class="tl">
+          <span></span><div class="hours"><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span></div>
+          <div class="lab"><b>Padel 1</b><small>Coperto · 90'</small></div>
+          <div class="row"><div class="slot" style="left:0%;width:10.7%">Rossi<small>4/4</small></div><div class="slot lez" style="left:14.3%;width:10.7%">Lezione<small>Maestro Fabio</small></div><div class="slot" style="left:35.7%;width:10.7%">Torneo U16<small>4/4</small></div><div class="slot" style="left:57.1%;width:10.7%">Leone<small>4/4</small></div><div class="slot wa" style="left:67.9%;width:10.7%">Caputo<small>3/4</small></div><div class="slot" style="left:78.6%;width:10.7%">Greco<small>4/4</small></div><div class="slot" style="left:89.3%;width:10.7%">Amico<small>4/4</small></div></div>
+          <div class="lab"><b>Padel 2</b><small>Coperto · 90'</small></div>
+          <div class="row"><div class="slot" style="left:7.1%;width:10.7%">Pace<small>4/4</small></div><div class="slot wa" style="left:32.1%;width:10.7%">Lattarulo<small>2/4</small></div><div class="slot" style="left:53.6%;width:10.7%">Fanelli<small>4/4</small></div><div class="slot wa" style="left:71.4%;width:10.7%">Ostuni<small>3/4</small></div><div class="slot ko" style="left:82.1%;width:10.7%">Libero<small>21:30</small></div></div>
+          <div class="lab"><b>Beach</b><small>Volley · tennis · soccer</small></div>
+          <div class="row"><div class="slot" style="left:21.4%;width:14.3%">Beach tennis<small>Gruppo Sud</small></div><div class="slot wa" style="left:64.3%;width:7.1%">Volley<small>5/8</small></div><div class="slot ko" style="left:78.6%;width:21.4%">Libero<small>dalle 20:00</small></div></div>
+          <div class="lab"><b>Calcio a 5/6</b><small>Sintetico · 60'</small></div>
+          <div class="row"><div class="slot lez" style="left:35.7%;width:14.3%">Scuola calcio<small>Esordienti</small></div><div class="slot" style="left:64.3%;width:7.1%">Amici<small>12/12</small></div><div class="slot wa" style="left:71.4%;width:7.1%">Bar Centrale<small>9/10</small></div><div class="slot" style="left:78.6%;width:7.1%">Calcetto<small>10/10</small></div><div class="slot" style="left:85.7%;width:7.1%">Over 40<small>10/10</small></div></div>
+        </div>
+        <div class="legend"><span><i style="background:var(--lime)"></i>Confermata</span><span><i style="background:var(--amber)"></i>Mancano giocatori</span><span><i style="background:#E8EBE2"></i>Lezioni e scuola</span><span><i style="box-shadow:inset 0 0 0 1.5px var(--red)"></i>Libero in fascia serale</span></div>
+      </div>
+      <div class="grid" style="grid-template-columns:1.2fr 1fr 1fr;margin-top:14px">
+        <div class="card"><div class="ch"><div><h3>Ore prenotate</h3><div class="sub">Ultimi 7 giorni, tutti i campi</div></div></div>
+          <div class="wk"><div class="lo"><span style="height:46%"></span>Dom</div><div class="lo"><span style="height:38%"></span>Lun</div><div><span style="height:58%"></span>Mar</div><div><span style="height:64%"></span>Mer</div><div><span style="height:71%"></span>Gio</div><div><span style="height:86%"></span>Ven</div><div class="today"><span style="height:94%"></span>Sab</div></div></div>
+        <div class="card"><div class="ch"><div><h3>Occupazione per campo</h3><div class="sub">Media del mese</div></div></div>
+          <div class="bars"><div><span>Padel 1</span><span class="t"><i style="width:88%"></i></span><b>88%</b></div><div><span>Padel 2</span><span class="t"><i style="width:81%"></i></span><b>81%</b></div><div><span>Calcio a 5/6</span><span class="t"><i style="width:64%"></i></span><b>64%</b></div><div><span>Beach</span><span class="t"><i style="width:37%;background:var(--amber)"></i></span><b>37%</b></div></div>
+          <p style="margin-top:16px;color:var(--muted);font-size:12px">Il beach è libero il 63% delle sere: proponi un torneo il giovedì.</p></div>
+        <div class="card"><div class="ch"><div><h3>Incasso per attività</h3><div class="sub">Novembre</div></div></div>
+          <div class="donut"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#1D201B" stroke-width="6"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#92C22E" stroke-width="6" stroke-dasharray="58 42" stroke-dashoffset="25"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#E8EBE2" stroke-width="6" stroke-dasharray="27 73" stroke-dashoffset="-33"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#F2B544" stroke-width="6" stroke-dasharray="15 85" stroke-dashoffset="-60"/><text x="21" y="20" text-anchor="middle" fill="#F4F5F1" font-size="6" font-family="DM Sans" font-weight="600">€ 18,4k</text><text x="21" y="26" text-anchor="middle" fill="#6B7066" font-size="3">questo mese</text></svg>
+            <ul><li><i style="background:var(--lime)"></i>Padel<b>58%</b></li><li><i style="background:#E8EBE2"></i>Calcio<b>27%</b></li><li><i style="background:var(--amber)"></i>Beach<b>15%</b></li></ul></div></div>
+      </div>
+    </section>
+
+    <!-- ============ 2. PRENOTAZIONI E PARTITE DA CHIUDERE ============ -->
+    <section class="screen" id="s2">
+      <div class="head">
+        <div><h1>Partite da chiudere</h1><p>5 partite di oggi aspettano giocatori · invita chi ha il livello giusto ed è libero</p></div>
+        <div class="r"><div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>Cerca giocatore o prenotazione</div><button class="btn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nuova prenotazione</button></div>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1.05fr">
+        <div class="grid" style="align-content:start">
+          <div class="match sel"><div class="top"><div><b>Padel 2 · 14:30</b><small> · 90' · livello 3.0</small></div><span class="pill wa">Mancano 2</span></div>
+            <div class="seats"><div class="seat"><span class="av l">AL</span><span>A. Lattarulo</span></div><div class="seat"><span class="av">MD</span><span>M. De Carlo</span></div><div class="seat free">+ Posto libero</div><div class="seat free">+ Posto libero</div></div>
+            <div class="acts"><button class="btn" style="flex:1;justify-content:center">Invita 2 giocatori</button><button class="btn ghost">Apri partita</button></div></div>
+          <div class="match"><div class="top"><div><b>Padel 1 · 18:30</b><small> · 90' · livello 2.5</small></div><span class="pill wa">Manca 1</span></div>
+            <div class="seats"><div class="seat"><span class="av l">GC</span><span>G. Caputo</span></div><div class="seat"><span class="av a">FS</span><span>F. Semeraro</span></div><div class="seat"><span class="av">LP</span><span>L. Palmisano</span></div><div class="seat free">+ Posto libero</div></div></div>
+          <div class="match"><div class="top"><div><b>Padel 2 · 20:00</b><small> · 90' · livello 3.5</small></div><span class="pill wa">Manca 1</span></div>
+            <div class="seats"><div class="seat"><span class="av">VO</span><span>V. Ostuni</span></div><div class="seat"><span class="av l">RT</span><span>R. Tarantino</span></div><div class="seat"><span class="av a">SM</span><span>S. Marangi</span></div><div class="seat free">+ Posto libero</div></div></div>
+          <div class="match"><div class="top"><div><b>Beach volley · 18:00</b><small> · 60' · 4 contro 4</small></div><span class="pill wa">Mancano 3</span></div>
+            <div class="seats"><div class="seat"><span class="av">GM</span><span>Gruppo Mininni</span></div><div class="seat"><span class="av l">+4</span><span>5 di 8 iscritti</span></div><div class="seat free">+ 3 posti</div></div></div>
+          <div class="match"><div class="top"><div><b>Calcio a 5 · 19:00</b><small> · 60' · Bar Centrale</small></div><span class="pill wa">Manca 1</span></div>
+            <div class="seats"><div class="seat"><span class="av a">BC</span><span>Bar Centrale</span></div><div class="seat"><span class="av">+8</span><span>9 di 10 confermati</span></div><div class="seat free">+ 1 posto</div></div></div>
+        </div>
+        <div class="grid" style="align-content:start">
+          <div class="card"><div class="ch"><div><h3>Chi invitare per Padel 2 · 14:30</h3><div class="sub">Livello 2.5–3.5, liberi oggi pomeriggio, giocano di solito il sabato</div></div><span class="pill ok">8 compatibili</span></div>
+            <div class="list">
+              <div class="cand"><span class="av l">NP</span><div><b>Nicola Pace</b><small>Livello 3.0 · 14 partite al mese</small></div><span class="m">98% adatto</span><span class="chk on"></span></div>
+              <div class="cand"><span class="av">CF</span><div><b>Chiara Fanelli</b><small>Livello 3.0 · ha già giocato con Lattarulo</small></div><span class="m">94% adatto</span><span class="chk on"></span></div>
+              <div class="cand"><span class="av a">DL</span><div><b>Dario Leone</b><small>Livello 3.5 · libero dalle 14</small></div><span class="m">88% adatto</span><span class="chk"></span></div>
+              <div class="cand"><span class="av">MG</span><div><b>Martina Greco</b><small>Livello 2.5 · cerca partite il sabato</small></div><span class="m">81% adatto</span><span class="chk"></span></div>
+            </div></div>
+          <div class="card"><div class="ch"><div><h3>Messaggio WhatsApp</h3><div class="sub">Inviato ai 2 giocatori selezionati · chi risponde per primo entra in partita</div></div></div>
+            <div class="wa-msg">Ciao Nicola! 🎾 Oggi alle <b>14:30</b> sul <b>Padel 2</b> manca un giocatore per una partita di livello 3.0 con Antonio e Marco. Ti unisci? Rispondi <b>SÌ</b> per confermare il posto: la quota di € 10 va sul tuo credito.<small>Kuelle Sports Center · adesso</small></div>
+            <div class="acts" style="display:flex;gap:8px;margin-top:14px"><button class="btn" style="flex:1;justify-content:center"><svg viewBox="0 0 24 24"><path d="M4 20l1.4-4A8 8 0 1 1 8 18.6z"/></svg>Invia su WhatsApp</button><button class="btn ghost">Modifica testo</button></div></div>
+          <div class="card"><div class="ch"><div><h3>Risposte di oggi</h3></div><a href="#">Tutte →</a></div>
+            <div class="list"><div class="li"><span class="av l">RT</span><div><b>Rocco Tarantino ha confermato</b><small>Padel 2 · 20:00 · 3 minuti fa</small></div><span class="pill ok">Entrato</span></div>
+              <div class="li"><span class="av">AV</span><div><b>Angela Vinci non è disponibile</b><small>Padel 1 · 18:30 · 12 minuti fa</small></div><span class="pill">Rifiutato</span></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3. GIOCATORI, SALDI E DIPENDENTI ============ -->
+    <section class="screen" id="s3">
+      <div class="head">
+        <div><h1>Giocatori e saldi</h1><p>412 giocatori · crediti ricaricati e conti da saldare in un unico posto</p></div>
+        <div class="r"><div class="seg"><span class="on">Tutti</span><span>Conto aperto</span><span>Con credito</span></div><button class="btn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Ricarica credito</button></div>
+      </div>
+      <div class="grid kpis">
+        <div class="card kpi"><small>Credito dei giocatori</small><b>€ 3.920</b><em>↑ € 640 ricaricati questa settimana</em></div>
+        <div class="card kpi"><small>Conti aperti</small><b>€ 685</b><em class="dn">12 giocatori · 3 da più di 30 giorni</em></div>
+        <div class="card kpi"><small>Incassato oggi</small><b>€ 1.240</b><em>62% da credito, 38% in cassa</em></div>
+        <div class="card kpi hl"><small>Solleciti inviati</small><b>9</b><em>4 saldati dopo il messaggio</em></div>
+      </div>
+      <div class="grid" style="grid-template-columns:1.55fr 1fr;margin-top:14px">
+        <div class="card"><div class="ch"><div><h3>Saldi dei giocatori</h3><div class="sub">Prima chi deve saldare da più tempo</div></div><a href="#">Esporta →</a></div>
+          <table class="tbl">
+            <tr><th>Giocatore</th><th>Ultima partita</th><th>Stato</th><th class="num">Saldo</th><th></th></tr>
+            <tr><td><div class="who"><span class="av a">FS</span><div><b>Francesco Semeraro</b><small>Padel · livello 2.5</small></div></div></td><td>2 ottobre</td><td><span class="pill ko">Da 48 giorni</span></td><td class="num neg">− € 120,00</td><td><span class="mini">Sollecita</span></td></tr>
+            <tr><td><div class="who"><span class="av">GM</span><div><b>Gruppo Mininni</b><small>Beach volley</small></div></div></td><td>14 ottobre</td><td><span class="pill ko">Da 36 giorni</span></td><td class="num neg">− € 96,00</td><td><span class="mini">Sollecita</span></td></tr>
+            <tr><td><div class="who"><span class="av a">BC</span><div><b>Bar Centrale</b><small>Calcio a 5 · squadra</small></div></div></td><td>Ieri</td><td><span class="pill wa">Quota parziale</span></td><td class="num neg">− € 35,00</td><td><span class="mini">Sollecita</span></td></tr>
+            <tr><td><div class="who"><span class="av">LP</span><div><b>Luca Palmisano</b><small>Padel · livello 2.5</small></div></div></td><td>Oggi</td><td><span class="pill wa">Da saldare oggi</span></td><td class="num neg">− € 10,00</td><td><span class="mini">Incassa</span></td></tr>
+            <tr><td><div class="who"><span class="av l">NP</span><div><b>Nicola Pace</b><small>Padel · livello 3.0</small></div></div></td><td>Oggi</td><td><span class="pill ok">Credito</span></td><td class="num pos">+ € 85,00</td><td><span class="mini l">Ricarica</span></td></tr>
+            <tr><td><div class="who"><span class="av l">CF</span><div><b>Chiara Fanelli</b><small>Padel · livello 3.0</small></div></div></td><td>Giovedì</td><td><span class="pill ok">Credito</span></td><td class="num pos">+ € 42,50</td><td><span class="mini l">Ricarica</span></td></tr>
+            <tr><td><div class="who"><span class="av">RT</span><div><b>Rocco Tarantino</b><small>Padel · livello 3.5</small></div></div></td><td>Oggi</td><td><span class="pill ok">Credito</span></td><td class="num pos">+ € 20,00</td><td><span class="mini l">Ricarica</span></td></tr>
+          </table></div>
+        <div class="grid" style="align-content:start">
+          <div class="card"><div class="ch"><div><h3>Dipendenti in turno</h3><div class="sub">Oggi, dalle 9 alle 24</div></div><a href="#">Turni →</a></div>
+            <div class="shift"><span class="av l">DL</span><div><div class="top"><b>Davide L. · Reception</b><small>14:00–23:00</small></div><div class="bar"><i class="now" style="left:33%;width:60%"></i></div></div></div>
+            <div class="shift"><span class="av">FA</span><div><div class="top"><b>Fabio A. · Maestro padel</b><small>10:00–13:00 · 17–19</small></div><div class="bar"><i style="left:7%;width:20%"></i><i class="now" style="left:53%;width:13%"></i></div></div></div>
+            <div class="shift"><span class="av a">SC</span><div><div class="top"><b>Sara C. · Bar e cassa</b><small>9:00–15:00</small></div><div class="bar"><i style="left:0;width:40%"></i></div></div></div>
+            <div class="shift"><span class="av">MR</span><div><div class="top"><b>Michele R. · Manutenzione</b><small>8:00–12:00</small></div><div class="bar"><i style="left:0;width:20%;background:var(--dim)"></i></div></div></div>
+            <div class="hours2"><span>9</span><span>12</span><span>15</span><span>18</span><span>21</span><span>24</span></div></div>
+          <div class="card"><div class="ch"><div><h3>Ultimi movimenti</h3></div><a href="#">Cassa →</a></div>
+            <div class="list">
+              <div class="li"><span class="av l">NP</span><div><b>Ricarica credito</b><small>Nicola Pace · carta · Davide L.</small></div><b class="pos">+ € 50</b></div>
+              <div class="li"><span class="av">RT</span><div><b>Quota partita da credito</b><small>Rocco Tarantino · Padel 2 · 20:00</small></div><b class="neg">− € 10</b></div>
+              <div class="li"><span class="av a">BC</span><div><b>Acconto squadra</b><small>Bar Centrale · contanti · Sara C.</small></div><b class="pos">+ € 25</b></div>
+            </div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<nav class="demo" aria-label="Schermate della demo"><span>Demo Merkorn</span><button class="on" data-go="1">1 · Campi</button><button data-go="2">2 · Prenotazioni</button><button data-go="3">3 · Saldi e dipendenti</button></nav>
+<script>
+const go = n => {
+  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === 's' + n));
+  document.querySelectorAll('.demo button').forEach(b => b.classList.toggle('on', b.dataset.go === String(n)));
+  document.querySelectorAll('.side a[data-go]').forEach((a, i) => a.classList.toggle('on', a.dataset.go === String(n) && (n !== 3 || i === 2)));
+  history.replaceState(null, '', '#' + n);
+};
+document.querySelectorAll('[data-go]').forEach(el => el.addEventListener('click', () => go(+el.dataset.go)));
+const h = +location.hash.slice(1); if (h >= 1 && h <= 3) go(h);
+</script>
+</body>
+</html>
