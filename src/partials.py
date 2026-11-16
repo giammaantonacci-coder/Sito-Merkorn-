@@ -146,7 +146,7 @@ def nav(current):
   <header class="top">
     <a class="logo" href="index.html" aria-label="Merkorn, pagina iniziale">{MARK}Merkorn</a>
     <nav class="caps" id="menu" aria-label="Pagine">{links}</nav>
-    <a class="btn nav-cta" href="contattaci.html"><span class="l">Prenota un appuntamento</span><span class="s">Prenota</span></a>
+    <a class="btn nav-cta" href="contattaci.html"><span class="l">Prenota un appuntamento</span><span class="s">Contattaci</span></a>
     <button class="burger" type="button" aria-label="Apri il menu" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
   </header>"""
 
