@@ -46,8 +46,8 @@ MARK = '<span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i
 
 FAVICON = (
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 32'%3E"
-    "%3Crect width='50' height='32' rx='6' fill='%23100E13'/%3E"
-    "%3Cg fill='%239747FF'%3E%3Crect x='21' y='4' width='8' height='8' rx='2'/%3E"
+    "%3Crect width='50' height='32' rx='6' fill='%23000'/%3E"
+    "%3Cg fill='%23fff'%3E%3Crect x='21' y='4' width='8' height='8' rx='2'/%3E"
     "%3Crect x='13' y='12' width='8' height='8' rx='2'/%3E%3Crect x='29' y='12' width='8' height='8' rx='2'/%3E"
     "%3Crect x='5' y='20' width='8' height='8' rx='2'/%3E%3Crect x='37' y='20' width='8' height='8' rx='2'/%3E%3C/g%3E%3C/svg%3E"
 )
@@ -124,9 +124,9 @@ def head(title, description, path, extra_ld=()):
 <meta property="og:locale" content="it_IT">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#FFFFFF">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="/assets/favicon-48.png" sizes="48x48" type="image/png">
-<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="icon" href="/{asset('favicon.svg')}" type="image/svg+xml">
+<link rel="icon" href="/{asset('assets/favicon-48.png')}" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/{asset('assets/apple-touch-icon.png')}">
 <link rel="preload" href="/assets/fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{asset('assets/sito.css')}">
