@@ -208,6 +208,54 @@ p { margin: 0; }
 .partner .g { width: 110px; height: 110px; }
 @media (max-width: 860px) { .partner { grid-template-columns: 1fr; gap: 14px; } .partner .g { width: 80px; height: 80px; } }
 
+/* ---- numbered list and columns ---- */
+.list { margin-top: 30px; border-top: 1px solid var(--line); }
+.list .item { display: grid; grid-template-columns: 90px 1fr 1.4fr; gap: 30px; align-items: start; padding: 28px 0; border-bottom: 1px solid var(--line); }
+.list .item > div { display: contents; }
+.list .n { font: 500 14px/1 var(--display); color: var(--accent); padding-top: 8px; }
+.list h3 { font-size: clamp(22px, 2.4vw, 30px); line-height: 1.1; font-weight: 500; }
+.list p { color: var(--muted); max-width: 52ch; }
+.cols { display: grid; grid-template-columns: repeat(var(--c, 3), 1fr); gap: 20px; margin-top: 40px; }
+.cols > div { padding: 0 10px 0 20px; border-left: 1px solid var(--line); }
+.cols .caps { color: var(--accent); }
+.cols h3 { margin-top: 26px; font-size: 21px; line-height: 1.2; font-weight: 500; letter-spacing: -.02em; }
+.cols p { margin-top: 10px; font-size: 13.5px; color: var(--muted); }
+@media (max-width: 860px) {
+  .list .item { grid-template-columns: 40px 1fr; gap: 10px 16px; } .list .item p { grid-column: 2; }
+  .cols { grid-template-columns: 1fr 1fr; row-gap: 36px; }
+}
+@media (max-width: 560px) { .cols { grid-template-columns: 1fr; } }
+
+/* ---- case study ---- */
+.frame { margin: 0; border-radius: 18px; overflow: hidden; background: #0B0C0A; box-shadow: 0 0 0 1px var(--line), 0 30px 70px rgba(13,12,16,.18); }
+.frame img { display: block; width: 100%; height: auto; }
+.case-teaser { display: grid; grid-template-columns: 1.6fr 1fr; gap: 40px; align-items: center; padding-top: 30px; }
+.case-teaser .frame { transition: transform .5s; } .case-teaser:hover .frame { transform: translateY(-4px); }
+.case-teaser .caps { color: var(--accent); }
+.case-teaser p { margin: 14px 0 24px; font: 500 clamp(20px, 2vw, 26px)/1.25 var(--display); letter-spacing: -.02em; }
+.case-client { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; padding-top: 30px; align-items: start; }
+.case-client img { width: 140px; height: 140px; border-radius: 50%; box-shadow: 0 0 0 1px var(--line); }
+.facts { list-style: none; padding: 0; margin: 36px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.facts li { padding-left: 18px; border-left: 1px solid var(--line); color: var(--muted); font-size: 13.5px; }
+.facts b { display: block; margin-bottom: 8px; font: 500 clamp(40px, 4.4vw, 60px)/1 var(--display); letter-spacing: -.05em; color: var(--ink); }
+.case-screens { display: grid; gap: clamp(60px, 8vw, 110px); padding-top: 40px; }
+.case-screen { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: center; }
+.case-screen:nth-child(even) .txt { order: 2; }
+.case-screen .caps { color: var(--accent); }
+.case-screen h3 { margin-top: 14px; font-size: clamp(26px, 2.8vw, 38px); line-height: 1.05; font-weight: 500; }
+.case-screen p { margin-top: 14px; color: var(--muted); }
+.case-screen ul { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 8px; }
+.case-screen li { display: flex; gap: 10px; align-items: baseline; font-size: 14px; }
+.case-screen li::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 2.5px; background: var(--accent); translate: 0 -1px; }
+.solves { display: inline-block; margin-top: 22px; padding: 7px 12px; border-radius: 10px; background: var(--bg2); font-size: 12px; font-weight: 500; }
+.case-note { margin-top: 50px; font-size: 13px; color: var(--muted); }
+@media (max-width: 860px) {
+  .case-teaser, .case-client, .case-screen { grid-template-columns: 1fr; gap: 24px; }
+  .case-screen:nth-child(even) .txt { order: 0; }
+  .facts { grid-template-columns: 1fr; gap: 18px; }
+  .case-client img { width: 100px; height: 100px; }
+}
+
 /* ---- faq and contact details ---- */
 .faq summary h3 { margin: 0; font: inherit; letter-spacing: inherit; }
 .info output { display: block; margin-top: 8px; font: 500 20px/1.35 var(--display); letter-spacing: -.02em; }

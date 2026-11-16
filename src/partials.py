@@ -38,6 +38,7 @@ LEGAL = "Merkorn S.r.l.s. · P.IVA 03494760733 · Via Carlo Alberto della Chiesa
 NAV = [
     ("servizi.html", "Servizi"),
     ("metodo.html", "Metodo"),
+    ("case-study.html", "Case study"),
     ("chi-siamo.html", "Chi siamo"),
     ("contattaci.html", "Contatti"),
 ]
