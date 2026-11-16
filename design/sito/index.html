@@ -58,11 +58,10 @@
   .caption .hide-m { display: none; }
 }
 
-.split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
-.sticky { position: relative; top: auto; height: auto; aspect-ratio: 1 / 1.08; min-width: 0; }
+.split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.sticky { min-width: 0; }
 @media (max-width: 860px) { .split { grid-template-columns: minmax(0, 1fr); } }
-.steps > div { opacity: 1; min-height: 0; padding: 34px 0; }
-@media (max-width: 860px) { .sticky { height: auto; padding: 0; } .steps > div { min-height: 0; } }
+
 .end h2 { font-size: clamp(54px, 8.4vw, 140px); }
 .top nav a[aria-current] { color: var(--accent); }
 .burger { display: none; width: 40px; height: 40px; border: 0; border-radius: 12px; background: var(--ink); cursor: pointer; }
@@ -162,7 +161,7 @@
   <section class="sec" style="padding-top:clamp(60px,8vw,100px)">
     <div class="sh"><span class="caps">02 / Metodo</span><h2>Quattro fasi, un disegno che cambia.</h2></div>
     <div class="split">
-      <div class="sticky"><div class="g" id="stickyGoo" aria-hidden="true"></div><div class="caption caps"><span>Fasi</span><span>01 — 04</span><i></i><span>Merkorn</span></div></div>
+      <div class="sticky"><div class="g" id="stickyGoo" aria-hidden="true"></div><div class="caption caps"><span>Fase</span><span id="patLabel">01</span><i></i><span>Merkorn</span></div></div>
       <div class="steps"><div data-pat="mosaic" data-n="01"><b>Fase 01</b><h3>Capiamo come lavori</h3><p>Studiamo i tuoi processi e troviamo dove si può guadagnare tempo.</p></div><div data-pat="drops" data-n="02"><b>Fase 02</b><h3>Partiamo da basi solide</h3><p>Moduli già collaudati per partire veloci e investire dove serve davvero.</p></div><div data-pat="wave" data-n="03"><b>Fase 03</b><h3>Costruiamo su misura</h3><p>Le funzioni specifiche della tua azienda, rilasciate una alla volta.</p></div><div data-pat="logo" data-n="04"><b>Fase 04</b><h3>Rendiamo i dati leggibili</h3><p>Schermate chiare che mostrano subito quello che conta.</p></div></div>
     </div>
   </section>
@@ -180,5 +179,14 @@
 <script src="goo.js"></script>
 <script>document.querySelector('.burger').addEventListener('click', e => { const t = e.currentTarget.closest('.top'), o = t.classList.toggle('open'); e.currentTarget.setAttribute('aria-expanded', o); });</script>
 <script>Goo(document.getElementById('heroGoo'), { cols: 5, rows: 6, pattern: 'cycle', cursor: true, accent: [[3, 4]] });</script>
-<script>Goo(document.getElementById('stickyGoo'), { cols: 7, rows: 7, pattern: 'cycle', cursor: true });</script>
+<script>
+// the sticky grid changes pattern as each phase scrolls into view
+(() => {
+  const box = document.getElementById('stickyGoo'); if (!box) return;
+  const g = Goo(box, { cols: 7, rows: 7, pattern: 'mosaic', cursor: true, scroll: true });
+  const steps = [...document.querySelectorAll('[data-pat]')], label = document.getElementById('patLabel');
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { g.setPattern(e.target.dataset.pat); steps.forEach(s => s.classList.toggle('on', s === e.target)); if (label) label.textContent = e.target.dataset.n; } }), { rootMargin: '-45% 0px -45% 0px' });
+  steps.forEach(s => io.observe(s));
+})();
+</script>
 </body></html>

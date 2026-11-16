@@ -35,7 +35,7 @@
   addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
 
   window.Goo = function (el, opt = {}) {
-    const o = Object.assign({ cols: 6, rows: 6, pattern: 'cycle', cursor: true, animate: true, fill: .74, radius: .3, accent: [], speed: 1, gap: .07 }, opt);
+    const o = Object.assign({ cols: 6, rows: 6, pattern: 'cycle', cursor: true, animate: true, scroll: false, fill: .74, radius: .3, accent: [], speed: 1, gap: .07 }, opt);
     const css = getComputedStyle(el);
     const color = o.color || css.getPropertyValue('--goo').trim() || '#100E13';
     const accentColor = o.accentColor || css.getPropertyValue('--accent').trim() || '#9747FF';
@@ -101,13 +101,13 @@
     let visible = true, raf = 0, last = 0;
     const loop = now => {
       raf = 0;
-      if (!visible || scrolling) return;
+      if (!visible || (scrolling && !o.scroll)) return;
       const dt = now - last;
       if (dt >= FRAME) { if (last) clock += Math.min(dt, 100) / 1000 * o.speed; last = now; draw(clock); }
       raf = requestAnimationFrame(loop);
     };
     const inst = {
-      pause() { if (raf) cancelAnimationFrame(raf); raf = 0; last = 0; rect = null; },
+      pause() { if (o.scroll && visible) { rect = null; return; } if (raf) cancelAnimationFrame(raf); raf = 0; last = 0; rect = null; },
       resume() { if (live && visible && !raf) raf = requestAnimationFrame(loop); },
     };
     all.push(inst);

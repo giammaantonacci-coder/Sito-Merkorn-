@@ -58,11 +58,10 @@
   .caption .hide-m { display: none; }
 }
 
-.split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
-.sticky { position: relative; top: auto; height: auto; aspect-ratio: 1 / 1.08; min-width: 0; }
+.split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.sticky { min-width: 0; }
 @media (max-width: 860px) { .split { grid-template-columns: minmax(0, 1fr); } }
-.steps > div { opacity: 1; min-height: 0; padding: 34px 0; }
-@media (max-width: 860px) { .sticky { height: auto; padding: 0; } .steps > div { min-height: 0; } }
+
 .end h2 { font-size: clamp(54px, 8.4vw, 140px); }
 .top nav a[aria-current] { color: var(--accent); }
 .burger { display: none; width: 40px; height: 40px; border: 0; border-radius: 12px; background: var(--ink); cursor: pointer; }
