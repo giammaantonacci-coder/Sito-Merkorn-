@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="it" class="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta D · Merkorn</title><meta name="robots" content="noindex">
+<link rel="stylesheet" href="base.css"><style>
+.wrap { width: min(1200px, 100% - 32px); margin: 0 auto; }
+.nav { position: sticky; top: 12px; z-index: 20; display: flex; align-items: center; gap: 20px; margin-top: 12px; padding: 8px 8px 8px 20px; border-radius: 18px; background: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: inset 0 0 0 1px var(--line); }
+.nav .logo { display: flex; align-items: center; gap: 10px; margin-right: auto; font: 600 15px/1 var(--display); }
+.nav nav { display: flex; gap: 26px; margin-right: auto; font-size: 13px; color: var(--muted); } .nav nav a:hover { color: var(--ink); }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 20px; border-radius: 12px; background: var(--accent); color: #fff; font: 600 13.5px/1 var(--body); box-shadow: 0 10px 26px rgba(151,71,255,.3); transition: transform .3s; }
+.btn:hover { transform: translateY(-2px); }
+.btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.hero { text-align: center; padding: clamp(60px, 8vw, 100px) 0 0; }
+.tag { display: inline-flex; align-items: center; gap: 10px; padding: 6px 12px 6px 6px; border-radius: 999px; font-size: 12.5px; box-shadow: inset 0 0 0 1px var(--line); }
+.tag b { width: 22px; height: 22px; }
+.hero h1 { margin: 24px auto 0; max-width: 14ch; font-size: clamp(46px, 6.6vw, 92px); line-height: .98; font-weight: 600; }
+.hero h1 span { color: var(--accent); }
+.hero p { margin: 20px auto 0; max-width: 50ch; color: var(--muted); font-size: 16.5px; }
+.hero .acts { display: flex; justify-content: center; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+.band { height: clamp(220px, 26vw, 340px); margin-top: 56px; cursor: crosshair; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 30px; }
+.stat { display: flex; align-items: center; gap: 18px; padding: 22px; border-radius: 22px; background: var(--card); }
+.stat .g { width: 58px; height: 58px; flex: none; }
+.stat b { display: block; font: 600 30px/1 var(--display); letter-spacing: -.04em; } .stat span { display: block; margin-top: 4px; font-size: 13px; color: var(--muted); }
+.sec { padding-top: clamp(90px, 11vw, 140px); }
+.sh { text-align: center; } .sh small { font: 600 11px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+.sh h2 { margin: 16px auto 0; max-width: 18ch; font-size: clamp(34px, 4.4vw, 58px); line-height: 1.02; font-weight: 600; }
+.bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 46px; }
+.card { position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 300px; padding: 26px; border-radius: 26px; background: var(--card); transition: transform .3s; }
+.card:hover { transform: translateY(-4px); }
+.card.wide { grid-column: span 2; }
+.card .bg { position: absolute; right: -20px; top: -20px; width: 60%; height: 70%; opacity: .9; }
+.card.wide .bg { width: 46%; height: 100%; right: 0; top: 0; }
+.card h3 { position: relative; margin-top: auto; font-size: 24px; font-weight: 600; letter-spacing: -.03em; }
+.card p { position: relative; margin-top: 8px; font-size: 13.5px; color: var(--muted); max-width: 32ch; }
+.card .n { position: relative; font: 600 12px/1 var(--display); color: var(--accent); }
+.card.v { background: var(--accent); color: #fff; } .card.v p { color: rgba(255,255,255,.8); } .card.v .n { color: #fff; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 50px; }
+.sticky { position: sticky; top: 14vh; height: 72vh; border-radius: 28px; background: var(--card); padding: 26px; display: flex; flex-direction: column; }
+.sticky .g { flex: 1; cursor: crosshair; }
+.sticky .lbl { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); } .sticky .lbl b { color: var(--accent); font-weight: 600; }
+.steps > div { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; opacity: .35; transition: opacity .4s; }
+.steps > div.on { opacity: 1; }
+.steps b { display: inline-block; padding: 6px 12px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); font: 600 12px/1 var(--body); align-self: flex-start; }
+.steps h3 { margin-top: 18px; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.02; font-weight: 600; }
+.steps p { margin-top: 12px; max-width: 36ch; color: var(--muted); }
+.cta { position: relative; overflow: hidden; margin-top: clamp(90px, 11vw, 140px); border-radius: 32px; padding: clamp(50px, 7vw, 90px) clamp(26px, 5vw, 60px); background: var(--ink); color: var(--bg); }
+.cta .g { position: absolute; right: -2%; top: 0; bottom: 0; width: 52%; }
+.cta h2 { position: relative; max-width: 12ch; font-size: clamp(40px, 5.4vw, 74px); line-height: .98; font-weight: 600; }
+.cta p { position: relative; margin-top: 18px; max-width: 38ch; opacity: .7; }
+.cta .btn { position: relative; margin-top: 28px; }
+footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 34px 0 80px; font-size: 12.5px; color: var(--muted); }
+@media (max-width: 860px) {
+  .nav nav { display: none; }
+  .stats, .bento, .split { grid-template-columns: 1fr; } .card.wide { grid-column: auto; }
+  .sticky { top: 70px; height: 40vh; z-index: 2; }
+  .steps > div { min-height: 50vh; }
+  .cta .g { width: 100%; opacity: .35; }
+}
+</style></head>
+<body>
+<div class="wrap">
+  <header class="nav"><a class="logo" href="index.html"><span class="mark"><i></i><i></i><i></i><i></i><i></i></span>Merkorn</a><nav><a href="#servizi">Servizi</a><a href="#metodo">Come lavoriamo</a><a href="#">Chi siamo</a><a href="#contatti">Contatti</a></nav><a class="btn" href="#contatti">Prenota</a></header>
+  <section class="hero">
+    <span class="tag"><b data-goo="breathe" data-cols="2" data-rows="2" data-speed="1.4"></b>Software house a Mottola, in Puglia</span>
+    <h1>Dati chiari. <span>Decisioni migliori.</span></h1>
+    <p>Gestionali su misura che mettono in ordine ordini, magazzino e produzione. Vedi tutto in un colpo d'occhio e decidi prima.</p>
+    <div class="acts"><a class="btn" href="#contatti">Prenota un appuntamento</a><a class="btn ghost" href="#metodo">Come lavoriamo</a></div>
+  </section>
+  <div class="band" id="heroGoo" aria-hidden="true"></div>
+  <div class="stats">
+    <div class="stat"><div class="g" data-goo="logo" data-cols="5" data-rows="3" data-static="1"></div><div><b>01</b><span>Un sistema per tutta l'azienda</span></div></div>
+    <div class="stat"><div class="g" data-goo="checker" data-cols="2" data-rows="2" data-static="1"></div><div><b>04</b><span>Fasi di lavoro chiare</span></div></div>
+    <div class="stat"><div class="g" data-goo="drops" data-cols="3" data-rows="3" data-static="1"></div><div><b>100%</b><span>Costruito sui tuoi processi</span></div></div>
+  </div>
+  <section class="sec" id="servizi"><div class="sh"><small>Servizi</small><h2>Ogni pezzo dell'azienda, collegato.</h2></div><div class="bento"><div class="card wide"><span class="n">01</span><div class="bg" data-goo="checker" data-cols="6" data-rows="4" data-cursor="1" data-speed=".7" aria-hidden="true"></div><h3>Gestionale su misura</h3><p>Ordini, magazzino, produzione e commesse in un unico sistema.</p></div><div class="card v"><span class="n">02</span><div class="bg" data-goo="rings" data-cols="4" data-rows="4" data-cursor="1" data-speed=".7" aria-hidden="true"></div><h3>Analisi dei processi</h3><p>Una fotografia chiara di come lavori oggi e delle priorità per crescere.</p></div><div class="card"><span class="n">03</span><div class="bg" data-goo="diag" data-cols="4" data-rows="4" data-cursor="1" data-speed=".7" aria-hidden="true"></div><h3>App per le consegne</h3><p>I dati del magazzino e delle consegne, subito visibili in ufficio.</p></div><div class="card wide"><span class="n">04</span><div class="bg" data-goo="breathe" data-cols="6" data-rows="4" data-cursor="1" data-speed=".7" aria-hidden="true"></div><h3>Assistenza ed evoluzione</h3><p>Il gestionale cresce con la tua azienda, seguito dallo stesso team.</p></div><div class="card"><span class="n">05</span><div class="bg" data-goo="logo" data-cols="5" data-rows="3" data-cursor="1" aria-hidden="true"></div><h3>Mottola, Puglia</h3><p>Prima veniamo a vedere come lavori.</p></div></div></section>
+  <section class="sec" id="metodo"><div class="sh"><small>Come lavoriamo</small><h2>Quattro fasi per un gestionale che usi ogni giorno.</h2></div>
+    <div class="split"><div class="sticky"><div class="lbl"><span>Merkorn</span><span>Fase <b id="patLabel">01</b></span></div><div class="g" id="stickyGoo" aria-hidden="true"></div></div><div class="steps"><div data-pat="mosaic" data-n="01"><b>Fase 01</b><h3>Capiamo come lavori</h3><p>Studiamo i tuoi processi e troviamo dove si può guadagnare tempo.</p></div><div data-pat="drops" data-n="02"><b>Fase 02</b><h3>Partiamo da basi solide</h3><p>Moduli già collaudati per partire veloci e investire dove serve davvero.</p></div><div data-pat="wave" data-n="03"><b>Fase 03</b><h3>Costruiamo su misura</h3><p>Le funzioni specifiche della tua azienda, rilasciate una alla volta.</p></div><div data-pat="logo" data-n="04"><b>Fase 04</b><h3>Rendiamo i dati leggibili</h3><p>Schermate chiare che mostrano subito quello che conta.</p></div></div></div>
+  </section>
+  <section class="cta" id="contatti"><div class="g" data-goo="drops" data-cols="7" data-rows="5" data-cursor="1" aria-hidden="true" style="--goo:var(--bg)"></div><h2>Scopri cosa può cambiare.</h2><p>Ci vediamo in azienda, guardiamo insieme come lavorate e ti mostriamo cosa può cambiare.</p><a class="btn" href="#">Prenota un appuntamento</a></section>
+  <footer><span>Merkorn S.r.l.s. · P.IVA 03494760733 · Mottola (TA)</span><span>merkornsh@gmail.com</span></footer>
+</div>
+<nav class="proposal"><a href="index.html">Tutte</a><a href="a-chiara-editoriale.html">A</a><a href="b-scura-editoriale.html">B</a><a href="c-chiara-tecnologica.html">C</a><a href="d-scura-tecnologica.html" class=on>D</a></nav>
+<script src="goo.js"></script>
+<script>Goo(document.getElementById('heroGoo'), { cols: 22, rows: 6, pattern: 'cycle', cursor: true, accent: [[15, 4]] });</script>
+<script>
+// the sticky grid changes pattern as each phase scrolls into view
+(() => {
+  const box = document.getElementById('stickyGoo'); if (!box) return;
+  const g = Goo(box, { cols: 7, rows: 7, pattern: 'mosaic', cursor: true });
+  const steps = [...document.querySelectorAll('[data-pat]')], label = document.getElementById('patLabel');
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { g.setPattern(e.target.dataset.pat); steps.forEach(s => s.classList.toggle('on', s === e.target)); if (label) label.textContent = e.target.dataset.n; } }), { rootMargin: '-45% 0px -45% 0px' });
+  steps.forEach(s => io.observe(s));
+})();
+</script>
+</body></html>
