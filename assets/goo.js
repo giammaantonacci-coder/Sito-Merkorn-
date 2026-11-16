@@ -55,18 +55,27 @@
     const cv2 = needsAccent ? layer() : null, x2 = cv2 && cv2.getContext('2d');
 
     const g = { cols: o.cols, rows: o.rows, cell: 10, ox: 0, oy: 0 };
-    const mc = Math.floor((o.cols - 5) / 2), mr = Math.floor((o.rows - 3) / 2);
+    let mc = 0, ac = 0; const mr = Math.floor((o.rows - 3) / 2);
     g.inMark = (c, r) => MARK.some(([a, b]) => a + mc === c && b + mr === r);
-    const isAccent = (c, r, pat) => needsAccent && (o.accent.some(([a, b]) => a === c && b === r) || (pat === 'logo' && c === 2 + mc && r === mr));
-    const cells = [];
-    for (let r = 0; r < o.rows; r++) for (let c = 0; c < o.cols; c++) cells.push({ c, r, s: .4 });
+    const isAccent = (c, r, pat) => needsAccent && (o.accent.some(([a, b]) => a + ac === c && b === r) || (pat === 'logo' && c === 2 + mc && r === mr));
+    let cells = [];
+    // a box wider than the grid gets extra columns, so the blocks reach both edges
+    const setCols = n => {
+      if (cells.length && n === g.cols) return;
+      const old = new Map(cells.map(k => [k.c + ',' + k.r, k.s]));
+      g.cols = n; mc = Math.floor((n - 5) / 2); ac = Math.floor((n - o.cols) / 2);
+      cells = [];
+      for (let r = 0; r < o.rows; r++) for (let c = 0; c < n; c++) cells.push({ c, r, s: old.get(c + ',' + r) ?? .4 });
+    };
+    setCols(o.cols);
     const minS = o.cols * o.rows <= 9 ? .5 : .12;
 
     let pattern = o.pattern, w = 0, h = 0, dpr = 1, ready = false, clock = o.time || 0, rect = null;
     const size = () => {
       dpr = Math.min(devicePixelRatio || 1, 1.5); w = el.clientWidth; h = el.clientHeight;
       for (const c of [cv, cv2]) if (c) { c.width = Math.max(1, Math.round(w * dpr)); c.height = Math.max(1, Math.round(h * dpr)); }
-      g.cell = Math.min(w / o.cols, h / o.rows); g.ox = (w - g.cell * o.cols) / 2; g.oy = (h - g.cell * o.rows) / 2;
+      if (o.fit !== false && h > 0) setCols(Math.max(o.cols, Math.round(w / (h / o.rows))));
+      g.cell = Math.min(w / g.cols, h / o.rows); g.ox = (w - g.cell * g.cols) / 2; g.oy = (h - g.cell * o.rows) / 2;
       blur.setAttribute('stdDeviation', (g.cell * o.gap).toFixed(2));
       rect = null;
       if (ready) draw(clock, true);
