@@ -193,7 +193,7 @@ p { margin: 0; }
 .top .nav-cta { margin-left: 28px; padding: 11px 18px; border-radius: 12px; font-size: 13px; }
 .top .nav-cta .s { display: none; }
 @media (max-width: 860px) {
-  .top .nav-cta { margin-left: auto; margin-right: 8px; padding: 10px 14px; }
+  .top .nav-cta { margin-left: auto; margin-right: 8px; height: 40px; padding: 0 24px; border-radius: 12px; }
   .top .nav-cta .l { display: none; } .top .nav-cta .s { display: inline; }
 }
 
