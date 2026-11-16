@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autoscuola Centrale Mongelli · Da telefono (demo Merkorn)</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; src: url(../../assets/fonts/dm-sans.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 100 900; src: url(../../assets/fonts/inter.woff2) format("woff2"); }
+:root { --bg: #F4F4F2; --card: #fff; --card2: #F4F4F2; --line: rgba(17,17,17,.08); --text: #141414; --muted: #6E6E6A; --dim: #9C9C97; --red: #E3262F; --redbg: rgba(227,38,47,.09); --ok: #1F9D55; --okbg: rgba(31,157,85,.11); --amber: #D98A00; --amberbg: rgba(217,138,0,.12); --blk: #141414;
+  --display: "DM Sans", system-ui, sans-serif; --body: "Inter", system-ui, sans-serif; }
+* { box-sizing: border-box; } html, body { margin: 0; }
+body { background: var(--bg); color: var(--text); font: 400 13px/1.4 var(--body); -webkit-font-smoothing: antialiased; min-height: 100vh; padding: 14px 16px 96px; }
+h2 { margin: 0; font: 500 17px/1.2 var(--display); letter-spacing: -.02em; }
+.status { display: flex; justify-content: space-between; padding: 2px 6px 14px; font: 600 14px/1 var(--body); }
+.top { display: flex; align-items: center; gap: 12px; }
+.top img { width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 0 1px var(--line); }
+.top b { display: block; font: 600 15px/1.2 var(--display); } .top small { color: var(--muted); font-size: 12px; }
+.top .bell { margin-left: auto; position: relative; width: 40px; height: 40px; border-radius: 12px; background: var(--card); display: grid; place-items: center; box-shadow: 0 0 0 1px var(--line); }
+.top .bell svg { width: 18px; height: 18px; fill: none; stroke: var(--text); stroke-width: 1.8; } .top .bell i { position: absolute; top: 9px; right: 10px; width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+.kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+.kpi { padding: 14px; border-radius: 16px; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+.kpi small { display: block; color: var(--muted); font-size: 11.5px; } .kpi b { display: block; margin-top: 6px; font: 500 26px/1 var(--display); letter-spacing: -.03em; }
+.kpi em { display: inline-block; margin-top: 8px; padding: 3px 8px; border-radius: 999px; font-style: normal; font-size: 10.5px; background: var(--okbg); color: var(--ok); } .kpi em.dn { background: var(--redbg); color: var(--red); }
+.kpi.hl { background: var(--blk); color: #fff; box-shadow: none; } .kpi.hl small { color: rgba(255,255,255,.65); } .kpi.hl em { background: rgba(255,255,255,.12); color: #fff; }
+.sh { display: flex; justify-content: space-between; align-items: baseline; margin: 22px 2px 10px; } .sh a { color: var(--red); font-size: 12px; font-weight: 600; text-decoration: none; }
+.next { padding: 16px; border-radius: 18px; background: var(--blk); color: #fff; }
+.next small { color: rgba(255,255,255,.65); font-size: 11.5px; } .next b { display: block; margin-top: 4px; font: 600 20px/1.2 var(--display); }
+.next .tags { display: flex; gap: 8px; margin-top: 12px; } .next .tags span { padding: 6px 10px; border-radius: 9px; background: rgba(255,255,255,.1); font-size: 11.5px; }
+.next .go { display: block; margin-top: 14px; padding: 12px; border-radius: 12px; background: var(--red); text-align: center; font-weight: 600; }
+.rows { display: grid; gap: 8px; }
+.row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+.row .tm { width: 44px; font: 600 13px/1 var(--display); } .row b { display: block; font-size: 13px; font-weight: 600; } .row small { color: var(--muted); font-size: 11px; }
+.pill { margin-left: auto; padding: 4px 9px; border-radius: 999px; font-size: 11px; font-weight: 500; background: var(--okbg); color: var(--ok); white-space: nowrap; } .pill.ko { background: var(--redbg); color: var(--red); } .pill.wa { background: var(--amberbg); color: var(--amber); }
+.lic { display: inline-grid; place-items: center; min-width: 28px; height: 22px; padding: 0 6px; border-radius: 6px; background: var(--blk); color: #fff; font: 700 11px/1 var(--display); }
+.grp { padding: 14px; border-radius: 16px; background: var(--card); box-shadow: 0 0 0 1.5px var(--red); }
+.grp .h { display: flex; align-items: center; gap: 10px; } .grp .h b { font: 600 14px/1.2 var(--display); } .grp .h small { display: block; color: var(--muted); font-size: 11.5px; }
+.avs { display: flex; gap: 6px; margin-top: 12px; }
+.next .av { color: var(--text); } .next .av.r, .next .av.k { color: #fff; } .next .av.k { box-shadow: 0 0 0 1px rgba(255,255,255,.25); }
+.av { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font: 600 11px/1 var(--display); background: linear-gradient(135deg, #EDEDEA, #CFCFCA); }
+.av.r { background: linear-gradient(135deg, #FF8A8F, var(--red)); color: #fff; } .av.k { background: linear-gradient(135deg, #4A4A47, #141414); color: #fff; }
+.tabs { position: fixed; left: 12px; right: 12px; bottom: 14px; display: flex; justify-content: space-around; padding: 10px 8px; border-radius: 22px; background: rgba(255,255,255,.97); box-shadow: 0 0 0 1px var(--line), 0 10px 30px rgba(0,0,0,.12); }
+.tabs span { display: grid; justify-items: center; gap: 4px; color: var(--dim); font-size: 10.5px; } .tabs svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; } .tabs span.on { color: var(--red); }
+</style>
+</head>
+<body>
+<div class="status"><span>9:41</span><span>●●● ▮</span></div>
+<header class="top"><img src="logo.png" alt="Autoscuola Centrale Mongelli"><div><b>Ciao, Cosimo</b><small>Giovedì 26 novembre · istruttore</small></div><span class="bell"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg><i></i></span></header>
+<div class="kpis">
+  <div class="kpi hl"><small>Iscritti attivi</small><b>148</b><em>+ 23 a novembre</em></div>
+  <div class="kpi"><small>Esami superati</small><b>82%</b><em>174 su 212</em></div>
+</div>
+<div class="sh"><h2>Prossimo esame</h2><a href="#">Esami →</a></div>
+<div class="next"><small>Oggi alle 9:00 · pratica patente B</small><b>Gruppo 1 · 4 allievi pronti</b>
+  <div class="tags"><span>Fiat Panda</span><span>6 guide fatte da tutti</span></div>
+  <div class="avs"><span class="av">MP</span><span class="av r">GR</span><span class="av k">SL</span><span class="av">FD</span></div>
+  <span class="go">Avvisa il gruppo</span></div>
+<div class="sh"><h2>Le mie guide di oggi</h2><a href="#">Calendario →</a></div>
+<div class="rows">
+  <div class="row"><span class="tm">8:00</span><div><b>Marco Pastore</b><small><span class="lic">B</span> guida 6 di 6</small></div><span class="pill">Confermata</span></div>
+  <div class="row"><span class="tm">15:00</span><div><b>Giulia Ruggieri</b><small><span class="lic">B</span> foglio rosa scade il 9/12</small></div><span class="pill ko">Scadenza</span></div>
+  <div class="row"><span class="tm">16:00</span><div><b>Davide Caputo</b><small><span class="lic">A2</span> guida 5 di 6</small></div><span class="pill wa">Da confermare</span></div>
+</div>
+<nav class="tabs"><span class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>Oggi</span><span><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Lezioni</span><span><svg viewBox="0 0 24 24"><path d="M9 11l2 2 4-4"/><path d="M4 4h16v16H4z"/></svg>Esami</span><span><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.8-3.6 3.2-5.6 6-5.6s5.2 2 6 5.6"/></svg>Allievi</span></nav>
+</body>
+</html>

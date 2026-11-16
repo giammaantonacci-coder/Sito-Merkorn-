@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autoscuola Centrale Mongelli · Gestionale (demo Merkorn)</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; src: url(../../assets/fonts/dm-sans.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 100 900; src: url(../../assets/fonts/inter.woff2) format("woff2"); }
+:root { --bg: #F4F4F2; --side: #FFFFFF; --card: #FFFFFF; --card2: #F4F4F2; --line: rgba(17,17,17,.08); --text: #141414; --muted: #6E6E6A; --dim: #9C9C97;
+  --red: #E3262F; --red2: #FF4B53; --redbg: rgba(227,38,47,.09); --ok: #1F9D55; --okbg: rgba(31,157,85,.11); --amber: #D98A00; --amberbg: rgba(217,138,0,.12); --blk: #141414;
+  --display: "DM Sans", system-ui, sans-serif; --body: "Inter", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--text); font: 400 13px/1.45 var(--body); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { margin: 0; font-family: var(--display); letter-spacing: -.02em; font-weight: 500; }
+p { margin: 0; }
+.app { display: grid; grid-template-columns: 236px 1fr; min-height: 100vh; }
+.side { background: var(--side); border-right: 1px solid var(--line); padding: 20px 14px; display: flex; flex-direction: column; gap: 4px; }
+.brand { display: flex; align-items: center; gap: 12px; padding: 0 6px 22px; }
+.brand img { width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 0 0 1px var(--line); }
+.brand b { display: block; font: 700 13px/1.15 var(--display); letter-spacing: .01em; } .brand small { color: var(--red); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
+.side a { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; color: var(--muted); font-size: 13.5px; cursor: pointer; }
+.side a svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.side a:hover { color: var(--text); background: var(--card2); }
+.side a.on { color: #fff; background: var(--blk); font-weight: 600; } .side a.on svg { color: var(--red2); }
+.side a .n { margin-left: auto; min-width: 20px; padding: 2px 7px; border-radius: 999px; background: var(--redbg); color: var(--red); font-size: 11px; font-weight: 600; text-align: center; }
+.side a.on .n { background: var(--red); color: #fff; }
+.side .sep { height: 1px; background: var(--line); margin: 14px 8px; }
+.side .me { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 14px; background: var(--card2); }
+.side .me b { display: block; font-size: 12.5px; } .side .me small { color: var(--dim); font-size: 11px; }
+main { padding: 24px 28px 34px; min-width: 0; }
+.head { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.head h1 { font-size: 26px; } .head p { color: var(--muted); margin-top: 2px; }
+.head .r { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+.seg { display: flex; padding: 4px; border-radius: 12px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); } .seg span { padding: 7px 12px; border-radius: 9px; color: var(--muted); font-size: 12.5px; white-space: nowrap; } .seg span.on { background: var(--blk); color: #fff; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 0; border-radius: 12px; background: var(--red); color: #fff; font: 600 13px/1 var(--body); white-space: nowrap; }
+.btn.ghost { background: var(--card); color: var(--text); box-shadow: inset 0 0 0 1px var(--line); } .btn.dark { background: var(--blk); }
+.btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.grid { display: grid; gap: 14px; }
+.card { background: var(--card); border-radius: 18px; padding: 18px; box-shadow: 0 0 0 1px var(--line), 0 1px 2px rgba(0,0,0,.03); min-width: 0; }
+.card h3 { font-size: 15px; } .card .sub { color: var(--dim); font-size: 11.5px; margin-top: 2px; }
+.ch { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.ch a { color: var(--red); font-size: 12px; font-weight: 600; white-space: nowrap; }
+.kpis { grid-template-columns: repeat(4, 1fr); }
+.kpi small { display: block; color: var(--muted); font-size: 12px; }
+.kpi b { display: block; margin-top: 8px; font: 500 32px/1 var(--display); letter-spacing: -.03em; }
+.kpi em { display: inline-block; margin-top: 10px; font-style: normal; font-size: 11.5px; padding: 3px 8px; border-radius: 999px; background: var(--okbg); color: var(--ok); }
+.kpi em.dn { background: var(--redbg); color: var(--red); } .kpi em.wa { background: var(--amberbg); color: var(--amber); }
+.kpi.hl { background: var(--blk); color: #fff; box-shadow: none; } .kpi.hl small { color: rgba(255,255,255,.65); } .kpi.hl em { background: rgba(255,255,255,.12); color: #fff; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 999px; font-size: 11px; font-weight: 500; white-space: nowrap; background: var(--card2); color: var(--muted); }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill.ok { background: var(--okbg); color: var(--ok); } .pill.wa { background: var(--amberbg); color: var(--amber); } .pill.ko { background: var(--redbg); color: var(--red); }
+.lic { display: inline-grid; place-items: center; min-width: 30px; height: 24px; padding: 0 7px; border-radius: 7px; background: var(--blk); color: #fff; font: 700 12px/1 var(--display); }
+.lic.r { background: var(--red); }
+.av { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font: 600 11.5px/1 var(--display); color: var(--text); background: linear-gradient(135deg, #EDEDEA, #CFCFCA); }
+.av.r { background: linear-gradient(135deg, #FF8A8F, var(--red)); color: #fff; } .av.k { background: linear-gradient(135deg, #4A4A47, #141414); color: #fff; }
+/* overview charts */
+.mbars { display: flex; align-items: flex-end; gap: 14px; height: 190px; padding-top: 10px; }
+.mbars div { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end; color: var(--dim); font-size: 11px; }
+.mbars .st { width: 100%; max-width: 46px; display: flex; flex-direction: column; justify-content: flex-end; border-radius: 8px; overflow: hidden; height: 100%; }
+.mbars .st i { display: block; } .mbars .st .p { background: var(--blk); } .mbars .st .f { background: var(--red); }
+.mbars div.cur { color: var(--text); font-weight: 600; }
+.legend { display: flex; gap: 16px; margin-top: 12px; color: var(--muted); font-size: 11.5px; } .legend span { display: flex; align-items: center; gap: 7px; } .legend i { width: 10px; height: 10px; border-radius: 3px; }
+.bars { display: grid; gap: 14px; }
+.bars div { display: grid; grid-template-columns: 120px 1fr 40px; align-items: center; gap: 12px; font-size: 12.5px; }
+.bars .t { height: 10px; border-radius: 6px; background: var(--card2); overflow: hidden; } .bars .t i { display: block; height: 100%; border-radius: 6px; background: var(--blk); } .bars .t i.r { background: var(--red); }
+.bars b { text-align: right; font-weight: 600; }
+.ring { display: flex; align-items: center; gap: 18px; } .ring svg { width: 116px; height: 116px; flex: none; }
+.ring ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 12.5px; } .ring li b { display: block; font: 600 18px/1.1 var(--display); }
+.list { display: grid; gap: 8px; }
+.li { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--card2); }
+.li b { display: block; font-size: 13px; font-weight: 600; } .li small { color: var(--muted); font-size: 11.5px; }
+/* calendar */
+.cal { display: grid; grid-template-columns: 56px repeat(6, 1fr); gap: 0; border-radius: 14px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--line); }
+.cal .h { padding: 10px 8px; background: var(--card2); font-size: 11.5px; color: var(--muted); text-align: center; border-left: 1px solid var(--line); } .cal .h b { display: block; color: var(--text); font: 600 15px/1.2 var(--display); }
+.cal .h.today { background: var(--blk); color: rgba(255,255,255,.7); } .cal .h.today b { color: #fff; }
+.cal .t { padding: 6px 8px 0; height: 54px; font-size: 10.5px; color: var(--dim); border-top: 1px solid var(--line); background: var(--card); }
+.cal .c { position: relative; height: 54px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); background: var(--card); }
+.ev { position: absolute; left: 4px; right: 4px; top: 4px; z-index: 1; padding: 6px 8px; border-radius: 9px; font-size: 10.5px; line-height: 1.25; overflow: hidden; background: #ECECE9; color: var(--text); border-left: 3px solid var(--blk); }
+.ev b { display: block; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ev small { color: var(--muted); }
+.ev.c2 { border-left-color: var(--red); background: #FCEDEE; }
+.ev.th { background: var(--blk); color: #fff; border-left-color: var(--red); } .ev.th small { color: rgba(255,255,255,.7); }
+.ev.ex { background: var(--red); color: #fff; border-left-color: var(--blk); } .ev.ex small { color: rgba(255,255,255,.85); }
+.ev.h2 { height: calc(200% - 8px); } .ev.h3 { height: calc(300% - 8px); }
+.inst { display: grid; gap: 10px; }
+.inst div { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 14px; background: var(--card2); }
+.inst b { display: block; font-size: 13px; } .inst small { color: var(--muted); font-size: 11.5px; } .inst div > div { min-width: 0; } .inst em { white-space: nowrap; }
+.inst em { margin-left: auto; font-style: normal; font: 600 18px/1 var(--display); }
+/* exam groups */
+.groups { grid-template-columns: repeat(2, 1fr); }
+.grp { background: var(--card); border-radius: 18px; padding: 16px; box-shadow: 0 0 0 1px var(--line); }
+.grp.sel { box-shadow: 0 0 0 2px var(--red); }
+.grp .top { display: flex; align-items: center; gap: 10px; }
+.grp .top b { font: 600 15px/1.2 var(--display); } .grp .top small { display: block; color: var(--muted); font-size: 11.5px; }
+.grp .top .pill { margin-left: auto; }
+.stu { display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; margin-top: 8px; padding: 8px 10px; border-radius: 12px; background: var(--card2); }
+.stu .av { width: 30px; height: 30px; font-size: 10.5px; }
+.stu b { display: block; font-size: 12.5px; font-weight: 600; } .stu small { color: var(--muted); font-size: 11px; }
+.prog { display: flex; gap: 3px; margin-top: 4px; } .prog i { width: 14px; height: 5px; border-radius: 3px; background: #DCDCD8; } .prog i.on { background: var(--blk); }
+.grp .foot { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; color: var(--muted); font-size: 11.5px; }
+.redo td { padding: 10px 8px; border-top: 1px solid var(--line); vertical-align: middle; } .redo { width: 100%; border-collapse: collapse; }
+.redo th { padding: 0 8px 8px; text-align: left; color: var(--dim); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+.who { display: flex; align-items: center; gap: 10px; } .who b { display: block; font-size: 12.5px; } .who small { color: var(--muted); font-size: 11px; }
+.screen { display: none; } .screen.on { display: block; }
+.demo { position: fixed; right: 16px; bottom: 16px; display: flex; gap: 4px; padding: 5px; border-radius: 999px; background: rgba(20,20,20,.92); font-size: 11.5px; z-index: 10; }
+.demo button { padding: 7px 12px; border: 0; border-radius: 999px; background: none; color: #bbb; cursor: pointer; font: inherit; } .demo button.on { background: var(--red); color: #fff; font-weight: 600; }
+.demo span { padding: 7px 10px; color: #888; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><img src="logo.png" alt="Autoscuola Centrale Mongelli"><div><b>AUTOSCUOLA CENTRALE</b><small>MONGELLI</small></div></div>
+    <a data-go="1" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>Panoramica</a>
+    <a data-go="2"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Calendario lezioni</a>
+    <a data-go="3"><svg viewBox="0 0 24 24"><path d="M9 11l2 2 4-4"/><path d="M4 4h16v16H4z"/></svg>Esami<span class="n">12</span></a>
+    <a><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.8-3.6 3.2-5.6 6-5.6s5.2 2 6 5.6"/><path d="M16 4.5a3 3 0 0 1 0 6M18 14.6c1.8.6 3 2.4 3.5 5.4"/></svg>Allievi</a>
+    <a><svg viewBox="0 0 24 24"><path d="M5 16l1.5-5h11L19 16M4 16h16v3H4zM7.5 11l1-3h7l1 3"/><circle cx="8" cy="17.5" r="1"/><circle cx="16" cy="17.5" r="1"/></svg>Veicoli</a>
+    <div class="sep"></div>
+    <a><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM15 3v4h4M9 12h7M9 16h5"/></svg>Pratiche e documenti</a>
+    <a><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Messaggi</a>
+    <a><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></svg>Pagamenti</a>
+    <div class="me"><span class="av r">CA</span><div><b>Carmen</b><small>Segreteria</small></div></div>
+  </aside>
+  <main>
+    <!-- ============ 1. PANORAMICA ============ -->
+    <section class="screen on" id="s1">
+      <div class="head"><div><h1>Panoramica</h1><p>Novembre · aggiornata a oggi, giovedì 26</p></div>
+        <div class="r"><div class="seg"><span>Mese</span><span class="on">Anno</span><span>Dall'apertura</span></div><button class="btn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nuovo iscritto</button></div></div>
+      <div class="grid kpis">
+        <div class="card kpi hl"><small>Iscritti attivi</small><b>148</b><em>+ 23 questo mese</em></div>
+        <div class="card kpi"><small>Esami sostenuti</small><b>212</b><em>dall'inizio dell'anno</em></div>
+        <div class="card kpi"><small>Esami superati</small><b>174</b><em>82% al primo tentativo</em></div>
+        <div class="card kpi"><small>Da rifare</small><b>38</b><em class="dn">21 teoria · 17 pratica</em></div>
+      </div>
+      <div class="grid" style="grid-template-columns:1.5fr 1fr;margin-top:14px">
+        <div class="card"><div class="ch"><div><h3>Esami per mese</h3><div class="sub">Superati e da rifare, teoria e pratica insieme</div></div><a href="#">Dettaglio →</a></div>
+          <div class="mbars">
+            <div><span class="st"><i class="f" style="height:12%"></i><i class="p" style="height:42%"></i></span>Giu</div>
+            <div><span class="st"><i class="f" style="height:10%"></i><i class="p" style="height:50%"></i></span>Lug</div>
+            <div><span class="st"><i class="f" style="height:6%"></i><i class="p" style="height:30%"></i></span>Ago</div>
+            <div><span class="st"><i class="f" style="height:14%"></i><i class="p" style="height:62%"></i></span>Set</div>
+            <div><span class="st"><i class="f" style="height:13%"></i><i class="p" style="height:70%"></i></span>Ott</div>
+            <div class="cur"><span class="st"><i class="f" style="height:15%"></i><i class="p" style="height:78%"></i></span>Nov</div>
+          </div>
+          <div class="legend"><span><i style="background:var(--blk)"></i>Superati</span><span><i style="background:var(--red)"></i>Da rifare</span></div></div>
+        <div class="card"><div class="ch"><div><h3>Esito degli esami</h3><div class="sub">Dall'inizio dell'anno</div></div></div>
+          <div class="ring"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#F4F4F2" stroke-width="6"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#141414" stroke-width="6" stroke-dasharray="82 18" stroke-dashoffset="25"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#E3262F" stroke-width="6" stroke-dasharray="18 82" stroke-dashoffset="-57"/><text x="21" y="22" text-anchor="middle" font-size="7" font-family="DM Sans" font-weight="600" fill="#141414">82%</text><text x="21" y="27" text-anchor="middle" font-size="3" fill="#9C9C97">superati</text></svg>
+            <ul><li><b>Teoria</b>86% superati · 132 esami</li><li><b>Pratica</b>79% superati · 80 esami</li><li><b style="color:var(--red)">38 da rifare</b>14 già riprenotati</li></ul></div></div>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1fr 1fr;margin-top:14px">
+        <div class="card"><div class="ch"><div><h3>Iscritti per patente</h3><div class="sub">Allievi attivi</div></div></div>
+          <div class="bars"><div><span><span class="lic">B</span> Auto</span><span class="t"><i style="width:100%"></i></span><b>96</b></div><div><span><span class="lic">AM</span> Ciclomotore</span><span class="t"><i style="width:22%"></i></span><b>21</b></div><div><span><span class="lic">A2</span> Moto</span><span class="t"><i style="width:18%"></i></span><b>17</b></div><div><span><span class="lic">C</span> Camion</span><span class="t"><i class="r" style="width:9%"></i></span><b>9</b></div><div><span><span class="lic">CQC</span> Professionali</span><span class="t"><i class="r" style="width:5%"></i></span><b>5</b></div></div></div>
+        <div class="card"><div class="ch"><div><h3>Dove sono gli allievi</h3><div class="sub">Percorso dei 148 iscritti</div></div></div>
+          <div class="bars"><div><span>Studiano teoria</span><span class="t"><i style="width:44%"></i></span><b>65</b></div><div><span>Foglio rosa</span><span class="t"><i style="width:31%"></i></span><b>46</b></div><div><span>Pronti per l'esame</span><span class="t"><i class="r" style="width:16%"></i></span><b>24</b></div><div><span>Da rifare</span><span class="t"><i class="r" style="width:9%"></i></span><b>13</b></div></div></div>
+        <div class="card"><div class="ch"><div><h3>Da controllare</h3></div><a href="#">Tutto →</a></div>
+          <div class="list"><div class="li"><span class="av r">GR</span><div><b>Foglio rosa in scadenza</b><small>Giulia Ruggieri · scade il 9 dicembre</small></div><span class="pill ko">13 giorni</span></div>
+            <div class="li"><span class="av">MP</span><div><b>Guide obbligatorie mancanti</b><small>Marco Pastore · 4 di 6 fatte</small></div><span class="pill wa">2 guide</span></div>
+            <div class="li"><span class="av k">SL</span><div><b>Certificato medico</b><small>Sara Lentini · da caricare</small></div><span class="pill wa">Documento</span></div></div></div>
+      </div>
+    </section>
+
+    <!-- ============ 2. CALENDARIO LEZIONI ============ -->
+    <section class="screen" id="s2">
+      <div class="head"><div><h1>Calendario lezioni</h1><p>Settimana dal 23 al 28 novembre · 64 guide e 8 lezioni di teoria</p></div>
+        <div class="r"><div class="seg"><span class="on">Tutti</span><span>Cosimo</span><span>Carmen</span><span>Aula</span></div><button class="btn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nuova lezione</button></div></div>
+      <div class="grid" style="grid-template-columns:1fr 330px">
+        <div class="card" style="padding:14px">
+          <div class="cal">
+            <div class="h" style="border-left:0"></div><div class="h">Lun<b>23</b></div><div class="h">Mar<b>24</b></div><div class="h">Mer<b>25</b></div><div class="h today">Gio<b>26</b></div><div class="h">Ven<b>27</b></div><div class="h">Sab<b>28</b></div>
+            <div class="t">8:00</div><div class="c"><div class="ev"><b>Pastore</b><small>B · Cosimo</small></div></div><div class="c"><div class="ev c2"><b>Ruggieri</b><small>B · Carmen</small></div></div><div class="c"><div class="ev"><b>Lentini</b><small>B · Cosimo</small></div></div><div class="c"><div class="ev"><b>Pastore</b><small>B · Cosimo</small></div></div><div class="c"></div><div class="c"><div class="ev c2"><b>Fanelli</b><small>A2 · Carmen</small></div></div>
+            <div class="t">9:00</div><div class="c"><div class="ev c2"><b>Caforio</b><small>AM · Carmen</small></div></div><div class="c"><div class="ev"><b>D'Elia</b><small>B · Cosimo</small></div></div><div class="c"></div><div class="c"><div class="ev ex h2"><b>Esame pratica</b><small>Gruppo 1 · B · Cosimo</small></div></div><div class="c"><div class="ev"><b>Lentini</b><small>B · Cosimo</small></div></div><div class="c"><div class="ev c2"><b>Fanelli</b><small>A2 · Carmen</small></div></div>
+            <div class="t">10:00</div><div class="c"><div class="ev"><b>Mastrangelo</b><small>C · Cosimo</small></div></div><div class="c"><div class="ev c2"><b>Ruggieri</b><small>B · Carmen</small></div></div><div class="c"><div class="ev c2"><b>Caforio</b><small>AM · Carmen</small></div></div><div class="c"></div><div class="c"><div class="ev c2"><b>Pace</b><small>B · Carmen</small></div></div><div class="c"></div>
+            <div class="t">11:00</div><div class="c"></div><div class="c"><div class="ev"><b>Mastrangelo</b><small>C · Cosimo</small></div></div><div class="c"><div class="ev"><b>D'Elia</b><small>B · Cosimo</small></div></div><div class="c"><div class="ev c2"><b>Pace</b><small>B · Carmen</small></div></div><div class="c"><div class="ev"><b>Mastrangelo</b><small>C · Cosimo</small></div></div><div class="c"></div>
+            <div class="t">15:00</div><div class="c"><div class="ev c2"><b>Greco</b><small>B · Carmen</small></div></div><div class="c"><div class="ev"><b>Pastore</b><small>B · Cosimo</small></div></div><div class="c"><div class="ev c2"><b>Greco</b><small>B · Carmen</small></div></div><div class="c"><div class="ev"><b>Ruggieri</b><small>B · Cosimo</small></div></div><div class="c"><div class="ev c2"><b>Greco</b><small>B · Carmen</small></div></div><div class="c"></div>
+            <div class="t">16:00</div><div class="c"><div class="ev"><b>Lentini</b><small>B · Cosimo</small></div></div><div class="c"></div><div class="c"><div class="ev"><b>Caputo</b><small>A2 · Cosimo</small></div></div><div class="c"><div class="ev c2"><b>D'Elia</b><small>B · Carmen</small></div></div><div class="c"><div class="ev"><b>Caputo</b><small>A2 · Cosimo</small></div></div><div class="c"></div>
+            <div class="t">18:00</div><div class="c"><div class="ev th h2"><b>Teoria · Patente B</b><small>Aula · 18 allievi</small></div></div><div class="c"><div class="ev th h2"><b>Teoria · AM</b><small>Aula · 9 allievi</small></div></div><div class="c"><div class="ev th h2"><b>Teoria · Patente B</b><small>Aula · 16 allievi</small></div></div><div class="c"><div class="ev th h2"><b>Quiz di prova</b><small>Aula · gruppo esame</small></div></div><div class="c"><div class="ev th h2"><b>Teoria · Patente B</b><small>Aula · 20 allievi</small></div></div><div class="c"></div>
+            <div class="t">19:00</div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div>
+          </div>
+          <div class="legend"><span><i style="background:var(--blk)"></i>Guida con Cosimo</span><span><i style="background:var(--red)"></i>Guida con Carmen</span><span><i style="background:var(--blk);box-shadow:inset 0 0 0 2px var(--red)"></i>Teoria in aula</span><span><i style="background:var(--red)"></i>Esame</span></div>
+        </div>
+        <div class="grid" style="align-content:start">
+          <div class="card"><div class="ch"><div><h3>Istruttori questa settimana</h3></div></div>
+            <div class="inst"><div><span class="av k">CO</span><div><b>Cosimo</b><small>Auto B, C · 2 veicoli</small></div><em>34 h</em></div><div><span class="av r">CA</span><div><b>Carmen</b><small>Auto B, moto AM, A2</small></div><em>30 h</em></div></div></div>
+          <div class="card"><div class="ch"><div><h3>Oggi, giovedì 26</h3></div><a href="#">Giorno →</a></div>
+            <div class="list"><div class="li"><span class="av">MP</span><div><b>Marco Pastore</b><small>8:00 · guida B · Cosimo</small></div><span class="pill ok">Confermata</span></div>
+              <div class="li"><span class="av r">EX</span><div><b>Esame pratica, gruppo 1</b><small>9:00 · 4 allievi patente B</small></div><span class="pill ko">Esame</span></div>
+              <div class="li"><span class="av k">GP</span><div><b>Gianni Pace</b><small>11:00 · guida B · Carmen</small></div><span class="pill wa">Da confermare</span></div></div></div>
+          <div class="card"><div class="ch"><div><h3>Guide da recuperare</h3><div class="sub">Disdette con meno di 24 ore</div></div></div>
+            <div class="list"><div class="li"><span class="av">AC</span><div><b>Alessia Caforio</b><small>AM · martedì 10:00</small></div><span class="btn ghost" style="padding:7px 10px;font-size:11.5px">Riprogramma</span></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3. ESAMI ============ -->
+    <section class="screen" id="s3">
+      <div class="head"><div><h1>Esami</h1><p>24 allievi pronti, divisi in gruppi da 4 per sessione e per patente</p></div>
+        <div class="r"><div class="seg"><span class="on">Prossimi</span><span>Teoria</span><span>Pratica</span><span>Da rifare</span></div><button class="btn dark"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Crea gruppo</button></div></div>
+      <div class="grid" style="grid-template-columns:1.55fr 1fr">
+        <div class="grid groups" style="align-content:start">
+          <div class="grp sel"><div class="top"><span class="lic">B</span><div><b>Gruppo 1 · Pratica</b><small>Oggi alle 9:00 · Cosimo · Fiat Panda</small></div><span class="pill ok">Completo</span></div>
+            <div class="stu"><span class="av">MP</span><div><b>Marco Pastore</b><div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div><span class="pill ok">Pronto</span></div>
+            <div class="stu"><span class="av r">GR</span><div><b>Giulia Ruggieri</b><div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div><span class="pill ok">Pronto</span></div>
+            <div class="stu"><span class="av k">SL</span><div><b>Sara Lentini</b><div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div><span class="pill ok">Pronto</span></div>
+            <div class="stu"><span class="av">FD</span><div><b>Francesco D'Elia</b><div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div><span class="pill ok">Pronto</span></div>
+            <div class="foot"><span>6 guide obbligatorie fatte da tutti</span><span class="btn ghost" style="padding:7px 10px;font-size:11.5px">Avvisa il gruppo</span></div></div>
+          <div class="grp"><div class="top"><span class="lic">B</span><div><b>Gruppo 2 · Teoria</b><small>Martedì 1 dicembre · Motorizzazione Taranto</small></div><span class="pill ok">Completo</span></div>
+            <div class="stu"><span class="av">GP</span><div><b>Gianni Pace</b><small>Quiz di prova: 2 errori</small></div><span class="pill ok">Pronto</span></div>
+            <div class="stu"><span class="av r">AG</span><div><b>Anna Greco</b><small>Quiz di prova: 1 errore</small></div><span class="pill ok">Pronto</span></div>
+            <div class="stu"><span class="av k">LM</span><div><b>Luca Montanaro</b><small>Quiz di prova: 4 errori</small></div><span class="pill wa">Da ripassare</span></div>
+            <div class="stu"><span class="av">CS</span><div><b>Chiara Semeraro</b><small>Quiz di prova: 0 errori</small></div><span class="pill ok">Pronto</span></div>
+            <div class="foot"><span>Soglia: massimo 3 errori su 30</span><span class="btn ghost" style="padding:7px 10px;font-size:11.5px">Avvisa il gruppo</span></div></div>
+          <div class="grp"><div class="top"><span class="lic">A2</span><div><b>Gruppo 3 · Pratica moto</b><small>Venerdì 4 dicembre · Carmen</small></div><span class="pill wa">Manca 1</span></div>
+            <div class="stu"><span class="av r">VF</span><div><b>Valeria Fanelli</b><div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div><span class="pill ok">Pronta</span></div>
+            <div class="stu"><span class="av">DC</span><div><b>Davide Caputo</b><div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div><span class="pill wa">2 guide</span></div>
+            <div class="stu"><span class="av k">RT</span><div><b>Rocco Tarantino</b><div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div><span class="pill ok">Pronto</span></div>
+            <div class="stu" style="background:none;box-shadow:inset 0 0 0 1.5px rgba(217,138,0,.5)"><span class="av" style="background:var(--amberbg);color:var(--amber)">+</span><div><b style="color:var(--amber)">Posto libero</b><small>2 allievi A2 quasi pronti</small></div><span class="btn ghost" style="padding:6px 9px;font-size:11px">Proponi</span></div></div>
+          <div class="grp"><div class="top"><span class="lic r">C</span><div><b>Gruppo 4 · Teoria</b><small>Lunedì 7 dicembre · Motorizzazione Taranto</small></div><span class="pill ko">Mancano 2</span></div>
+            <div class="stu"><span class="av k">NM</span><div><b>Nicola Mastrangelo</b><small>Quiz di prova: 3 errori</small></div><span class="pill ok">Pronto</span></div>
+            <div class="stu"><span class="av">PL</span><div><b>Pietro Lattarulo</b><small>Quiz di prova: 5 errori</small></div><span class="pill wa">Da ripassare</span></div>
+            <div class="stu" style="background:none;box-shadow:inset 0 0 0 1.5px rgba(227,38,47,.4)"><span class="av" style="background:var(--redbg);color:var(--red)">+</span><div><b style="color:var(--red)">Posto libero</b><small>Nessun allievo C pronto</small></div></div>
+            <div class="stu" style="background:none;box-shadow:inset 0 0 0 1.5px rgba(227,38,47,.4)"><span class="av" style="background:var(--redbg);color:var(--red)">+</span><div><b style="color:var(--red)">Posto libero</b><small>Si può spostare al 14 dicembre</small></div></div></div>
+        </div>
+        <div class="grid" style="align-content:start">
+          <div class="card"><div class="ch"><div><h3>Prossime sessioni</h3></div></div>
+            <div class="list"><div class="li"><span class="lic">B</span><div><b>Pratica · oggi</b><small>Gruppo 1 · 4 di 4</small></div><span class="pill ok">Completo</span></div>
+              <div class="li"><span class="lic">B</span><div><b>Teoria · 1 dicembre</b><small>Gruppo 2 · 4 di 4</small></div><span class="pill ok">Completo</span></div>
+              <div class="li"><span class="lic">A2</span><div><b>Pratica · 4 dicembre</b><small>Gruppo 3 · 3 di 4</small></div><span class="pill wa">Manca 1</span></div>
+              <div class="li"><span class="lic r">C</span><div><b>Teoria · 7 dicembre</b><small>Gruppo 4 · 2 di 4</small></div><span class="pill ko">Mancano 2</span></div></div></div>
+          <div class="card"><div class="ch"><div><h3>Da rifare</h3><div class="sub">Esame non superato, da riprenotare</div></div><a href="#">Tutti (38) →</a></div>
+            <table class="redo"><tr><th>Allievo</th><th>Esame</th><th>Tentativo</th></tr>
+              <tr><td><div class="who"><span class="av">AV</span><div><b>Angela Vinci</b><small>12 novembre</small></div></div></td><td><span class="lic">B</span> Pratica</td><td><span class="pill wa">2° · riprenota</span></td></tr>
+              <tr><td><div class="who"><span class="av r">MM</span><div><b>Mario Marangi</b><small>5 novembre</small></div></div></td><td><span class="lic">B</span> Teoria</td><td><span class="pill ok">Riprenotato</span></td></tr>
+              <tr><td><div class="who"><span class="av k">EP</span><div><b>Elena Palmisano</b><small>29 ottobre</small></div></div></td><td><span class="lic">AM</span> Teoria</td><td><span class="pill ko">2° non superato</span></td></tr>
+            </table></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<nav class="demo" aria-label="Schermate della demo"><span>Demo Merkorn</span><button class="on" data-go="1">1 · Panoramica</button><button data-go="2">2 · Lezioni</button><button data-go="3">3 · Esami</button></nav>
+<script>
+const go = n => {
+  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === 's' + n));
+  document.querySelectorAll('[data-go]').forEach(b => b.classList.toggle('on', b.dataset.go === String(n)));
+};
+document.querySelectorAll('[data-go]').forEach(el => el.addEventListener('click', () => go(+el.dataset.go)));
+</script>
+</body>
+</html>
