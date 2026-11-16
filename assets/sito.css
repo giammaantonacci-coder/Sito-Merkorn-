@@ -181,7 +181,7 @@ p { margin: 0; }
 .top { position: sticky; top: 0; z-index: 50; isolation: isolate; }
 .top::before { content: ""; position: absolute; z-index: -1; top: 0; bottom: -1px; left: calc(50% - 50vw); right: calc(50% - 50vw); background: rgba(255,255,255,.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 .sticky { top: calc(12vh + 40px); }
-@media (max-width: 860px) { .sticky { top: 85px; } }
+@media (max-width: 860px) { .sticky { top: 85px; height: 30vh; padding: 10px 0 8px; } .sticky .g { max-width: 62%; } .sticky .caption { padding-top: 8px; } }
 
 /* ---- call to action in the menu bar ---- */
 .top nav { margin-left: auto; }
