@@ -307,6 +307,76 @@ CASE_HUB = f"""{CASE_HERO}
 
 CASE_PAGES = [case_page(CASES[0], CASES[1]), case_page(CASES[1], CASES[0])]
 
+
+# ---------------------------------------------------------------- ux design
+
+UX_IMPACT = [
+    ("Meno errori", "Campi chiari e controlli al momento giusto: il dato entra corretto la prima volta, invece di essere corretto dopo."),
+    ("Operativi prima", "Una schermata che si capisce da sola riduce la formazione. Chi arriva in azienda impara facendo, non leggendo un manuale."),
+    ("Più tempo per il lavoro vero", "Meno passaggi per le operazioni di tutti i giorni. Ogni clic risparmiato si ripete decine di volte al giorno, per ogni persona."),
+    ("Lo usano davvero tutti", "Un gestionale scomodo viene aggirato con fogli Excel e appunti. Uno comodo viene usato da tutti, ed è l'unico modo per avere dati completi."),
+]
+UX_COST = [
+    ("Doppio lavoro", "Lo stesso dato scritto nel gestionale, poi in un foglio Excel, poi in un messaggio. Ogni copia è un'occasione per sbagliare."),
+    ("Telefonate all'assistenza", "Se non è chiaro dove cliccare, qualcuno deve chiedere. Il tempo perso è doppio: di chi chiede e di chi risponde."),
+    ("Resistenza al cambiamento", "Quando il nuovo programma è più difficile del vecchio metodo, le persone tornano al vecchio metodo. E l'investimento resta fermo."),
+    ("Decisioni su dati incompleti", "Se l'inserimento è faticoso, i dati arrivano in ritardo o non arrivano. I numeri sulla schermata non raccontano più l'azienda."),
+]
+UX_STEPS = [
+    ("Osserviamo sul posto", "Passiamo del tempo con chi userà il gestionale: in ufficio, in magazzino, alla reception. Guardiamo cosa fa davvero, non solo cosa dovrebbe fare."),
+    ("Disegniamo i flussi", "Mettiamo in fila le operazioni di ogni giorno e togliamo i passaggi inutili, prima ancora di pensare alle schermate."),
+    ("Proviamo un prototipo", "Prima di scrivere il codice, le schermate si possono cliccare. Le provi con il tuo team e cambiarle costa pochi minuti, non settimane."),
+    ("Miglioriamo con l'uso", "Dopo il rilascio raccogliamo dubbi e richieste di chi lavora ogni giorno con il gestionale, e lo rendiamo più semplice a ogni versione."),
+]
+FAQ_UX = [
+    ("Cos'è la UX?", "UX sta per user experience, l'esperienza di chi usa un prodotto. Nel software vuol dire progettare schermate e passaggi perché siano facili, veloci e senza errori per chi li usa ogni giorno."),
+    ("Che differenza c'è tra UX e UI?", "La UX decide cosa c'è in una schermata e in che ordine si fanno le cose. La UI ne cura l'aspetto: colori, caratteri, icone. Servono entrambe, ma si parte sempre dalla UX."),
+    ("La progettazione UX fa aumentare i costi?", "È una parte del progetto, non un extra. Cambiare un prototipo costa molto meno che riscrivere un programma già sviluppato, e un gestionale che si usa bene si ripaga con il tempo risparmiato."),
+    ("Serve anche per un gestionale interno?", "Soprattutto lì. Un gestionale si usa ogni giorno, per ore: anche un piccolo attrito, ripetuto per mesi, diventa un costo grande."),
+]
+
+def ux_compare():
+    return f"""<div class="ux-compare">
+      <div><div class="g" data-goo="mosaic" data-cols="7" data-rows="4" data-cursor="1" data-speed="1.6" aria-hidden="true"></div><span class="caps">Senza progettazione</span><h3>Tutto c'è, ma niente si trova.</h3><p>Funzioni sparse, passaggi in più, informazioni importanti nascoste tra quelle che non servono.</p></div>
+      <div><div class="g" data-goo="breathe" data-cols="7" data-rows="4" data-cursor="1" data-accent="3,1" aria-hidden="true"></div><span class="caps">Con la UX</span><h3>Ogni cosa al suo posto.</h3><p>Quello che serve è davanti agli occhi, nell'ordine in cui lavori. Il resto non disturba.</p></div>
+    </div>"""
+
+def numbered(items):
+    return '<div class="list">' + "".join(f'<div class="item"><span class="n">{i:02d}</span><div><h3>{t}</h3><p>{d}</p></div></div>' for i, (t, d) in enumerate(items, 1)) + "</div>"
+
+UX = f"""{phero('UX design: il gestionale <span>che si capisce da solo</span>', "Un software può avere tutte le funzioni del mondo. Se è difficile da usare, nessuno le userà. Per questo progettiamo l'esperienza prima del codice.", 'wave')}
+{caption('UX design', 'Prototipi', 'Test con chi lo usa', 'Merkorn')}
+  <section class="sec">
+    {sh('01 / Perché conta', 'Un gestionale vale quanto è facile da usare.')}
+    <div class="who"><span></span><div><p class="big">La UX non è una questione estetica. <span>Decide quanto tempo perdono le persone, quanti errori fanno e se il gestionale verrà usato davvero.</span></p></div></div>
+    {ux_compare()}
+  </section>
+  <section class="sec">
+    {sh("02 / L'impatto", 'Cosa cambia quando un software è progettato bene.')}
+    {numbered(UX_IMPACT)}
+  </section>
+  <section class="sec">
+    {sh('03 / Il costo nascosto', 'Cosa succede quando la UX manca.')}
+    {numbered(UX_COST)}
+  </section>
+  <div class="strip" data-goo="diag" data-cols="28" data-rows="1" data-cursor="1" aria-hidden="true"></div>
+  <section class="sec" style="padding-top:clamp(60px,8vw,100px)">
+    {sh('04 / Come lavoriamo', 'Si disegna con chi lo userà, si prova prima di costruire.')}
+    <div class="cols" style="--c:4">{''.join(f'<div><span class="caps">Passo 0{i}</span><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate(UX_STEPS, 1))}</div>
+  </section>
+  <section class="sec">
+    {sh('05 / Nei nostri progetti', 'La UX, vista dentro due gestionali veri.')}
+    <div class="list">
+      <div class="item"><span class="n">01</span><div><h3>Kuelle Sports Center</h3><p>Chi sta in reception doveva chiudere le partite incomplete cercando i giocatori uno a uno. Oggi il gestionale propone chi invitare e il messaggio WhatsApp parte con un tocco. <a class="u" href="case-study-kuelle.html">Leggi il case study</a></p></div></div>
+      <div class="item"><span class="n">02</span><div><h3>Autoscuola Centrale Mongelli</h3><p>Comporre i gruppi d'esame voleva dire incrociare calendari e liste. Oggi gli allievi pronti sono già raggruppati da quattro, per patente. <a class="u" href="case-study-mongelli.html">Leggi il case study</a></p></div></div>
+    </div>
+  </section>
+  <section class="sec">
+    {sh('06 / Domande', 'UX design, le domande più comuni.')}
+    {faq(FAQ_UX)}
+  </section>
+{end('Progettiamolo insieme')}"""
+
 # ---------------------------------------------------------------- home
 
 HOME_FOUR = "".join(f'<div>{grid(p, 3, 3, cls="ico", extra=" data-speed=.8")}<h3>{t}</h3><p>{d}</p></div>' for t, d, p in HOME_SERVICES)
@@ -325,23 +395,29 @@ HOME = f"""  <section class="hero">
     <div class="four">{HOME_FOUR}</div>
     <div style="margin-top:30px"><a class="u" href="servizi.html">Tutti i servizi</a></div>
   </section>
+  <section class="sec">
+    {sh('02 / UX design', 'Un gestionale vale quanto è facile da usare.')}
+    <div class="who"><span></span><div><p class="big">Un software difficile resta nel cassetto. <span>Per questo disegniamo ogni schermata con chi la userà ogni giorno, e la proviamo prima di scrivere il codice.</span></p></div></div>
+    {ux_compare()}
+    <div style="margin-top:30px"><a class="u" href="ux-design.html">Perché la UX conta</a></div>
+  </section>
   <div class="strip" data-goo="wave" data-cols="28" data-rows="1" data-cursor="1" aria-hidden="true"></div>
   <section class="sec" style="padding-top:clamp(60px,8vw,100px)">
-    {sh('02 / Metodo', 'Quattro fasi, un disegno che cambia.')}
+    {sh('03 / Metodo', 'Quattro fasi, un disegno che cambia.')}
     {method(False)}
   </section>
   <section class="sec">
-    {sh('03 / Chi siamo', 'Da Mottola, per le PMI.')}
+    {sh('04 / Chi siamo', 'Da Mottola, per le PMI.')}
     <div class="who"><span></span><div><p class="big">Prima veniamo a vedere come lavori. <span>Poi costruiamo il gestionale attorno a te, con lo stesso team dal primo incontro all'assistenza.</span></p>
       <div style="margin-top:30px"><a class="u" href="chi-siamo.html">Conosci il team</a></div></div></div>
   </section>
   <section class="sec">
-    {sh('04 / Case study', 'Due gestionali su misura, nati a Mottola.')}
+    {sh('05 / Case study', 'Due gestionali su misura, nati a Mottola.')}
     <div class="case-list">{''.join(case_teaser(c, i) for i, c in enumerate(CASES, 1))}</div>
     <div style="margin-top:30px"><a class="u" href="case-study.html">Come lavoriamo nei case study</a></div>
   </section>
   <section class="sec">
-    {sh('05 / Domande', 'Software gestionale su misura, le domande più comuni.')}
+    {sh('06 / Domande', 'Software gestionale su misura, le domande più comuni.')}
     {faq(FAQ_HOME)}
   </section>
 {end('Parliamo')}"""
@@ -531,6 +607,9 @@ PAGES = [
     ("index.html", "Software gestionale su misura per PMI | Merkorn",
      "Merkorn è una software house in Puglia che sviluppa software gestionali su misura per PMI: ordini, magazzino, produzione e fatturazione in un unico sistema.",
      HOME, HOME_JS, [faq_ld(FAQ_HOME)]),
+    ("ux-design.html", "UX design per software gestionali | Merkorn",
+     "Perché la UX conta in un software gestionale: meno errori, formazione più breve, più tempo per il lavoro vero. Come la progettiamo con chi userà il gestionale.",
+     UX, "", [faq_ld(FAQ_UX)]),
     ("metodo.html", "Come sviluppiamo un gestionale personalizzato | Merkorn",
      "Il metodo Merkorn per sviluppare un gestionale personalizzato: analisi dei processi, moduli collaudati, componenti su misura e interfacce semplici da usare.",
      METODO, METHOD_JS, [faq_ld(FAQ_METODO)]),
