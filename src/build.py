@@ -49,9 +49,8 @@ SPECS = [
 def specs():
     out = ""
     for i, (name, text, tags) in enumerate(SPECS, 1):
-        row = "".join(f"<span>{t}</span><i>/</i>" for t in tags) * 2  # each half wider than the screen, so the loop never shows a gap
-        out += (f'<article class="spec"><div class="spec-h"><span class="n">0{i}</span><h3>{name}</h3><p>{text}</p></div>'
-                f'<div class="marquee"><div class="track"><div>{row}</div><div aria-hidden="true">{row}</div></div></div></article>')
+        items = "".join(f"<li>{t}</li>" for t in tags)
+        out += f'<article class="spec"><div class="spec-h"><span class="n">0{i}</span><h3>{name}</h3><div><p>{text}</p><ul>{items}</ul></div></div></article>'
     return f'<div class="specs">{out}</div>'
 
 # the method: title, text, pattern shown by the sticky grid, result
