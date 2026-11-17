@@ -17,28 +17,31 @@ from legal import PRIVACY_DOC, COOKIE_DOC  # noqa: E402
 
 SERVICES = [
     ("Gestionale su misura",
-     "Un ERP personalizzato che riunisce ordini, magazzino, produzione e commesse e ti dà la visione completa dell'azienda.",
+     "I programmi pronti ti chiedono di cambiare il tuo modo di lavorare, e le differenze le colmano le persone, a mano. Noi costruiamo il gestionale sui tuoi processi: ordini, magazzino, produzione e commesse in un unico sistema.",
      ["Ordini e offerte", "Magazzino", "Produzione", "Commesse", "Documenti di trasporto"]),
     ("Analisi dei processi aziendali",
-     "Una fotografia chiara di come lavori oggi e delle priorità per crescere.",
+     "Prima di scrivere codice seguiamo il lavoro in azienda e troviamo dove si ferma. Ti consegniamo la mappa dei processi, con i punti critici e da dove conviene partire.",
      ["Mappa del processo", "Punti critici", "Priorità di intervento"]),
+    ("UX e design delle schermate",
+     "Un software scomodo viene aggirato con fogli Excel e appunti. Disegniamo le schermate prima del codice e le mettiamo alla prova con il tuo team, quando cambiarle costa ancora poco.",
+     ["Prototipi cliccabili", "Test con il tuo team", "Computer, tablet e telefono"]),
     ("App per magazzino e consegne",
-     "I dati del magazzino e delle consegne, subito visibili in ufficio.",
+     "Chi lavora in magazzino o fuori sede spesso scrive su carta e ricopia in ufficio. Con l'app i dati arrivano subito, senza passaggi in mezzo.",
      ["Carico e scarico merce", "Consegne", "Firma del cliente"]),
     ("Assistenza ed evoluzione del software",
-     "Il gestionale cresce con la tua azienda, seguito dallo stesso team.",
+     "Il progetto non finisce al rilascio. Lo stesso team che l'ha costruito segue il gestionale, risolve i problemi e aggiunge funzioni quando l'azienda cambia.",
      ["Assistenza agli utenti", "Aggiornamenti", "Nuove funzioni"]),
 ]
 # short versions for the home, each with its own moving pattern
 HOME_SERVICES = [
-    ("Gestionale su misura", "Ordini, magazzino, produzione e commesse in un unico sistema.", "mosaic"),
-    ("Analisi dei processi", "Una fotografia chiara di come lavori oggi e delle priorità per crescere.", "rings"),
-    ("App per le consegne", "I dati del magazzino e delle consegne, subito visibili in ufficio.", "diag"),
-    ("Assistenza ed evoluzione", "Il gestionale cresce con la tua azienda, seguito dallo stesso team.", "wave"),
+    ("Gestionale su misura", "Costruito sui tuoi processi, non preso da un catalogo.", "mosaic"),
+    ("Analisi dei processi", "Troviamo dove si ferma il lavoro e cosa conviene sistemare prima.", "rings"),
+    ("UX design", "Schermate provate con chi le userà, prima di scrivere il codice.", "diag"),
+    ("Assistenza ed evoluzione", "Il progetto non finisce al rilascio: lo stesso team lo fa crescere.", "wave"),
 ]
 # the method: title, text, pattern shown by the sticky grid, result
 PHASES = [
-    ("Capiamo come lavori", "Studiamo i tuoi processi e troviamo dove si può guadagnare tempo.", "mosaic", "Priorità chiare fin da subito"),
+    ("Capiamo come lavori", "Seguiamo il lavoro dove succede, dal magazzino all'ufficio, e troviamo dove si perde tempo.", "mosaic", "Priorità chiare fin da subito"),
     ("Partiamo da basi solide", "Moduli già collaudati per partire veloci e investire dove serve davvero.", "drops", "La base del gestionale con i tuoi dati"),
     ("Costruiamo le parti su misura", "Le funzioni specifiche della tua azienda, rilasciate una alla volta.", "wave", "Un passo avanti a ogni rilascio"),
     ("Rendiamo i dati leggibili", "Schermate chiare che mostrano subito quello che conta.", "logo", "Decisioni più rapide, ogni giorno"),
@@ -384,20 +387,20 @@ HOME_FOUR = "".join(f'<div>{grid(p, 3, 3, cls="ico", extra=" data-speed=.8")}<h3
 HOME = f"""  <section class="hero">
     <div>
       <h1>Dati chiari.<br>Decisioni <span>migliori.</span></h1>
-      <p>Merkorn è una software house in Puglia. Costruiamo software gestionali su misura che mettono in ordine i dati di ogni reparto.</p>
+      <p>Merkorn è una software house in Puglia. Invece di chiederti di adattarti a un programma, guardiamo come lavori e costruiamo il gestionale attorno a te.</p>
       <div class="acts"><a class="btn" href="contattaci.html">Prenota un appuntamento</a><a class="u" href="metodo.html">Come lavoriamo</a></div>
     </div>
     <div class="panel" id="heroGoo" aria-hidden="true"></div>
   </section>
 {caption('Merkorn', 'Mottola', 'Puglia', 'Gestionali su misura')}
   <section class="sec">
-    {sh('01 / Servizi', 'Ogni reparto, un blocco al suo posto.')}
+    {sh('01 / Servizi', 'Ogni servizio risolve un problema preciso.')}
     <div class="four">{HOME_FOUR}</div>
     <div style="margin-top:30px"><a class="u" href="servizi.html">Tutti i servizi</a></div>
   </section>
   <section class="sec">
     {sh('02 / UX design', 'Un gestionale vale quanto è facile da usare.')}
-    <div class="who"><span></span><div><p class="big">Un software difficile resta nel cassetto. <span>Per questo disegniamo ogni schermata con chi la userà ogni giorno, e la proviamo prima di scrivere il codice.</span></p></div></div>
+    <div class="who"><span></span><div><p class="big">Un software scomodo non lo usa nessuno. <span>Per questo disegniamo ogni schermata con chi la userà ogni giorno, e la proviamo prima di scrivere il codice.</span></p></div></div>
     {ux_compare()}
     <div style="margin-top:30px"><a class="u" href="ux-design.html">Perché la UX conta</a></div>
   </section>
@@ -450,18 +453,29 @@ def orbit():
 
 ORBIT = orbit()
 
-SERV_PATTERNS = ["checker", "rings", "diag", "breathe"]
+SERV_PATTERNS = ["checker", "rings", "drops", "diag", "breathe"]
+SERV_PROBLEMS = [
+    ("Il programma non segue il tuo lavoro", "Un gestionale pronto impone i suoi passaggi. Le differenze le coprono le persone, a mano, ogni giorno."),
+    ("Excel accanto al gestionale", "Quello che il programma non sa fare finisce in un file Excel. Dopo un anno i numeri veri stanno lì, non nel gestionale."),
+    ("Programmi che non si parlano", "Ordini, fatture e magazzino su sistemi diversi: lo stesso dato si ricopia più volte, e ogni copia può sbagliare."),
+    ("Nessuno lo usa volentieri", "Schermate confuse e troppi passaggi: appena possono, le persone tornano al vecchio metodo. <a class=\"u\" href=\"ux-design.html\">Perché la UX conta</a>"),
+    ("Dopo il rilascio, nessuno", "Il fornitore consegna e sparisce. Errori aperti, richieste senza risposta, un software che invecchia."),
+]
 SERV_ROWS = "".join(
     f'<div class="row"><span class="n">0{i}</span><h3>{t}</h3><div><p>{d}</p><ul>{"".join(f"<li>{x}</li>" for x in tags)}</ul></div>{grid(p, 3, 3)}</div>'
     for i, ((t, d, tags), p) in enumerate(zip(SERVICES, SERV_PATTERNS), 1))
-SERVIZI = f"""{phero('Software gestionale <span>su misura</span> per la tua azienda', 'Tutto quello che serve per avere i dati sotto controllo e decidere con più sicurezza.', 'checker')}
-{caption('Servizi', 'Quattro servizi', 'Un solo progetto')}
+SERVIZI = f"""{phero('Software gestionale su misura: <span>prima guardiamo come lavori</span>', "Cinque servizi, ognuno nato da un problema preciso. Puoi sceglierne uno o metterli insieme, con lo stesso team dall'inizio alla fine.", 'checker')}
+{caption('Servizi', 'Cinque servizi', 'Un solo team')}
   <section class="sec">
-    {sh('01 / Cosa facciamo', "Dall'analisi all'assistenza, sempre le stesse persone.")}
+    {sh('01 / I problemi', 'Dove si bloccano i gestionali.')}
+    {numbered(SERV_PROBLEMS)}
+  </section>
+  <section class="sec">
+    {sh('02 / Cosa facciamo', 'Un servizio per ogni problema, sempre le stesse persone.')}
     <div class="rows" style="border-top:0">{SERV_ROWS}</div>
   </section>
   <section class="sec">
-    {sh('02 / Per chi lavoriamo', 'Imprese che vogliono crescere con i propri dati.')}
+    {sh('03 / Per chi lavoriamo', 'Imprese che vogliono crescere con i propri dati.')}
     <div class="three">
       <div>{grid('drops', 3, 3, cls='ico')}<h3>Agroalimentare e produzione</h3><p>Lotti, scadenze e commesse sempre tracciati.</p></div>
       <div>{grid('wave', 3, 3, cls='ico')}<h3>Commercio e logistica</h3><p>Giacenze, ordini e consegne sempre aggiornati.</p></div>
@@ -469,12 +483,12 @@ SERVIZI = f"""{phero('Software gestionale <span>su misura</span> per la tua azie
     </div>
   </section>
   <section class="sec">
-    {sh('03 / Integrazioni', 'Ci colleghiamo ai programmi che usi già.')}
+    {sh('04 / Integrazioni', 'Ci colleghiamo ai programmi che usi già.')}
     {ORBIT}
     <p style="color:var(--muted);max-width:56ch;margin-top:24px">Contabilità, fatturazione elettronica, messaggi, documenti e vendite online parlano con il gestionale. Ogni dato si scrive una volta sola.</p>
   </section>
   <section class="sec">
-    {sh('04 / Domande', 'Domande sui nostri servizi.')}
+    {sh('05 / Domande', 'Domande sui nostri servizi.')}
     {faq(FAQ_SERVIZI)}
   </section>
 {end('Iniziamo')}"""
