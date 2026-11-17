@@ -20,11 +20,11 @@ SERVICES = [
      "Prima di scrivere codice seguiamo il lavoro in azienda e troviamo dove si ferma. Ti consegniamo la mappa dei processi, con i punti critici e da dove conviene partire.",
      ["Mappa del processo", "Punti critici", "Priorità di intervento"]),
     ("Software su misura",
-     "I programmi pronti ti chiedono di cambiare il tuo modo di lavorare, e le differenze le colmano le persone, a mano. Noi costruiamo il software sui tuoi processi: gestionali, portali e app collegati ai programmi che usi già.",
-     ["Gestionali", "Portali", "App", "Integrazioni"]),
+     "I programmi pronti ti chiedono di cambiare il tuo modo di lavorare, e le differenze le colmano le persone, a mano. Noi costruiamo il software sui tuoi processi: gestionali e portali collegati ai programmi che usi già.",
+     ["Gestionali", "Portali", "Integrazioni"]),
     ("UX/UI Design",
      "Un software scomodo viene aggirato con fogli Excel e appunti. Disegniamo le schermate prima del codice e le mettiamo alla prova con il tuo team, quando cambiarle costa ancora poco.",
-     ["Prototipi cliccabili", "Test con il tuo team", "Computer, tablet e telefono"]),
+     ["Prototipi cliccabili", "Test con il tuo team"]),
     ("MVP",
      "Hai un'idea ma non vuoi investire tutto prima di sapere se funziona. Costruiamo la parte essenziale in poche settimane e la mettiamo in mano ai primi utenti: se regge, si continua.",
      ["Prototipo funzionante", "Primi utenti", "Prossimi passi"]),
@@ -81,7 +81,6 @@ FAQ_HOME = [
 FAQ_SERVIZI = [
     ("Si può partire da un solo reparto?", "Sì. Si parte da dove si perde più tempo e il resto si aggiunge dopo."),
     ("Potete importare i dati da Excel o dal vecchio gestionale?", "Sì. Importiamo anagrafiche, articoli e giacenze, dopo averli ripuliti da doppioni ed errori."),
-    ("Sviluppate anche app per telefono e tablet?", "Sì, per magazzino, consegne e interventi fuori sede, collegate al gestionale."),
     ("Cosa succede dopo il rilascio?", "Il software lo segue lo stesso team che l'ha costruito, con assistenza e aggiornamenti."),
 ]
 FAQ_METODO = [

@@ -81,7 +81,7 @@ ORG = {
                    {"@type": "City", "name": "Lecce"}, {"@type": "City", "name": "Matera"},
                    {"@type": "AdministrativeArea", "name": "Puglia"}, {"@type": "Country", "name": "Italia"}],
     "knowsAbout": ["software gestionale su misura", "gestionale personalizzato", "ERP personalizzato", "gestionale magazzino",
-                   "gestionale produzione", "gestionale commesse", "app per consegne", "UX design", "analisi dei processi aziendali"],
+                   "gestionale produzione", "gestionale commesse", "UX/UI design", "MVP", "analisi dei processi aziendali"],
 }
 
 
@@ -153,10 +153,10 @@ def nav(current):
 
 
 TOPICS = [
-    "Nuovo gestionale su misura",
     "Analisi dei processi",
-    "App per reparto e consegne",
-    "Assistenza su un software esistente",
+    "Software su misura",
+    "UX/UI Design",
+    "MVP",
     "Altro",
 ]
 
