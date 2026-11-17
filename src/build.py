@@ -432,12 +432,7 @@ HOME = f"""  <section class="hero">
       <div style="margin-top:30px"><a class="u" href="chi-siamo.html">Conosci il team</a></div></div></div>
   </section>
   <section class="sec">
-    {sh('06 / Case study', 'Due gestionali su misura, nati a Mottola.')}
-    <div class="case-list">{''.join(case_teaser(c, i) for i, c in enumerate(CASES, 1))}</div>
-    <div style="margin-top:30px"><a class="u" href="case-study.html">Come lavoriamo nei case study</a></div>
-  </section>
-  <section class="sec">
-    {sh('07 / Domande', 'Software gestionale su misura, le domande più comuni.')}
+    {sh('06 / Domande', 'Software gestionale su misura, le domande più comuni.')}
     {faq(FAQ_HOME)}
   </section>
 {end('Parliamo')}"""
