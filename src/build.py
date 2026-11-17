@@ -41,10 +41,10 @@ HOME_SERVICES = [
 ]
 # the method: title, text, pattern shown by the sticky grid, result
 PHASES = [
-    ("Capiamo come lavori", "Seguiamo il lavoro dove succede, dal magazzino all'ufficio, e troviamo dove si perde tempo.", "mosaic", "Priorità chiare fin da subito"),
-    ("Partiamo da basi solide", "Moduli già collaudati per partire veloci e investire dove serve davvero.", "drops", "La base del gestionale con i tuoi dati"),
-    ("Costruiamo le parti su misura", "Le funzioni specifiche della tua azienda, rilasciate una alla volta.", "wave", "Un passo avanti a ogni rilascio"),
-    ("Rendiamo i dati leggibili", "Schermate chiare che mostrano subito quello che conta.", "logo", "Decisioni più rapide, ogni giorno"),
+    ("Capiamo come lavori", "Seguiamo il lavoro dove succede, dal magazzino all'ufficio, e troviamo dove si perde tempo.", "mosaic", "La mappa dei processi e da dove partire"),
+    ("Partiamo da basi solide", "Anagrafiche, utenti e documenti non vanno reinventati. Partiamo da moduli collaudati e investiamo dove la tua azienda è diversa dalle altre.", "drops", "La base del gestionale, con i tuoi dati dentro"),
+    ("Costruiamo le parti su misura", "Le funzioni che fanno la differenza arrivano una alla volta. Le provi mentre il progetto va avanti, non tutte insieme alla fine.", "wave", "Un pezzo funzionante a ogni rilascio"),
+    ("Rendiamo i dati leggibili", "Un dato che non si legge non serve. Le schermate mettono davanti agli occhi quello che richiede attenzione.", "logo", "Decisioni prese su numeri aggiornati"),
 ]
 
 FAQ_HOME = [
@@ -55,9 +55,9 @@ FAQ_HOME = [
     ("Quando conviene un gestionale personalizzato rispetto a uno pronto?",
      "Quando accanto al gestionale torna fuori il foglio Excel. Se ti basta un programma pronto, te lo diciamo."),
     ("Quanto costa un gestionale su misura?",
-     "Dipende da quante aree deve seguire. Dopo l'analisi ricevi un preventivo diviso per fasi, con tempi e costi chiari."),
+     "Dipende da quante aree deve seguire. Dopo l'analisi ricevi un preventivo diviso per fasi: sai cosa paghi e cosa ricevi, prima di iniziare."),
     ("Quanto tempo serve per sviluppare un gestionale personalizzato?",
-     "Lavoriamo per rilasci, quindi le prime parti le usi già durante il progetto. La durata la fissiamo dopo l'analisi."),
+     "Rilasciamo un pezzo alla volta, quindi le prime parti le usi già durante il progetto. La durata complessiva la fissiamo dopo l'analisi, nero su bianco."),
     ("Il gestionale si collega alla fatturazione elettronica e alla contabilità?",
      "Sì, ai programmi che usi già. Ogni dato si scrive una volta sola."),
     ("Lavorate solo in Puglia?",
@@ -70,8 +70,8 @@ FAQ_SERVIZI = [
     ("Cosa succede dopo il rilascio?", "Il software lo segue lo stesso team che l'ha costruito, con assistenza e aggiornamenti."),
 ]
 FAQ_METODO = [
-    ("Quanto costa un gestionale su misura?", "Dipende da quante aree deve seguire. Dopo l'analisi ricevi un preventivo diviso per fasi, con tempi e costi chiari."),
-    ("Quanto tempo serve?", "Lavoriamo per rilasci, quindi le prime parti le usi già durante il progetto. La durata la fissiamo dopo l'analisi."),
+    ("Quanto costa un gestionale su misura?", "Dipende da quante aree deve seguire. Dopo l'analisi ricevi un preventivo diviso per fasi: sai cosa paghi e cosa ricevi, prima di iniziare."),
+    ("Quanto tempo serve?", "Rilasciamo un pezzo alla volta, quindi le prime parti le usi già durante il progetto. La durata complessiva la fissiamo dopo l'analisi, nero su bianco."),
     ("Quando conviene rispetto a un programma pronto?", "Quando accanto al gestionale torna fuori il foglio Excel. Se ti basta un programma pronto, te lo diciamo."),
 ]
 
@@ -289,7 +289,7 @@ def case_teaser(c, n=None):
     </a>"""
 
 
-CASE_HERO = phero('Case study: <span>come lavoriamo</span>, progetto dopo progetto', "Ogni gestionale parte da come lavora davvero un'azienda. Qui raccontiamo due progetti: i problemi da cui siamo partiti, il metodo e le schermate che li risolvono.", 'logo', 5, 3)
+CASE_HERO = phero('Case study: <span>come lavoriamo</span>, progetto dopo progetto', "Le promesse le fanno tutti. Qui ti mostriamo due gestionali veri: i problemi da cui siamo partiti, come abbiamo lavorato e le schermate che li hanno risolti.", 'logo', 5, 3)
 CASE_HUB = f"""{CASE_HERO}
 {caption('Case study', 'Progetti reali', 'Mottola (TA)', 'Gestionali su misura')}
   <section class="sec">
@@ -495,7 +495,7 @@ SERVIZI = f"""{phero('Software gestionale su misura: <span>prima guardiamo come 
 
 # ---------------------------------------------------------------- metodo
 
-METODO = f"""{phero('Come sviluppiamo un gestionale <span>personalizzato</span>', 'Quattro fasi, ognuna con un risultato concreto da verificare.', 'drops')}
+METODO = f"""{phero('Come sviluppiamo un gestionale <span>personalizzato</span>', 'Niente salti nel buio. Quattro fasi, e alla fine di ognuna hai in mano qualcosa di concreto da verificare.', 'drops')}
 {caption('Metodo', 'Quattro fasi', 'Un risultato per fase')}
   <section class="sec">
     {sh('01 / Le fasi', "Dall'analisi alle schermate.")}
@@ -503,13 +503,14 @@ METODO = f"""{phero('Come sviluppiamo un gestionale <span>personalizzato</span>'
   </section>
   <div class="strip" data-goo="diag" data-cols="28" data-rows="1" data-cursor="1" aria-hidden="true"></div>
   <section class="sec" style="padding-top:clamp(60px,8vw,100px)">
-    {sh('02 / Principi', 'Come progettiamo le schermate.')}
+    {sh('02 / Principi', 'Quattro regole per ogni schermata.')}
     <div class="four">
-      <div>{grid('logo', 5, 3, cls='ico')}<h3>I numeri che contano, in primo piano</h3><p>Apri la schermata e sai subito come sta andando.</p></div>
-      <div>{grid('checker', 3, 3, cls='ico')}<h3>Tutto in un unico posto</h3><p>Ordini, magazzino e fatture parlano tra loro.</p></div>
-      <div>{grid('rings', 3, 3, cls='ico')}<h3>Chiaro al primo sguardo</h3><p>Quello che richiede attenzione si nota subito.</p></div>
-      <div>{grid('breathe', 3, 3, cls='ico')}<h3>Solo quello che ti serve</h3><p>Ogni funzione ha un motivo per esserci.</p></div>
+      <div>{grid('logo', 5, 3, cls='ico')}<h3>I numeri che contano, in primo piano</h3><p>Apri la schermata e sai subito come sta andando, senza cercare.</p></div>
+      <div>{grid('checker', 3, 3, cls='ico')}<h3>Tutto in un unico posto</h3><p>Ordini, magazzino e fatture si parlano. Ogni dato si scrive una volta sola.</p></div>
+      <div>{grid('rings', 3, 3, cls='ico')}<h3>Chiaro al primo sguardo</h3><p>Quello che richiede attenzione si nota prima di tutto il resto.</p></div>
+      <div>{grid('breathe', 3, 3, cls='ico')}<h3>Solo quello che ti serve</h3><p>Ogni funzione deve guadagnarsi il suo posto. Il resto toglie spazio.</p></div>
     </div>
+    <div style="margin-top:30px"><a class="u" href="ux-design.html">Perché la UX conta</a></div>
   </section>
   <section class="sec">
     {sh('03 / Domande', 'Tempi e costi, senza sorprese.')}
@@ -532,19 +533,19 @@ PARTNER_ROWS = "".join(
     f'<a class="u" href="{url}" target="_blank" rel="noopener">Visita il sito di {name}</a></div>{grid("rings", 3, 3)}</article>'
     for name, field, desc, tags, url in PARTNERS)
 
-CHI = f"""{phero('Una software house che <span>prima viene a vedere</span>', 'Siamo a Mottola, in provincia di Taranto. Aiutiamo le PMI a lavorare meglio con i propri dati.', 'logo', 5, 3)}
+CHI = f"""{phero('Una software house che <span>prima viene a vedere</span>', 'Siamo a Mottola, in provincia di Taranto. Un buon gestionale si costruisce guardando il lavoro vero, non una lista di requisiti. Per questo, prima di proporre qualcosa, veniamo a vedere.', 'logo', 5, 3)}
 {caption('Chi siamo', 'Mottola', 'Taranto', 'Puglia')}
   <section class="sec">
     {sh('01 / Missione', 'Il digitale, comprensibile e utile.')}
-    <div class="who"><span></span><p class="big">Rendere il digitale comprensibile e utile <span>per chi lavora nelle PMI pugliesi. Disegniamo le schermate con chi le userà e le proviamo sul posto, finché ogni passaggio è chiaro.</span></p></div>
+    <div class="who"><span></span><p class="big">Troppi software vengono comprati e poi abbandonati. <span>Noi vogliamo il contrario: gestionali che le persone delle PMI pugliesi usano volentieri, perché sono stati disegnati con loro e provati sul posto.</span></p></div>
   </section>
   <section class="sec">
     {sh('02 / Il team', 'Le persone che seguono il tuo progetto.')}
     <div class="team">
-      <div>{grid('breathe', 3, 3)}<h3>Sales manager</h3><p>Il tuo primo contatto. Viene in azienda e prepara con te proposta, tempi e costi.</p></div>
-      <div>{grid('rings', 3, 3)}<h3>Project manager e data analyst</h3><p>Trasforma le esigenze in requisiti chiari e segue l'avanzamento del progetto.</p></div>
-      <div>{grid('diag', 3, 3)}<h3>Product designer</h3><p>Progetta le schermate e le prova con chi le userà.</p></div>
-      <div>{grid('mosaic', 3, 3)}<h3>Developer</h3><p>Scrive il software, lo collega ai tuoi programmi e lo segue dopo il rilascio.</p></div>
+      <div>{grid('breathe', 3, 3)}<h3>Sales manager</h3><p>Il tuo primo contatto. Viene in azienda, ascolta e ti porta una proposta con tempi e costi scritti.</p></div>
+      <div>{grid('rings', 3, 3)}<h3>Project manager e data analyst</h3><p>Traduce le tue esigenze in requisiti chiari e ti tiene aggiornato su ogni passo del progetto.</p></div>
+      <div>{grid('diag', 3, 3)}<h3>Product designer</h3><p>Disegna le schermate e le prova con chi le userà, prima che si scriva il codice.</p></div>
+      <div>{grid('mosaic', 3, 3)}<h3>Developer</h3><p>Scrive il software, lo collega ai programmi che usi già e lo segue anche dopo il rilascio.</p></div>
     </div>
   </section>
   <section class="sec">
@@ -556,11 +557,11 @@ CHI = f"""{phero('Una software house che <span>prima viene a vedere</span>', 'Si
     </div>
   </section>
   <section class="sec">
-    {sh('04 / Impegni', 'Tre impegni che manteniamo.')}
+    {sh('04 / Impegni', 'Tre promesse, nero su bianco.')}
     <div class="three">
-      <div><h3>Esempi basati su esperienze reali</h3><p>Ogni proposta parte da situazioni già viste in altre aziende.</p></div>
-      <div><h3>Tempi e costi definiti</h3><p>Durata e costo di ogni fase, concordati prima di iniziare.</p></div>
-      <div><h3>Lo stesso team nel tempo</h3><p>Chi scrive il software lo segue anche dopo.</p></div>
+      <div><h3>Esempi veri, non teorie</h3><p>Ogni proposta parte da situazioni già viste in altre aziende, con soluzioni che hanno già funzionato.</p></div>
+      <div><h3>Tempi e costi scritti prima</h3><p>Durata e costo di ogni fase li concordiamo prima di iniziare. Niente sorprese a metà strada.</p></div>
+      <div><h3>Lo stesso team, anche dopo</h3><p>Chi scrive il software lo segue nel tempo. Non sparisce dopo la consegna.</p></div>
     </div>
   </section>
   <section class="sec">
@@ -571,7 +572,7 @@ CHI = f"""{phero('Una software house che <span>prima viene a vedere</span>', 'Si
 
 # ---------------------------------------------------------------- contattaci
 
-CONTATTI = f"""{phero('Parliamo della <span>tua azienda</span>', 'Scrivici per un appuntamento o un preventivo. Ti rispondiamo personalmente.', 'mosaic')}
+CONTATTI = f"""{phero('Parliamo della <span>tua azienda</span>', 'Raccontaci cosa ti fa perdere tempo. Ti risponde una persona del team, e il primo incontro è senza impegno.', 'mosaic')}
 {caption('Contatti', 'Mottola', 'Puglia', 'Rispondiamo personalmente')}
   <section class="sec" style="padding-top:clamp(50px,6vw,80px)">
     <div class="contact-block">
